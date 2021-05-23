@@ -1,7 +1,24 @@
-const url = 'https://acon-stats-server.herokuapp.com';
+const url = 'https://adeli-server.herokuapp.com';
 export const environment = {
   production: true,
   api_url: 'https://acon-stats-server.herokuapp.com',
+
+
+  TONTINE_URL: url + '/admin/tontine',
+  AMANDE_URL: url + '/admin/amandes',
+  RETENUE_URL: url + '/api/retenue',
+  PLANING_URL: url + '/api/planing',
+  REUNION_URL: url + '/admin/reunion',
+  SESSION_URL: url + '/admin/session',
+  COMPTE_RENDU_URL: url + '/admin/compteRendu',
+  COMMUNIQUE_URL: url + '/admin/communique',
+  DISCIPLINE_URL: url + '/admin/discipline',
+  PRET_URL: url + '/admin/prets',
+  BENEFICIAIRE_URL: url + '/admin/beneficiaire',
+  NOTIFICATION_URL: url + '/admin/notification',
+  ELECTION_URL: url + '/admin/elections',
+
+
   DEPARTEMENT_URL: url + '/api/departements',
   LIGNE_URL: url + '/api/lignes',
   TECHNICIEN_URL: url + '/api/techniciens',
