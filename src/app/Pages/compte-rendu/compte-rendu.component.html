@@ -1,0 +1,137 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Compte Rendu de la reunion
+            </div>
+            <div class="card-body">
+                <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="crForm">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="liste2" class="">Date</label>
+                                <input id="liste2" type="date" class="form-control-sm form-control"
+                                       formControlName="dat"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <label for="liste4" class="">Compte rendu</label>
+                                <div id="liste4" class="has-feedback"
+                                     [ngClass]="{ 'has-error': myckeditor.invalid && myckeditor.touched }">
+                                    <ckeditor [(ngModel)]="mycontent" [ngModelOptions]="{standalone: true}"
+                                              #myckeditor="ngModel"
+                                              name="myckeditor"
+                                              required
+                                              [config]="ckeConfig"
+                                              debounce="500"
+                                              (paste)="onPaste($event)"
+                                              (change)="onChange($event)">
+                                    </ckeditor>
+                                    <div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Champs
+                                        Obligatoire!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<div class="form-row">-->
+                    <!--<div class="col-md-12">-->
+                    <!--<label for="liste" class="">Compt22e rendu</label>-->
+                    <!--<input id="liste" type="text"  [(ngModel)]="myProperty" class="form-control-sm form-control">-->
+                    <!--<br>-->
+                    <!--<h1 style="color: red">test: {{ myProperty }}</h1>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="addCR()" [disabled]="crForm.invalid || crForm.pristine">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+                <!--<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="row">-->
+    <!--<div class="col-lg-12">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-header">-->
+                <!--result-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<div [innerHTML]="mycontent"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Compte Rendu des Séances
+            </div>
+            <div class="card-body">
+                <div class=" row ">
+                    <div class="col-md-3 bg-transparent card">
+                        <div class="p-3">
+                            <div class="dropdown-menu nav p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
+                                <h6 tabindex="-1" class="pt-0 dropdown-header">Menu</h6>
+                                <a *ngFor="let cr of compteRendus" (click)="onChange2(cr)" href="#tab-faq-{{cr.id_compte_rendu}}"
+                                   data-toggle="tab" tabindex="0" class="mb-1 dropdown-item">{{cr.date}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 card">
+                        <div class="pb-5 pl-5 pr-5 pt-3">
+                            <div class="mobile-app-menu-btn mb-3">
+                                <button type="button" class="hamburger hamburger--elastic"><span
+                                        class="hamburger-box"><span class="hamburger-inner"></span></span></button>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="tab-faq-{{id}}">
+                                    <h4>Ordre du Jour du {{date}}</h4>
+                                    <div class="divider"></div>
+                                    <div [innerHTML]="details"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>-->
+<!--<div class="form-group has-feedback"-->
+<!--[ngClass]="{ 'has-error': myckeditor.invalid && myckeditor.touched }">-->
+<!--<ckeditor [(ngModel)]="mycontent"-->
+<!--#myckeditor="ngModel"-->
+<!--name="myckeditor"-->
+<!--required-->
+<!--[config]="ckeConfig"-->
+<!--debounce="500"-->
+<!--(paste)="onPaste($event)"-->
+<!--(change)="onChange($event)">-->
+<!--</ckeditor>-->
+<!--<div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Required field.</div>-->
+<!--</div>-->
+<!--<button [disabled]="myForm.invalid" class="btn btn-primary">Save</button>-->
+
+<!--<button type="button" class="btn btn-primary btn-sm" (click)="swl(mycontent)" >-->
+<!--voir-->
+<!--</button>-->
+<!--</form>-->
+<!--<div [innerHTML]="mycontent"></div>-->

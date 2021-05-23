@@ -1,0 +1,118 @@
+<div class="h-100" *ngIf="authority === 'super_admin'">
+  <div class="h-100 no-gutters row">
+    <div class="h-100 d-md-flex d-sm-block bg-white justify-content-center align-items-center col-md-12 col-lg-7">
+      <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+        <div class="app-logo"></div>
+        <h5>
+          <div>Nouvel Utilisateur,</div>
+          <!--<span>ça prend juste quelques secondes pour créer un nouvel utilisateur</span>-->
+        </h5>
+        <div>
+          <form [formGroup]="registerForm">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="position-relative form-group">
+                  <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
+                  <input formControlName="email" name="email" id="exampleEmail" placeholder="Email here..." type="email" class="form-control form-control-sm">
+                </div>
+                <div style="color: #f65656" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched)">
+                  <span>*</span> entrez une adresse mail valide
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="position-relative form-group">
+                  <label for="exampleName" class="">Nom & Prénom</label>
+                  <input name="text" id="exampleName" placeholder="Name here..." formControlName="name" type="text" class="form-control form-control-sm">
+                </div>
+                <div style="color: #f65656" *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].touched)">
+                  <span>*</span> au moins 4 caractères requis
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="examplePassword" class=""><span class="text-danger">*</span> Username</label>
+                  <input name="password" formControlName="username" id="examplePassword" placeholder="Username" type="text" class="form-control form-control-sm">
+                </div>
+                <div style="color: #f65656" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched)">
+                  <span>*</span> au moins 3 caractères requis
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="tel" class=""><span class="text-danger">*</span> Tel</label>
+                  <input name="tel" formControlName="tel" id="tel" placeholder="Téléphone" type="text" class="form-control form-control-sm">
+                </div>
+                <div style="color: #f65656" *ngIf="registerForm.controls['tel'].invalid && (registerForm.controls['tel'].touched)">
+                  <span>*</span> min 9 chiffres
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Password</label>
+                  <input name="passwordrep" id="examplePasswordRep" formControlName="password" placeholder="Password here..." type="password" class="form-control form-control-sm">
+                </div>
+                <div style="color: #f65656" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched)">
+                  <span>*</span> le mot de passe doit comporter au moins 6 caractères
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="position-relative form-group">
+                <div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespCP" class="custom-control-input" value="tresorier" formControlName="tresorier">
+                    <label class="custom-control-label" for="RespCP">Tresorier</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespPlacage" class="custom-control-input" value="president" formControlName="president">
+                    <label class="custom-control-label" for="RespPlacage">President</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespSc" class="custom-control-input" value="secretaire" formControlName="secretaire">
+                    <label class="custom-control-label" for="RespSc">Secretaire</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespBRA" class="custom-control-input" value="senceur" formControlName="senceur">
+                    <label class="custom-control-label" for="RespBRA">Sensceur</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespMaint" class="custom-control-input" value="porte_parole" formControlName="porte_parole">
+                    <label class="custom-control-label" for="RespMaint">Porte Parole</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespMind" class="custom-control-input" value="adherent" formControlName="adherent">
+                    <label class="custom-control-label" for="RespMind">Adherent</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--<div class="mt-3 position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Accept our <a href="javascript:void(0);">Terms-->
+              <!--and Conditions</a>.</label></div>-->
+            <div *ngIf="registerForm.valid && isSignUpFailed" class="alert alert-warning">
+              Echec d'Inscription!<br/>{{errorMessage}}
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+              <div class="ml-auto">
+                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onSubmit()">Créér utilisateur</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="d-lg-flex d-xs-none col-lg-5">
+      <div class="slider-light">
+        <div class="slick-slider slick-initialized">
+          <div>
+            <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark" tabindex="-1">
+              <div class="slide-img-bg" style="background-image: url('assets/images/originals/citynights.jpg');"></div>
+              <div class="slider-content"><h3>ADELI</h3>
+                <p>Copyright © ACON NKAP 2021, Conçu par <b>ING. Casimir OUANDJI </b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

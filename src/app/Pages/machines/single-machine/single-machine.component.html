@@ -1,0 +1,635 @@
+<app-page-title id="heads" [heading]="nom_mach | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
+" [bg]="bg" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'"></app-page-title>
+
+<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title" style="cursor: pointer;" (click)="capture()">
+                    <i class="header-icon pe-7s-graph2 icon-gradient bg-happy-green"> </i>
+                    Rapport
+                </div>
+                <div class="btn-actions-pane-right" *ngIf="authority === 'admin' || authority === 'super_admin'">
+                    <button class="btn btn-outline-primary btn-sm" *ngIf="mtbfByYear.labels.length && loader == false " (click)="div == true ? exportsMDT() : exportsMTBF();">
+                        <i class="fa fa-file-pdf"></i> Export PDF
+                    </button>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div class="nav">
+                        <a (click)="div = false " href="#tab-eg-65" data-toggle="tab" class="btn-pill btn-wide active btn btn-outline-primary btn-sm">MTBF {{selectedMachine.nom | uppercase}}</a>
+                        <a (click)="div = true" href="#tab-eg-66" data-toggle="tab" class="btn-pill btn-wide mr-1 ml-1  btn btn-outline-primary btn-sm">MDT {{selectedMachine.nom | uppercase}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade active show mtbf1" id="tab-eg-65">
+                    <div class="widget-chart p-0" id="xyz">
+
+                        <app-chart width="400" height="auto" *ngIf="mtbfByYear.labels.length && loader == false "
+                                   [type]="'bar'"
+                                   [data]="mtbfByYear.datasets"
+                                   [lineChartLabels]="mtbfByYear.labels"
+                                   [lineChartColors]="colorsMTBF"
+                        ></app-chart>
+
+                        <table class="table table-inverse mt-3" *ngIf="mtbfByYear.labels.length && loader == false  && val == true">
+                            <tbody>
+                            <tr>
+                                <th class="text-left">Période</th>
+                                <th *ngFor="let x of mtbfByYear.labels">{{x}}</th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-vert"></div>&nbsp; MTBF [h]</th>
+                                <td *ngFor="let y of mtbfByYear.mtbfs">{{y}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-bleu"></div>&nbsp; TDT [min]</th>
+                                <td *ngFor="let z of mtbfByYear.tdt">{{z}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-rouge"></div>&nbsp; Pannes</th>
+                                <td *ngFor="let x of mtbfByYear.nbr">{{x}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="line-spin-fade-loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tab-eg-66">
+                    <div class="widget-chart p-0" id="xyz1">
+                        <app-chart
+                                width="400" height="auto" *ngIf="mdtByYear.labels.length && loader == false "
+                                   [type]="'bar'"
+                                   [data]="mdtByYear.datasets"
+                                   [lineChartLabels]="mdtByYear.labels"
+                                   [lineChartColors]="colorsMDT"
+                        ></app-chart>
+
+                        <table class="table table-inverse mt-3" *ngIf="mdtByYear.labels.length && loader == false && vals == true">
+                            <tbody>
+                            <tr>
+                                <th class="text-left">Période</th>
+                                <th *ngFor="let x of mdtByYear.labels">{{x}}</th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-noir"></div>&nbsp;MDT [min]</th>
+                                <td *ngFor="let x of mdtByYear.mdt">{{x}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-bleu"></div>&nbsp;TTR [min]</th>
+                                <td *ngFor="let x of mdtByYear.ttr">{{x}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-orange"></div>&nbsp;WT [min]</th>
+                                <td *ngFor="let x of mdtByYear.wt">{{x}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="line-spin-fade-loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" id="tableau" class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card " id="htmlData" #htmlData>
+            <div class="card-header">
+                {{periode_panne}}&nbsp;<span  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="selectPanForm">
+                            <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
+                                <option value="" selected disabled hidden>Sélectionner une période</option>
+                                <option value="ttesp">Toutes les pannes</option>
+                                <option value="tp" >Aujourd'hui</option>
+                                <option value="hp" >Hier</option>
+                                <option value="twp" >Cette Semaine</option>
+                                <option value="lwp" >Semaine Dernière</option>
+                                <option value="tmp" >Ce mois</option>
+                                <option value="lmp" >Mois Dernier</option>
+                                <option value="typ" >Cette Année</option>
+                                <option value="lyp" >Année Dernière</option>
+                                <option value="pp"  >Personaliser la recherche</option>
+                            </select>
+                        </form>
+
+                        <ng-template #range let-modal >
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <form [formGroup]="rangeForm">
+                                        <div class="form-row">
+
+                                            <div class="col-md-5">
+                                                <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div *ngIf="ranger == 'true'" role="group" class="btn-group-sm btn-group">
+                        <div >
+                            <form [formGroup]="rangeForm">
+                                <div class="form-row">
+
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive" >
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Date</th>
+                        <th>Machine</th>
+                        <th class="">Cause</th>
+                        <th class="text-center">Arrêt</th>
+                        <th class="text-center">Début Inter</th>
+                        <th class="text-center">Fin Inter</th>
+                        <th class="text-center">WT (min)</th>
+                        <th class="text-center">TTR (min)</th>
+                        <th class="text-center">DT (min)</th>
+                        <!--<th class="text-center">Actions</th>-->
+                    </tr>
+                    </thead>
+                    <tbody  *ngIf="pannes.length && loaders == false">
+                    <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; " (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
+                        <ng-template #mymodal let-modal >
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                    <p>{{pan.code}}</p>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="tabs-animation">
+                                    <div class="row" *ngIf="tail < 2">
+                                        <div class="col-md-4 col-xl-4 ">
+                                            <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                            <p *ngFor="let hp of Hpannes">{{hp.heure_arret | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-center">
+                                            <span class="timeline-title"><b>Début Inter</b></span>
+                                            <p *ngFor="let hp of Hpannes;">{{hp.debut_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-right">
+                                            <span class="timeline-title"><b>Fin Inter</b></span>
+                                            <p *ngFor="let hp of Hpannes">{{hp.fin_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="tail > 1">
+                                        <div class="col-md-4 col-xl-4 ">
+                                            <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                            <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-center">
+                                            <span class="timeline-title"><b>Début Inter</b></span>
+                                            <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-right">
+                                            <span class="timeline-title"><b>Fin Inter</b></span>
+                                            <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="scroll-area-lg">
+                                    <div class="scrollbar-container">
+                                        <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                        <p>{{pan.description}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                        <p>{{pan.cause}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                        <p>{{pan.details}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp;
+                                                            <span class="text-capitalize">{{pan.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{pan.nomOP}}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                        <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                            <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span class="text-uppercase">{{pt.nomTec}}</span>
+                                                            <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="pan.outil != ''" class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in">
+                                                        <h4 class="timeline-title">Outils utilisés</h4>
+                                                        <p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-block clearfix card-footer ">
+                                <div class="float-left">
+                                    <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
+                                </div>
+                                <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                                        <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                        <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;" ><i class="fa fa-times"></i></button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </ng-template>
+
+                        <ng-template #extendPanne let-modal >
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                    <p>{{pan.code}}</p>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove #0b5885 1px">
+                                        <div class="tabs-animation">
+                                            <div class="row" >
+                                                <div class="col-md-4 col-xl-4 ">
+                                                    <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                    <p >{{ha1 | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-center">
+                                                    <span class="timeline-title"><b>Début Inter</b></span>
+                                                    <p >{{di1 | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-right">
+                                                    <span class="timeline-title"><b>Fin Inter</b></span>
+                                                    <p >{{fi1 | date: 'HH:mm'}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="scroll-area-lg">
+                                            <div class="scrollbar-container">
+                                                <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                <p>{{desc1}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                <p>{{cause1}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                <p>{{details1}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 1">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                <p *ngFor="let pt of Tpannes">
+                                                                    <span *ngIf="pt.quart == 1">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="qte1 != 0" class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in">
+                                                                <h4 class="timeline-title">Outils utilisés</h4>
+                                                                <p><b>{{qte1}}</b> {{outil1}}: <b class="text-dark">{{ref1}}</b></p>                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-6">
+                                        <div class="tabs-animation">
+                                            <div class="row" >
+                                                <div class="col-md-4 col-xl-4 ">
+                                                    <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                    <p >{{ha2 | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-center">
+                                                    <span class="timeline-title"><b>Début Inter</b></span>
+                                                    <p >{{di2 | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-right">
+                                                    <span class="timeline-title"><b>Fin Inter</b></span>
+                                                    <p >{{fi2 | date: 'HH:mm'}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="scroll-area-lg">
+                                            <div class="scrollbar-container">
+                                                <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                <p>{{desc2}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                <p>{{cause2}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                <p>{{details2}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 2">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                <p *ngFor="let pt of Tpannes" >
+                                                                    <span *ngIf="pt.quart == 2">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="qte2 != 0" class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in">
+                                                                <h4 class="timeline-title">Outils utilisés</h4>
+                                                                <p>
+
+                                                                    <b>{{qte2}}</b> {{outil2}}:
+                                                                    <b class="text-dark float-right">{{ref2}}</b>
+                                                                </p>                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="d-block clearfix card-footer ">
+                                <div class="float-left">
+                                    <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
+                                </div>
+                                <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                                        <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                        <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;" ><i class="fa fa-times"></i></button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </ng-template>
+                        <td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>
+                        <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left mr-3">
+                                        <div class="widget-content-left">
+                                            <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
+                                            <button class="btn-icon btn-icon-only btn btn-link btn-sm">
+                                                <!--<i class="pe-7s-settings btn-icon-wrapper font-size-xlg"> </i>-->
+                                                <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                                <span *ngIf="pan.cont == false && pan.etat == true" class="badge badge-abs badge-danger badge-dot badge-dot-sm"> Not</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-left flex2">
+                                        <div class="widget-heading">{{pan.machine | uppercase}}</div>
+                                        <div class="widget-subheading opacity-7">{{pan.code | uppercase}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-left" style="white-space: nowrap;overflow: hidden;
+text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</td>
+
+
+
+                        <td class="text-center" >
+                            <!--<div *ngIf="tails > 1">-->
+                            <!--<span>{{times[0].heureArret | date: 'HH:mm'}}</span>-->
+                            <!--</div>-->
+                            {{ pan.heure_arret | date: 'HH:mm'}}
+                        </td>
+                        <td class="text-center" >
+                            {{pan.debut_inter | date: 'HH:mm'}}
+
+                        </td>
+                        <td class="text-center" >
+                            <!--<div *ngIf="tails < 2">-->
+                            <!--<span *ngFor="let hp of ko">{{hp.finInter | date: 'HH:mm'}}</span>-->
+                            <!--</div>-->
+
+                            {{pan.fin_inter | date: 'HH:mm'}}
+                        </td>
+                        <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20}">{{pan.wt}} </td>
+                        <td class="text-center">{{pan.ttr}}</td>
+                        <td class="text-center">{{pan.dt}}</td>
+                        <!--<td class="text-center">-->
+                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                        <!--<button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>-->
+                        <!--<button class="btn  btn-danger" (click)="swl()"><i class="fa fa-times"></i></button>-->
+                        <!--</div>-->
+                        <!--</td>-->
+                    </tr>
+
+                    </tbody>
+
+                </table>
+                <p *ngIf="!pannes.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune Panne trouvée !</p>
+                <div *ngIf="!pannes.length && loaders == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="onExport()">-->
+                    <!--<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;-->
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>07</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

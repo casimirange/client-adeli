@@ -1,0 +1,170 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin'"></app-page-title>
+
+<div *ngIf="authority === 'super_admin' || authority === 'tresorier'" class="row">
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Nouvelle Cotisation
+            </div>
+            <div class="card-body">
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="techForm">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <label for="liste" class="">Membre</label>
+                                    <select id="liste" class="form-control-sm form-control" formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
+                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm" [disabled]="techForm.invalid || techForm.pristine"
+                                    (click)="operation == 'add' ? addTechnicien() : updateTechnicien() " >
+                                {{operation == 'add' ? 'Enregistrer' :
+                                operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Liste des Bénéficiaires
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Membre</th>
+                            <th>Montant</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="widget-content" *ngFor="let benef of beneficiaires | filter: term | paginate:{itemsPerPage: pages, currentPage:p}">
+                        <th scope="row" >{{ benef.date | date: 'dd-MM-yyyy'}}</th>
+                        <td>{{benef.nom | titlecase}}</td>
+                        <td class="text-capitalize">{{benef.montant}} €</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Historique de la tontine
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="selectPanForm">
+                            <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
+
+                            <select class="form-control-sm form-control" (change)="findSso($event.target.value)" formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
+                                <option value="" selected disabled hidden>Filtrer par session</option>
+                                <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; initTech();">
+                            <i class="fa fa-plus-circle"></i>
+                            Nouvelle Cotisation
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Entrée</th>
+                            <th>Sortie</th>
+                            <th>Solde</th>
+                            <th>Motif</th>
+                            <th>Membre</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
+                            <th scope="row" >{{ tontine.date | date: 'dd-MM-yyyy'}}</th>
+                            <td>{{tontine.debit}} €</td>
+                            <td class="text-capitalize">{{tontine.credit}} €</td>
+                            <td class="text-capitalize">{{tontine.montant}} €</td>
+                            <td class="text-capitalize">{{tontine.motif}}</td>
+                            <td class="text-capitalize">{{tontine.name}}</td>
+                            <!--<td> <div [ngClass]="tech.etat == true ? 'badge badge-success' : 'badge badge-focus'">-->
+                                <!--{{tech.etat == true ? 'En Service' : 'Hors Service'}}-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <td class="text-center">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedTontine = tontine;"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedTontine = tontine; swl(tontine)" ><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

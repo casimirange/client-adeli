@@ -1,0 +1,394 @@
+<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin' || authority === 'user_alpi' || authority === 'user_mind'"></app-title>
+
+<div class="" *ngIf="authority === 'super_admin' || authority === 'user_alpi' || authority === 'user_mind'">
+    <div class="app-inner-layout">
+        <div class="app-inner-layout__wrapper">
+            <div class="app-inner-layout__content card">
+                <div class="card-body">
+                    <h5 class="card-title">Enregistrer une nouvelle panne</h5>
+                    <form [formGroup]="panForm" id="signupForm" class="col-md-10 mx-auto"  >
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="date" [ngClass]="{'red': panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched)}">Date</label>
+                                        <input type="date" id="date" class="form-control form-control-sm" formControlName="dateP" [ngClass]="{'fred': panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched)}" [(ngModel)]="dat"/>
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched) ">
+                                        <span>*</span> Date invalide
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="ha" [ngClass]="{'red': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y'))}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" min="{{dat}}" [(ngModel)]="ha" [ngClass]="{'fred': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y'))}" />
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic; font-size: 0.5em" *ngIf="panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) ">
+                                        <span>*</span> Date et heure invalide
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic; font-size: 0.9em" *ngIf="((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y')) ">
+                                        <span>*</span> Veuillez saisir une valeur ≥ {{dat}}.
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="di" [ngClass]="{'red': panForm.controls['debutInter'].invalid && (panForm.controls['debutInter'].touched) || (di < ha)}">Début d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="di" class="form-control form-control-sm" formControlName="debutInter" min="{{ha}}" [(ngModel)]="di" [ngClass]="{'fred': panForm.controls['debutInter'].invalid && (panForm.controls['debutInter'].touched) ? 'fred': (di < ha)}">
+                                    </div>
+                                    <div *ngIf="(di < ha)" style="font-style: italic; font-size: 0.9em; color: #f65656;">
+                                        <span>*</span> Veuillez saisir une valeur ≥ {{ha}}.
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="fi" [ngClass]="{'red': panForm.controls['finInter'].invalid && (panForm.controls['finInter'].touched) || (fi < di)}">Fin d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="fi" class="form-control form-control-sm" formControlName="finInter" min="{{di}}" [(ngModel)]="fi" [ngClass]="{'fred': panForm.controls['finInter'].invalid && (panForm.controls['finInter'].touched)
+                                        ? 'fred': (fi < di)}">
+                                    </div>
+                                    <div *ngIf="(fi < di)" style="font-style: italic; font-size: 0.7em; color: #f65656;">
+                                        <span>*</span> Veuillez saisir une valeur ≥ {{di}}.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="form-group">
+
+                            <div class="form-row">
+
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="machine" [ngClass]="{'red': panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched)}">Machine</label>
+                                        <select id="machine" class="form-control form-control-sm" formControlName="idMachine" [ngClass]="{'fred': panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched)}" >
+                                            <option value="" selected disabled hidden>Sélectionner machine en panne</option>
+                                            <option *ngFor="let mach of machines"  [ngValue]="mach.idMachine">
+                                                <b>{{mach.code | uppercase}}</b>&nbsp; {{mach.nom | uppercase}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched) ">
+                                        <span>*</span> Veuillez sélectionner la machine en panne
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="op" [ngClass]="{'red': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
+
+                                        <select id="op" class=" form-control form-control-sm"  formControlName="idOperateur" [ngClass]="{'fred': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">
+                                            <option value="" selected disabled hidden>Sélectionner un opérateur</option>
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP">
+                                                {{op.nomOP | uppercase}} {{op.prenomOP | titlecase}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched) ">
+                                        <span>*</span> Veuillez sélectionner un Opérateur de production
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div formArrayName="idTechnicien">
+                            <div class="form-group ">
+                                <label>Maintenanciers</label> &nbsp;
+                                <span>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech(); add_tec = true"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                                </span>
+                            </div>
+
+                            <div class="form-group" *ngFor="let tc of getTechni().controls; let i = index">
+
+                                <div class="form-row">
+                                    <div class="col-md-5 field_wrapper">
+                                        <div class="position-relative form-group">
+                                            <label for="mnt{{i+1}}" [ngClass]="{'red': panForm.controls['idTechnicien'].invalid && (panForm.controls['idTechnicien'].touched)}">Maintenancier N°{{i+1}}</label>
+                                            <select id="mnt{{i+1}}" class="form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': panForm.controls['idTechnicien'].invalid && (panForm.controls['idTechnicien'].touched)}">
+                                                <option value="" selected disabled hidden>Sélectionner un maintenancier</option>
+                                                <option *ngFor="let tec of techniciens" [ngValue]="tec.idTechnicien" >
+                                                    {{tec.nom | uppercase}} {{tec.prenom | titlecase}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['details'].invalid && (panForm.controls['details'].touched) ">
+                                            <span>*</span> Veuillez sélectionner un maintenancier
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
+                                                name="code" id="matM{{i+1}}" type="text" placeholder="BCP002"
+                                                class="form-control form-control-sm" disabled></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
+                                                name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" disabled></div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="position-relative form-group">
+                                            <label class="" style="color:transparent;">Fonction</label>
+                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="onMoveTech(i)">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="divider"></div>
+
+                        <div class="form-group">
+                            <label for="desc" [ngClass]="{'red': panForm.controls['description'].invalid && (panForm.controls['description'].touched)}">Description du Problème</label>
+                            <div>
+                                <textarea rows="2" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="desc" placeholder="Description..."  formControlName="description"  [ngClass]="{'fred': panForm.controls['description'].invalid && (panForm.controls['description'].touched)}"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['description'].invalid && (panForm.controls['description'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="cause" [ngClass]="{'red': panForm.controls['cause'].invalid && (panForm.controls['cause'].touched)}">Cause de la Panne</label>
+                            <div>
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="Cause..." formControlName="cause" [ngClass]="{'fred': panForm.controls['cause'].invalid && (panForm.controls['cause'].touched)}"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['cause'].invalid && (panForm.controls['cause'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="detail" [ngClass]="{'red': panForm.controls['details'].invalid && (panForm.controls['details'].touched)}">Détails d'intervention</label>
+                            <div>
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="detail" placeholder="Détails..." formControlName="details" [ngClass]="{'fred': panForm.controls['details'].invalid && (panForm.controls['details'].touched)}"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['details'].invalid && (panForm.controls['details'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+                        <div class="form-group">
+                            <label class="form-check-label">Avez-vous utilisé des pièces de rechange? </label>
+                                <div class="">
+
+                                    <div class="position-relative form-check-inline">
+                                        <div class="custom-radio custom-control position-relative form-group">
+                                            <input type="radio" id="exampleCustomRadio4" name="pic" class="custom-control-input" formControlName="pic" value="non" [(ngModel)]="piece" checked >
+                                            <label class="custom-control-label" for="exampleCustomRadio4">Non</label>
+                                        </div>
+                                    </div>
+                                    <div class="position-relative form-check-inline">
+                                        <div class="custom-radio custom-control position-relative form-group">
+                                            <input type="radio" id="exampleCustomRadio5" name="pic" class="custom-control-input" formControlName="pic" value="oui" [(ngModel)]="piece">
+                                            <label class="custom-control-label" for="exampleCustomRadio5">Oui </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+
+                        <div class="form-group" *ngIf="piece == 'oui' ">
+
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="piece" class="">Nom de la pièce</label>
+                                        <input name="code" id="piece" type="text" placeholder="Ampoule"
+                                            class="form-control form-control-sm" formControlName="outil" value="ou12" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="qte" class="">Quantité</label>
+                                        <input name="code" id="qte" type="number" placeholder="01"
+                                            class="form-control form-control-sm" formControlName="qte" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="ref" class="">Référence Magasin</label>
+                                        <input name="code" id="ref" type="text" placeholder="6000157"
+                                               class="form-control form-control-sm" formControlName="ref" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+                        <div class="form-group">
+                            <label for="machine" class="">La panne a t-elle été réparée?</label>
+                            <div class="">
+
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required>
+                                        <label class="custom-control-label" for="exampleCustomRadio1">Panne achevée</label>
+                                    </div>
+                                </div>
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required>
+                                        <label class="custom-control-label" for="exampleCustomRadio2">Panne en cours... </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-pill btn-shadow btn btn-primary" (click)="addPanne()" [disabled]="panForm.invalid || panForm.pristine || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y')) || (di > fi) || (ha > di)">
+                                <i class="fa fa-save"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="app-inner-layout__sidebar card">
+                <ul class="nav flex-column">
+                    <li class="pt-4 pl-3 pr-3 pb-3 nav-item">
+                        <a routerLink="/pannes">
+                            <button class="btn-pill btn-shadow btn btn-primary btn-block">Toutes les Pannes
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item-header nav-item">
+                        <i class="nav-link-icon fa fa-spinner fa-spin"> </i>&nbsp;&nbsp;
+                        <span>Liste des pannes non achevées</span>
+                    </li>
+
+                </ul>
+                <ul class="todo-list-wrapper list-group list-group-flush">
+                    <li style="cursor: pointer" class="list-group-item" *ngFor="let pan of unPan" (click)="open(mymodal); loadTechPannes(pan);">
+                        <div class="todo-indicator bg-warning"></div>
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left ml-1">
+                                    <div class="widget-heading">{{pan.machine}}</div>
+                                    <div class="widget-subheading"><i>{{pan.code}}</i></div>
+                                </div>
+                                <div class="widget-content-right widget-content-actions">
+                                    <a [routerLink]="['/new-panne', pan.numero]">
+                                    <button class="border-0 btn-transition btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    </a>
+                                    <button class="border-0 btn-transition btn btn-outline-primary">
+                                        <i class="fa fa-pen"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ng-template #mymodal let-modal>
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')">
+                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                    <p>{{pan.code}}</p>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="tabs-animation">
+                                    <div class="row">
+                                        <div class="col-md-4 col-xl-4 ">
+                                            <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                            <p>{{pan.heure_arret | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-center">
+                                            <span class="timeline-title"><b>Début Inter</b></span>
+                                            <p>{{pan.debut_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                        <div class="col-md-4 col-xl-4 text-right">
+                                            <span class="timeline-title"><b>Fin Inter</b></span>
+                                            <p>{{pan.fin_inter | date: 'HH:mm'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="scroll-area-lg">
+                                    <div class="scrollbar-container">
+                                        <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                        <p>{{pan.description}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                        <p>{{pan.cause}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                        <p>{{pan.details}}</p></div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                        <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}
+                                                            <span class="float-right">
+                                                           {{pt.fonction}}
+                                                        </span>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                    <div class="vertical-timeline-element-content bounce-in">
+                                                        <h4 class="timeline-title">Outils utilisés</h4>
+                                                        <p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-block clearfix modal-footer">
+                                <!--<div class="float-left">-->
+                                <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning btn-sm">Modifier</button>-->
+                                <!--</div>-->
+                                <div class="float-right">
+                                    <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm" (click)="modal.close('save click')">Annuler</button>-->
+                                    <a [routerLink]="['/new-panne', pan.numero]" (click)="modal.close('save click')">
+                                        <button class="btn-wide btn-shadow btn btn-outline-alternate btn-sm" >Continuer</button>
+                                    </a>
+                                </div>
+                                <!--<button class="btn btn-primary" type="button" (click)="modal.close('save click')">Fermer</button>-->
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li class="list-group-item font-weight-bold" *ngIf="countUnfinishedFailure == 0">
+                        Aucune panne inachevée !!!
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

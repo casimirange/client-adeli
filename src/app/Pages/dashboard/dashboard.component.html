@@ -1,0 +1,319 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-md-3 col-xl-3">
+        <div class="card mb-3 widget-content bg-white card-shadow-danger">
+            <div class="widget-content-wrapper ">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Tontine</div>
+                    <div class="widget-subheading">Solde Tontine</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-danger"><span>{{soldeTontine}} €</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-xl-3">
+        <div class="card mb-3 widget-content bg-white card-shadow-success">
+            <div class="widget-content-wrapper ">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Mangwa</div>
+                    <div class="widget-subheading">Solde Mangwa</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-success"><span>{{soldeMangwa}} €</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-xl-3">
+        <div class="card mb-3 widget-content bg-white card-shadow-primary">
+            <div class="widget-content-wrapper ">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Amandes</div>
+                    <div class="widget-subheading">Solde Amandes</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-primary"><span>{{soldeAmande}} €</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-xl-3">
+        <div class="card mb-3 widget-content bg-white card-shadow-warning">
+            <div class="widget-content-wrapper ">
+                <div class="widget-content-left">
+                    <div class="widget-heading">Caisse</div>
+                    <div class="widget-subheading">Total en caisse</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-warning"><span>{{soldeTontine + soldeMangwa + soldeAmande}} €</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="tabs-animation">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            <div class="main-card mb-3 card">
+                <div class="rm-border card-header">
+                    <div>
+                        <h5 class="menu-header-title text-capitalize text-secondary">Evolution des Membres et cotisations par session</h5>
+                    </div>
+
+                </div>
+                <div class="card-body p-2" *ngIf="(datas.labels.length  && dah != 0) && loaders == false ">
+                    <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 testss">
+                        <div style="height: auto">
+                            <div class="flex-item">
+                                <div style="display: block; height: auto;">
+                                    <app-chart
+                                            [type]="'line'"
+                                            [data]="datas.datasets"
+                                            [lineChartLabels]="datas.labels"
+                                    ></app-chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-2 text-center" *ngIf="(!datas.labels.length  || dah == 0)&& loaders == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.8em">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center" *ngIf="(!datas.labels.length  || dah == 0)&& loaders == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                             style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Planning de la session
+                </div>
+
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Date</th>
+                            <th class="text-left">Evènement</th>
+                            <th class="text-left">Réceptionniste</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="cursor: pointer"
+                            *ngFor="let planing of planings | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; ">
+                            <td class="text-center text-muted">{{ planing.date | date: 'dd/MM/y'}}</td>
+                            <td class="text-left text-muted">{{ planing.evenement}}</td>
+                            <td class="text-left text-muted">{{ planing.membre}}</td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+                    <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>-->
+                    <p *ngIf="!planings.length && loader == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucun Planning poue la session !</p>
+                    <div *ngIf="!planings.length && loader == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-block clearfix card-footer">
+                    <div class="float-left">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li>
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide="true"
+                                                     responsive="true"
+                                                     previousLabel=""
+                                                     nextLabel="">
+                                </pagination-controls>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Informations sur la Réunion
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="todo-list-wrapper list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-warning"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Date Création Réunion
+                                            </div>
+                                            <div class="widget-subheading" style="color: black"><i>{{date_creation_reunion}} par {{fondateur_reunion}}</i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-focus"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Session en cours</div>
+                                            <div class="widget-subheading" style="color: black">
+                                                <div>Du {{activeSession.debut}} au {{activeSession.fin}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-primary"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left flex2">
+                                            <div class="widget-heading">Participants</div>
+                                            <div class="widget-subheading">{{countUser}} membres</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-info"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Prêts (%)</div>
+                                            <div class="widget-subheading">le taux appliqué sur le prêt est de {{activeSession.taux}} %</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-success"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left flex2">
+                                            <div class="widget-heading">Montant !cotisation</div>
+                                            <div class="widget-subheading">Le nouveau montant arrêté pour la tontine est de {{activeSession.montant}} €</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="todo-list-wrapper list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-warning"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Président
+                                            </div>
+                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-focus"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Secretaire</div>
+                                            <div class="widget-subheading">
+                                                <div>tagne
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-warning"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Scenseur
+                                            </div>
+                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-focus"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Trésorier</div>
+                                            <div class="widget-subheading">
+                                                <div>tagne
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="todo-indicator bg-warning"></div>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">Porte Parole
+                                            </div>
+                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+

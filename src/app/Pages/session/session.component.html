@@ -1,0 +1,230 @@
+ <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="tabs-animation">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Nouvelle Session
+                </div>
+                <div class="card-body">
+                    <div>
+                        <form id="signupForm"  [formGroup]="sessForm" class="col-md-10 mx-auto">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="dd" [ngClass]="{'red': sessForm.controls['dd'].invalid && (sessForm.controls['dd'].touched)}">Date de Debut</label>
+                                                <input type="date" class="form-control form-control-sm" id="dd" formControlName="dd" [ngClass]="{'fred': sessForm.controls['dd'].invalid && (sessForm.controls['dd'].touched)}" [(ngModel)]="dd"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['dd'].invalid && (sessForm.controls['dd'].touched) ">
+                                                <span>*</span> Date invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="df" [ngClass]="{'red': sessForm.controls['df'].invalid && (sessForm.controls['df'].touched)}">Date de Fin</label>
+                                                <input type="date" class="form-control form-control-sm" id="df" formControlName="df" [ngClass]="{'fred': sessForm.controls['df'].invalid && (sessForm.controls['df'].touched) ? 'fred': (df < dd)}" min="{{dd}}" [(ngModel)]="df"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['df'].invalid && (sessForm.controls['df'].touched) ">
+                                                <span>*</span> Date invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="fond" [ngClass]="{'red': sessForm.controls['fond'].invalid && (sessForm.controls['fond'].touched)}">Fonds</label>
+                                                <input type="text" id="fond" [ngClass]="{'fred': sessForm.controls['fond'].invalid && (sessForm.controls['fond'].touched)}" class="form-control form-control-sm" formControlName="fond" placeholder="300 €"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['fond'].invalid && (sessForm.controls['fond'].touched) ">
+                                                <span>*</span> montant de fond invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="mangwa" [ngClass]="{'red': sessForm.controls['mangwa'].invalid && (sessForm.controls['mangwa'].touched)}">Mangwa</label>
+                                                <input type="text" id="mangwa" [ngClass]="{'fred': sessForm.controls['mangwa'].invalid && (sessForm.controls['mangwa'].touched)}" class="form-control form-control-sm" formControlName="mangwa" placeholder="5 €"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['mangwa'].invalid && (sessForm.controls['mangwa'].touched) ">
+                                                <span>*</span> montant du mangwa invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="taux" [ngClass]="{'red': sessForm.controls['taux'].invalid && (sessForm.controls['taux'].touched)}">Taux(%) prêts tontine</label>
+                                                <input type="text" id="taux" [ngClass]="{'fred': sessForm.controls['taux'].invalid && (sessForm.controls['taux'].touched)}" class="form-control form-control-sm" formControlName="taux" placeholder="2.5%"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['taux'].invalid && (sessForm.controls['taux'].touched) ">
+                                                <span>*</span> montant de taux invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="cotisation" [ngClass]="{'red': sessForm.controls['cotisation'].invalid && (sessForm.controls['cotisation'].touched)}">Montant Cotisation</label>
+                                                <input type="text" id="cotisation" [ngClass]="{'fred': sessForm.controls['cotisation'].invalid && (sessForm.controls['cotisation'].touched)}" class="form-control form-control-sm" formControlName="cotisation" placeholder="300 €"/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['cotisation'].invalid && (sessForm.controls['cotisation'].touched) ">
+                                                <span>*</span> montant de cotisation invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="cotisation" [ngClass]="{'red': sessForm.controls['membres'].invalid && (sessForm.controls['membres'].touched)}">Nombre de membre</label>
+                                                <input type="number" id="cotisation" [ngClass]="{'fred': sessForm.controls['membres'].invalid && (sessForm.controls['membres'].touched)}" class="form-control form-control-sm" formControlName="membres" placeholder=""/>
+                                            </div>
+                                            <div style="color: #f65656; font-style: italic;" *ngIf="sessForm.controls['membres'].invalid && (sessForm.controls['membres'].touched) ">
+                                                <span>*</span> nombre de membre invalide
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addSession()" [disabled]="sessForm.invalid || sessForm.pristine">
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-lg-6 col-xl-6">
+            <div class="card-shadow-primary profile-responsive card-border mb-3 card">
+                <div class="dropdown-menu-header">
+                    <div class="dropdown-menu-header-inner bg-focus">
+                        <div class="menu-header-image opacity-3" style="background-image: url('assets/images/dropdown-header/city4.jpg');"></div>
+                        <div class="menu-header-content btn-pane-right">
+                            <div class="avatar-icon-wrapper mr-2 avatar-icon-xl">
+
+                            </div>
+                            <div><h5 class="menu-header-title">Paramètres ADELI</h5><h6 class="menu-header-subtitle">Informations sur la session en cours</h6></div>
+                            <div class="menu-header-btn-pane">
+                                <!--<button class="ladda-button btn btn-pill btn-dark" data-style="slide-right"><span class="ladda-label">Load Click</span><span class="ladda-spinner"></span></button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="bg-warm-flame list-group-item">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading text-dark opacity-7">Fonds</div>
+                                    <div class="widget-subheading opacity-10"><span>La session a débuté avec<b class="text-dark"> {{activeSessions ? activeSessions.fonds : 0}} €</b> dans la caisse</span></div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-heading text-dark opacity-7">Taux</div>
+                                    <div class="widget-subheading opacity-10"><span><b class="text-dark">{{activeSessions ? activeSessions.taux : 0}}%</b> applicable à chaque prêt</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="p-0 list-group-item">
+                        <div class="grid-menu grid-menu-2col">
+                            <div class="no-gutters row">
+                                <div class="col-sm-6">
+                                    <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="pe-7s-date btn-icon-wrapper btn-icon-lg mb-3"> </i>Début Session : {{activeSessions ? activeSessions.debut : ''}}</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="pe-7s-date btn-icon-wrapper btn-icon-lg mb-3"> </i>Fin Session : {{activeSessions ? activeSessions.fin : ''}}</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="pe-7s-cash btn-icon-wrapper btn-icon-lg mb-3"> </i> Mangwa : {{activeSessions ? activeSessions.retenue : 0}} €</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn-icon-vertical btn-square btn-transition btn btn-outline-link"><i class="pe-7s-cash btn-icon-wrapper btn-icon-lg mb-3"> </i>Cotisation : {{activeSessions ? activeSessions.montant : 0}} €</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Toutes les Sessions
+                </div>
+
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Date Début</th>
+                            <th class="text-center">Date Fin</th>
+                            <th class="text-center">Cotisation</th>
+                            <th class="text-center">Mangwa</th>
+                            <th class="text-center">Fonds</th>
+                            <th class="text-center">Taux (prêt)</th>
+                            <th class="text-center">Membres</th>
+                            <th class="text-center">Statut</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let session of sessions">
+                            <td class="text-center">{{session.debut}}</td>
+                            <td class="text-center">{{session.fin}}</td>
+                            <td class="text-center">{{session.montant}} €</td>
+                            <td class="text-center">{{session.retenue}} €</td>
+                            <td class="text-center">{{session.fonds}} €</td>
+                            <td class="text-center">{{session.taux}} %</td>
+                            <td class="text-center">{{session.participants}}</td>
+                            <td class="text-center">
+                                <div [ngClass]="session.etat == true ? 'badge badge-success' : 'badge badge-focus'">
+                                    {{session.etat == true ? 'En Cours' : 'Terminée'}}
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedSession = session;"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="swl(session); selectedSession = session;"><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
