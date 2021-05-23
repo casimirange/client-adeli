@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm" (click)="addCR()" [disabled]="discForm.invalid || crForm.pristine">
+                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="discForm.invalid || discForm.pristine">
                             Enregistrer
                         </button>
                     </div>
@@ -84,7 +84,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="widget-content" *ngFor="let disc of disciplines | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                        <tr class="widget-content" *ngFor="let disc of disciplines | paginate:{itemsPerPage: 7, currentPage:7}; ">
                             <th scope="row" >{{ disc.date | date: 'dd/mm/yyyy'}}</th>
                             <td>{{disc.name | uppercase}}</td>
                             <td> <div [ngClass]="disc.type == 'retard' ? 'badge badge-warning' : 'badge badge-danger'">
@@ -97,7 +97,7 @@
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedDiscipline = disc;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="selectedDiscipline = disc;swl(disc)"><i class="fa fa-times"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedDiscipline = disc;"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>

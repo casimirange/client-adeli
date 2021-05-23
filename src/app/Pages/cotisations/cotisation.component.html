@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-sm" [disabled]="techForm.invalid || techForm.pristine"
-                                    (click)="operation == 'add' ? addTechnicien() : updateTechnicien() " >
+                                     >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
                             </button>
@@ -76,7 +76,7 @@
                         <form [formGroup]="selectPanForm">
                             <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
 
-                            <select class="form-control-sm form-control" (change)="findSso($event.target.value)" formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
+                            <select class="form-control-sm form-control"  formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
                                 <option value="" selected disabled hidden>Filtrer par session</option>
                                 <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
                             </select>
@@ -86,7 +86,7 @@
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; initTech();">
+                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; ">
                             <i class="fa fa-plus-circle"></i>
                             Nouvelle Cotisation
                         </button>
@@ -123,7 +123,7 @@
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedTontine = tontine;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="selectedTontine = tontine; swl(tontine)" ><i class="fa fa-times"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedTontine = tontine; " ><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>

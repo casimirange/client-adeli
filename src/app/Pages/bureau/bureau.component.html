@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-sm" [disabled]="bureauForm.invalid || bureauForm.pristine"
-                                    (click)="operation == 'add' ? addBureau() : updateTechnicien() " >
+                                    (click)="operation == 'add' ? addBureau() : ''" >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
                             </button>
@@ -82,7 +82,7 @@
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedBureau = bureau;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="swl(session); selectedSession = session;"><i class="fa fa-times"></i></button>
+                                    <button class="btn  btn-danger"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>

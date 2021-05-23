@@ -25,6 +25,8 @@ export class SessionComponent implements OnInit {
   searchForms: FormGroup;
   private roles: string[];
   public authority: string;
+  dd: Date;
+  df: Date;
 
   constructor(private fb: FormBuilder,
               private sessionServices: SessionService,

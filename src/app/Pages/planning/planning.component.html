@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm" (click)="addCR()" [disabled]="planForm.invalid || crForm.pristine">
+                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="planForm.invalid || planForm.pristine">
                             Enregistrer
                         </button>
                     </div>
@@ -68,14 +68,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="widget-content" *ngFor="let plan of planings | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                        <tr class="widget-content" *ngFor="let plan of planings | paginate:{itemsPerPage: 7, currentPage:7}; ">
                             <th scope="row" >{{ plan.date | date: 'dd/MM/yyyy'}}</th>
                             <td>{{plan.evenement | uppercase}}</td>
                             <td>{{plan.membre | uppercase}}</td>
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
-                                    <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedPlanning = plan;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="selectedPlanning = plan;swl(plan)"><i class="fa fa-times"></i></button>
+                                    <button class=" btn  btn-primary" (click)="selectedPlanning = plan;"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedPlanning = plan;"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
