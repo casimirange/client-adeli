@@ -121,7 +121,7 @@ import { PlanningComponent } from './Pages/planning/planning.component';
 import {BureauService} from "./services/bureau/bureau.service";
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
- 
+
 @NgModule({
   declarations: [
     AppComponent,
