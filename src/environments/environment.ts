@@ -2,12 +2,9 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const url = 'http://localhost:8080';
-const urls = 'https://acon-stats-server.herokuapp.com';
-const url2 = 'https://server-bi.herokuapp.com/';
 export const environment = {
 
-  production: true,
-  api_url: 'https://acon-stats-server.herokuapp.com/',
+  production: false,
   TONTINE_URL: url + '/admin/tontine',
   AMANDE_URL: url + '/admin/amandes',
   RETENUE_URL: url + '/api/retenue',

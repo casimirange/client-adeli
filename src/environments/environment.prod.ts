@@ -1,7 +1,7 @@
 const url = 'https://adeli-server.herokuapp.com';
 export const environment = {
   production: true,
-  api_url: 'https://acon-stats-server.herokuapp.com',
+  // api_url: 'https://acon-stats-server.herokuapp.com',
 
 
   TONTINE_URL: url + '/admin/tontine',
