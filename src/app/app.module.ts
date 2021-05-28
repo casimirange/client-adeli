@@ -113,7 +113,7 @@ import {AmandesService} from "./services/amandes/amandes.service";
 import {PretService} from "./services/pret/pret.service";
 // import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 // import { HelloComponent } from './Pages/hello/hello.component';
-import { CKEditorModule } from 'ng2-ckeditor';
+// import { CKEditorModule } from 'ng2-ckeditor';
 import {CompteRenduService} from "./services/compte_rendu/compte-rendu.service";
 import {CommuniqueService} from "./services/communique/communique.service";
 import {DisciplineService} from "./services/discipline/discipline.service";
@@ -121,7 +121,7 @@ import { PlanningComponent } from './Pages/planning/planning.component';
 import {BureauService} from "./services/bureau/bureau.service";
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
-
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -209,7 +209,7 @@ import {BureauService} from "./services/bureau/bureau.service";
     NgApexchartsModule,
     jqxGridModule,
     AutocompleteLibModule,
-    CKEditorModule
+    // CKEditorModule
 
     // IgxGridModule
     // NgScrollbarModule

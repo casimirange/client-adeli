@@ -21,17 +21,18 @@
                         <div class="form-row">
                             <div class="col-md-12">
                                 <label for="liste4" class="">Compte rendu</label>
-                                <div id="liste4" class="has-feedback"
-                                     [ngClass]="{ 'has-error': myckeditor.invalid && myckeditor.touched }">
-                                    <ckeditor [(ngModel)]="mycontent" [ngModelOptions]="{standalone: true}"
-                                              #myckeditor="ngModel"
-                                              name="myckeditor"
-                                              required
-                                              [config]="ckeConfig"
-                                              debounce="500"
-                                              (paste)="onPaste($event)"
-                                              (change)="onChange($event)">
-                                    </ckeditor>
+                                <div id="liste4" class="has-feedback">
+                                     <!--[ngClass]="{ 'has-error': myckeditor.invalid && myckeditor.touched }">-->
+                                    <!--<ckeditor [(ngModel)]="mycontent" [ngModelOptions]="{standalone: true}"-->
+                                              <!--#myckeditor="ngModel"-->
+                                              <!--name="myckeditor"-->
+                                              <!--required-->
+                                              <!--[config]="ckeConfig"-->
+                                              <!--debounce="500"-->
+                                              <!--(paste)="onPaste($event)"-->
+                                              <!--(change)="onChange($event)">-->
+                                    <!--</ckeditor>-->
+                                <textarea name="" id="" cols="30" rows="10"></textarea>
                                     <div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Champs
                                         Obligatoire!
                                     </div>

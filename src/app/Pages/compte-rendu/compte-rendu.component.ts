@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CKEditorComponent } from 'ng2-ckeditor';
+// import { CKEditorComponent } from 'ng2-ckeditor';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CompteRenduService} from "../../services/compte_rendu/compte-rendu.service";
 import {CompteRendu} from "../../Models/cr";
@@ -24,7 +24,7 @@ export class CompteRenduComponent implements OnInit {
   id: number;
   details: string;
   date: Date;
-  @ViewChild("myckeditor", {static: false}) ckeditor: CKEditorComponent;
+  // @ViewChild("myckeditor", {static: false}) ckeditor: CKEditorComponent;
 
   constructor(private fb: FormBuilder,
   private compteRenduservice: CompteRenduService) {
