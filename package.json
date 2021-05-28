@@ -1,6 +1,6 @@
 {
   "name": "client-adeli",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "engines": {
     "node": "12.19.0"
   },
