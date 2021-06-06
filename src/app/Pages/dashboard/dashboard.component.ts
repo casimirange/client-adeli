@@ -30,7 +30,7 @@ import {SessionService} from "../../services/session/session.service";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {AmandesService} from "../../services/amandes/amandes.service";
 import {BureauService} from "../../services/bureau/bureau.service";
-import dataProcessor = CKEDITOR.dataProcessor;
+// import dataProcessor = CKEDITOR.dataProcessor;
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
@@ -737,7 +737,7 @@ export class DashboardComponent implements OnInit {
     CountUsers(){
         this.userService.countUsers().subscribe(
             data => {
-                this.countUser = data;
+                this.countUser = data ? data : 0;
 
             } ,
             error => {

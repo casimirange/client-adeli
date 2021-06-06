@@ -192,7 +192,7 @@
                                         <div class="widget-content-left">
                                             <div class="widget-heading">Session en cours</div>
                                             <div class="widget-subheading" style="color: black">
-                                                <div>Du {{activeSession.debut}} au {{activeSession.fin}}
+                                                <div>Du {{activeSession ? activeSession.debut : ''}} au {{activeSession ? activeSession.fin : ''}}
                                                 </div>
                                             </div>
                                         </div>
