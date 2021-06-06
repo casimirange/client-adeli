@@ -30,7 +30,6 @@ import {SessionService} from "../../services/session/session.service";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {AmandesService} from "../../services/amandes/amandes.service";
 import {BureauService} from "../../services/bureau/bureau.service";
-// import dataProcessor = CKEDITOR.dataProcessor;
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
