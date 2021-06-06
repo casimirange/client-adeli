@@ -66,7 +66,7 @@
                     </div>
 
                 </div>
-                <div class="card-body p-2" *ngIf="(datas.labels.length  && dah != 0) && loaders == false ">
+                <div class="card-body p-2" *ngIf="(datas.labels && dah != 0) && loaders == false ">
                     <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 testss">
                         <div style="height: auto">
                             <div class="flex-item">
@@ -81,10 +81,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-2 text-center" *ngIf="(!datas.labels.length  || dah == 0)&& loaders == false ">
+                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == false ">
                     <p class="text-center" style="color: grey; font-size: 1.8em">Aucune donnée disponible!</p>
                 </div>
-                <div class="card-body p-2 text-center" *ngIf="(!datas.labels.length  || dah == 0)&& loaders == true ">
+                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == true ">
                     <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
                         <div class="loader-wrapper d-flex justify-content-center align-items-center"
                              style="vertical-align: middle;">
@@ -131,9 +131,9 @@
 
                     </table>
                     <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>-->
-                    <p *ngIf="!planings.length && loader == false" style="color: grey; font-size: 1.5rem;"
-                       class="text-center">Aucun Planning poue la session !</p>
-                    <div *ngIf="!planings.length && loader == true" class="text-center">
+                    <p *ngIf="!planings && loader == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucun Planning pour la session !</p>
+                    <div *ngIf="!planings && loader == true" class="text-center">
                         <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
                             <div class="loader-wrapper d-flex justify-content-center align-items-center"
                                  style="vertical-align: middle;">

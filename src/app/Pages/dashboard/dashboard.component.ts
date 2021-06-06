@@ -30,6 +30,7 @@ import {SessionService} from "../../services/session/session.service";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {AmandesService} from "../../services/amandes/amandes.service";
 import {BureauService} from "../../services/bureau/bureau.service";
+import dataProcessor = CKEDITOR.dataProcessor;
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
@@ -63,7 +64,7 @@ export class DashboardComponent implements OnInit {
     planings: Planing[];
     date_creation_reunion: any;
     fondateur_reunion: string;
-    activeSession: any;
+    activeSession: any = {};
     countUser: any;
 
   headings = 'Tableau de Bord';
@@ -630,7 +631,7 @@ export class DashboardComponent implements OnInit {
     SoldeTontine(){
         this.dashboardService.getSolde().subscribe(
             data => {
-                this.soldeTontine = (data.solde);
+                this.soldeTontine = (data ? data.solde : 0 );
 
             } ,
             error => {
@@ -648,7 +649,7 @@ export class DashboardComponent implements OnInit {
     SoldeAmande(){
         this.amandeService.getSolde().subscribe(
             data => {
-                this.soldeAmande = (data.solde);
+                this.soldeAmande = (data ? data.solde : 0);
 
             } ,
             error => {
@@ -666,7 +667,7 @@ export class DashboardComponent implements OnInit {
     SoldeMangwa(){
         this.retenueServices.getSolde().subscribe(
             data => {
-                this.soldeMangwa = (data.solde);
+                this.soldeMangwa = (data ? data.solde : 0);
 
             } ,
             error => {
@@ -701,16 +702,17 @@ export class DashboardComponent implements OnInit {
     Reunion(){
         this.reuniongServices.getReunion().subscribe(
             data => {
-                this.date_creation_reunion = data.date;
-                this.fondateur_reunion = data.fondateur;
-
+                this.date_creation_reunion = data ? data.date : '';
+                this.fondateur_reunion = data ? data.fondateur : '';
+                console.log('info réunion', data);
             } ,
             error => {
-                console.log('une erreur sur planing a été détectée!')
+                console.log('une erreur sur infos réunion!')
                 this.loaders = false;
             },
             () => {
                 this.loaders = false;
+
             }
         );
     }
@@ -719,10 +721,11 @@ export class DashboardComponent implements OnInit {
         this.sessionServices.getActiveSession().subscribe(
             data => {
                 this.activeSession = data;
+                console.log('session active', this.activeSession);
 
             } ,
             error => {
-                console.log('une erreur sur planing a été détectée!')
+                console.log('une erreur sur la session active')
                 this.loaders = false;
             },
             () => {
