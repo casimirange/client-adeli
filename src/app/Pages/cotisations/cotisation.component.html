@@ -13,17 +13,19 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <label for="liste" class="">Membre</label>
-                                    <select id="liste" class="form-control-sm form-control" formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
+                                    <select id="liste" class="form-control-sm form-control" formControlName="membre"  >
+                                        <option selected disabled hidden>Sélectionner un membre</option>
                                         <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-sm" [disabled]="techForm.invalid || techForm.pristine"
+                            <button type="submit" class="btn btn-primary btn-sm" (click)="addTontine()" [disabled]="techForm.invalid || techForm.pristine"
                                      >
-                                {{operation == 'add' ? 'Enregistrer' :
-                                operation == 'edit' ? 'Modifier ' : ''}}
+                                <!--{{operation == 'add' ? 'Enregistrer' :-->
+                                <!--operation == 'edit' ? 'Modifier ' : ''}}-->
+                                Enregistrer
                             </button>
                         </div>
                     </form>
@@ -73,24 +75,24 @@
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <form [formGroup]="selectPanForm">
-                            <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
+                        <!--<form [formGroup]="selectPanForm">-->
+                            <!--&lt;!&ndash;<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">&ndash;&gt;-->
 
-                            <select class="form-control-sm form-control"  formControlName="depL"  [(ngModel)]="selectedSessions.id_session">
-                                <option value="" selected disabled hidden>Filtrer par session</option>
-                                <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
-                            </select>
-                        </form>
+                            <!--<select class="form-control-sm form-control"   [(ngModel)]="selectedSessions.id_session">-->
+                                <!--<option value="" selected disabled hidden>Filtrer par session</option>-->
+                                <!--<option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>-->
+                            <!--</select>-->
+                        <!--</form>-->
                     </div>
                 </div>
                 <div class="btn-actions-pane-right">
-                    <div role="group" class="btn-group-sm btn-group">
-                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; ">
-                            <i class="fa fa-plus-circle"></i>
-                            Nouvelle Cotisation
-                        </button>
-                    </div>
+                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                        <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
+                        <!--<button class="btn btn-secondary float-right" (click)="operation = 'add'; ">-->
+                            <!--<i class="fa fa-plus-circle"></i>-->
+                            <!--Nouvelle Cotisation-->
+                        <!--</button>-->
+                    <!--</div>-->
                 </div>
 
             </div>

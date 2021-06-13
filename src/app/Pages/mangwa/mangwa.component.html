@@ -6,34 +6,59 @@
         <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Enregistrement prêt/remboursement
+                    Ajout / Retrait Mangwa
                 </div>
                 <div class="card-body">
                     <div>
-                        <form id="signupForm" class="col-md-10 mx-auto">
+                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="techForm">
                             <div class="form-group">
                                 <div class="form-row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" />
+                                                <input type="date" class="form-control form-control-sm" formControlName="date" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="">
-                                            <div class="position-relative">
-                                                <label for="" class="">Nom</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="pelagie" />
-                                            </div>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label for="liste" class="">Membre</label>
+                                        <select id="liste" class="form-control-sm form-control" formControlName="membre"  >
+                                            <option selected disabled hidden>Sélectionner un membre</option>
+                                            <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                        </select>
                                     </div>
-                                    <div class="col-md-4">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <label for="lite"  >Transaction</label>
+                                        <select id="lite" class="form-control-sm form-control" formControlName="fonction" >
+                                            <option value="" selected disabled hidden>Sélectionner un poste</option>
+                                            <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
+                                        </select>
+                                        <!--<div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched) ">-->
+                                        <!--<span>*</span> selectionner une fonction-->
+                                        <!--</div>-->
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="300 €" />
+                                                <input type="text" class="form-control form-control-sm" formControlName="montant" placeholder="300 €" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="" class="">Motif</label>
+                                                <input type="text" class="form-control form-control-sm" formControlName="motif" placeholder="motif" />
                                             </div>
                                         </div>
                                     </div>
@@ -41,7 +66,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm"
+                                <button type="submit" class="btn btn-primary btn-sm" (click) = "addMangwa()"
                                 >
                                     Enregistrer
                                 </button>
@@ -88,7 +113,7 @@
                         <tr>
                             <th class="text-center">Date</th>
                             <th class="text-left">Membres</th>
-                            <th class="text-center">Motif</th>
+                            <th class="text-left">Motif</th>
                             <th class="text-left">Crédit</th>
                             <th class="text-left">Débit</th>
                             <th class="text-center">Solde</th>
@@ -96,13 +121,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let mangwa of mangwas | paginate:{itemsPerPage: pages, currentPage:7}; "  [ngClass]="mangwa.debit == 0 ? 'bg-w' : ''">
+                        <tr *ngFor="let mangwa of mangwas | paginate:{itemsPerPage: 7, currentPage:p}; "  [ngClass]="mangwa.debit == 0 ? 'bg-w' : ''">
                             <td class="text-center">{{mangwa.date}}</td>
-                            <td class="text-center">{{mangwa.nom}}</td>
+                            <td class="text-left">{{mangwa.nom}}</td>
                             <td class="text-left">{{mangwa.motif}}</td>
                             <td class="text-left">{{mangwa.credit}} €</td>
                             <td class="text-left">{{mangwa.debit}} €</td>
-                            <td class="text-left">{{mangwa.solde}} €</td>
+                            <td class="text-center">{{mangwa.solde}} €</td>
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedMangwa = mangwa;"><i class="fa fa-pencil"></i></button>
@@ -134,12 +159,12 @@
                     <div class="float-right">
                         <ul class="pagination pagination-sm mb-0">
                             <li>
-                                <!--<pagination-controls (pageChange)="p=$event"-->
-                                                     <!--autoHide = "true"-->
-                                                     <!--responsive = "true"-->
-                                                     <!--previousLabel = "Précédent"-->
-                                                     <!--nextLabel = "Suivant">-->
-                                <!--</pagination-controls>-->
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide = "true"
+                                                     responsive = "true"
+                                                     previousLabel = "Précédent"
+                                                     nextLabel = "Suivant">
+                                </pagination-controls>
                             </li>
                         </ul>
                     </div>

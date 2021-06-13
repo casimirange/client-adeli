@@ -8,6 +8,7 @@ export class Mangwas {
     debit?: number;
     solde?: number;
     nom?: string;
+    transaction?: string;
     motif?: string;
     constructor( ) {}
 }

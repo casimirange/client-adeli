@@ -627,10 +627,11 @@ export class DashboardComponent implements OnInit {
     this.datas.datasets.push(datasetNbrePanne4);
 
     }
-    SoldeTontine(){
+    SoldeTontine() {
+        this.soldeTontine = 0;
         this.dashboardService.getSolde().subscribe(
             data => {
-                this.soldeTontine = (data ? data.solde : 0 );
+                this.soldeTontine = (data.solde ? data.solde : 0 );
 
             } ,
             error => {
@@ -645,38 +646,37 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    SoldeAmande(){
+    SoldeAmande() {
+        this.soldeAmande = 0;
         this.amandeService.getSolde().subscribe(
             data => {
-                this.soldeAmande = (data ? data.solde : 0);
+                this.soldeAmande = data.solde;
 
             } ,
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('erreur solde amande détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde tontine');
+                console.log('solde amande ', this.soldeAmande);
                 this.loaders = false;
-                console.log("test007: "+this.soldeTontine)
             }
         );
     }
 
-    SoldeMangwa(){
+    SoldeMangwa() {
+        this.soldeMangwa = 0;
         this.retenueServices.getSolde().subscribe(
             data => {
-                this.soldeMangwa = (data ? data.solde : 0);
+                this.soldeMangwa = data.solde;
 
             } ,
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('erreur solde mangwa a été détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde tontine');
                 this.loaders = false;
-                console.log("test007: "+this.soldeTontine)
             }
         );
     }

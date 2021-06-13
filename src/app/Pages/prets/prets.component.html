@@ -87,22 +87,100 @@
                         <thead>
                         <tr>
                             <th class="text-center">Date Prêt</th>
-                            <th class="text-left">Montant Prêté</th>
-                            <th class="text-left">Membres</th>
-                            <th class="text-left">Montant à remboursé</th>
-                            <th class="text-left">Date Remboursement</th>
-                            <th class="text-center">Montant Remboursé</th>
+                            <th class="text-left">Membre</th>
+                            <th class="text-left">Prêt</th>
+                            <th class="text-left">Taux</th>
+                            <th class="text-left">A Rembourser</th>
+                            <th class="text-left">Date Remb.</th>
+                            <!--<th class="text-center">Montant Remboursé</th>-->
                             <th class="text-center">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:7}; "  [ngClass]="pret.rembourse == false ? 'bg-w' : ''">
+                        <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
+
+                            <ng-template #mymodal let-modal >
+                                <div class="modal-header">
+                                    <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Remboursement du prêt de </b>{{pret.montant_prete}} € </h6>
+                                    <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                        <span class="timeline-title"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="tabs-animation">
+                                        <div class="modal-header bg-transparent">
+                                            <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Taux appliqué : </b> {{pret.taux}} % </h6>
+                                            <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                                <span class="timeline-title"><b>Bénéfice :</b> {{(pret.taux) * (pret.montant_prete)}} €</span>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row">-->
+                                            <!--<div class="">-->
+                                                <!--<span class="timeline-title"><b>Taux appliqué : </b> {{pret.taux}} %</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="text-right">-->
+                                                <!--<span class="timeline-title"><b>Bénéfice :</b> {{(pret.taux) * (pret.montant_prete)}} €</span>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    </div>
+
+                                    <div class="scroll-area-md">
+                                        <div class="scrollbar-container">
+                                            <form id="signupForm" class="col-md-10 mx-auto">
+                                                <div class="form-group">
+                                                    <div class="">
+                                                        <div class="position-relative">
+                                                            <label for="" class="">Membre</label>
+                                                            <input type="text" disabled class="form-control form-control-sm" placeholder="300 €" value="{{selectedPret.nom}}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="">
+                                                        <div class="position-relative">
+                                                            <label for="" class="">Date Remboursement</label>
+                                                            <input type="date" class="form-control form-control-sm" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="">
+                                                        <div class="position-relative">
+                                                            <label for="" class="">Montant Remboursé</label>
+                                                            <input type="text" class="form-control form-control-sm" placeholder="pelagie" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-sm" (click)="rembourser(pret)">
+                                                        Enregistrer
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-block clearfix card-footer ">
+                                    <div class="float-left">
+                                        <b class="pull-left">{{ pret.date_pret  | date: 'dd MMM y'}}</b>
+                                    </div>
+                                    <div class="float-right" *ngIf="authority === 'super_admin'">
+                                        <div role="group" class="btn-group-sm btn-group">
+                                            <button class=" btn  btn-primary" (click)="rembourser(pret); modal.close('save click')">Rembourser</button>
+                                            <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+
                             <td class="text-center">{{pret.date_pret}}</td>
-                            <td class="text-center">{{pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.nom}}</td>
-                            <td class="text-left">1200 €</td>
+                            <td class="text-left">{{pret.montant_prete}} €</td>
+                            <td class="text-left">{{pret.taux}} %</td>
+                            <td class="text-left">{{(pret.taux * pret.montant_prete) + pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.date_remboursement}}</td>
-                            <td class="text-left">{{pret.montant_rembourse}} €</td>
+                            <!--<td class="text-left">{{pret.montant_rembourse}} €</td>-->
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedPret = pret;"><i class="fa fa-pencil"></i></button>
@@ -132,16 +210,16 @@
                         <!--</form>-->
                     </div>
                     <div class="float-right">
-                        <!--<ul class="pagination pagination-sm mb-0">-->
-                            <!--<li>-->
-                                <!--<pagination-controls (pageChange)="p=$event"-->
-                                                     <!--autoHide = "true"-->
-                                                     <!--responsive = "true"-->
-                                                     <!--previousLabel = "Précédent"-->
-                                                     <!--nextLabel = "Suivant">-->
-                                <!--</pagination-controls>-->
-                            <!--</li>-->
-                        <!--</ul>-->
+                        <ul class="pagination pagination-sm mb-0">
+                            <li>
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide = "true"
+                                                     responsive = "true"
+                                                     previousLabel = "Précédent"
+                                                     nextLabel = "Suivant">
+                                </pagination-controls>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

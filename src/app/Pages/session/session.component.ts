@@ -161,7 +161,7 @@ export class SessionComponent implements OnInit {
     this.activeSession();
   }
 
-  allSession(){
+  allSession() {
     this.sessions = [];
     this.sessionServices.getAllSession().subscribe(
         data => {
@@ -173,24 +173,24 @@ export class SessionComponent implements OnInit {
         },
         () => {
           this.loaders = false;
-          console.log("Liste des sessions: ",this.sessions)
+          console.log("Liste des sessions: ", this.sessions)
         }
     );
   }
 
-  activeSession(){
+  activeSession() {
 
     this.sessionServices.getActiveSession().subscribe(
         data => {
           this.activeSessions = data;
         } ,
         error => {
-          console.log('les sessions ne se sont pas chargées correctement')
+          console.log('les sessions ne se sont pas chargées correctement');
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log("session active: ",this.activeSessions)
+          console.log('session active: ', this.activeSessions);
         }
     );
   }
@@ -202,7 +202,7 @@ export class SessionComponent implements OnInit {
     const t = this.sessForm.value;
     console.log(t);
     // this.selectedSession = t;
-    this.selectedSession.debut = this.sessForm.controls['dd'].value;
+    this.selectedSession.debut = this.sessForm.controls["dd"].value;
     this.selectedSession.fin = this.sessForm.controls['df'].value;
     this.selectedSession.fonds = this.sessForm.controls['fond'].value;
     this.selectedSession.montant = this.sessForm.controls['cotisation'].value;
@@ -211,7 +211,6 @@ export class SessionComponent implements OnInit {
     this.selectedSession.participants = this.sessForm.controls['membres'].value;
     const Swal = require('sweetalert2');
     console.log(this.selectedSession);
-    //dès qu'on crée le département on affiche immédiatement la liste
     this.sessionServices.newSession(this.selectedSession).subscribe(
         res => {
           this.initSession();
@@ -227,16 +226,16 @@ export class SessionComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true,
             onOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
           });
 
           Toast.fire({
             icon: 'error',
             text: error.error.message,
-            title: "Echec d\'enregistrement"
-          })
+            title: 'Echec d\'enregistrement',
+          });
         },
         () => {
           const Toast = Swal.mixin({
@@ -254,8 +253,8 @@ export class SessionComponent implements OnInit {
           Toast.fire({
             icon: 'success',
             text: 'nouvelle session créée',
-            title: "Enregistrement réussi!"
-          })
+            title: 'Enregistrement réussi!'
+          });
         }
     );
 

@@ -6,6 +6,7 @@ export class Prêts {
     date_pret?: Date;
     date_remboursement?: Date;
     montant_prete?: number;
+    taux?: number;
     montant_rembourse?: number;
     rembourse?: boolean;
     nom?: string;

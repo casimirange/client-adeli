@@ -10,7 +10,7 @@ export class PretService {
 
   constructor(private http: HttpClient) { }
 
-  getPrets(): Observable<any>{
+  getPrets(): Observable<any> {
     return this.http.get(environment.PRET_URL);
   }
 }
