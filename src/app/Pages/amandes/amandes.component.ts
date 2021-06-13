@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Amandes} from "../../Models/amandes";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AmandesService} from "../../services/amandes/amandes.service";
 import {TokenStorageService} from "../../auth/token-storage.service";
+import {UserService} from "../../services/user/user.service";
+import {User} from "../../Models/users";
 
 @Component({
   selector: 'app-amandes',
@@ -19,13 +21,18 @@ export class AmandesComponent implements OnInit {
   loaders: boolean = false;
   selectedAmande: Amandes;
   amandeForm: FormGroup;
-  searchPanForm: FormGroup;
+  discForm: FormGroup;
   selectPanForm: FormGroup;
   pageForm: FormGroup;
   pages: number = 7;
+  id: number;
+  users: User[];
+
+  fonction: string[] = ['Crédit', 'Débit'];
 
   constructor(private fb: FormBuilder,
               private amandeServices: AmandesService,
+              private userServices: UserService,
               private tokenStorage: TokenStorageService,
   ) {
     this.selectedAmande = new Amandes
@@ -35,8 +42,12 @@ export class AmandesComponent implements OnInit {
   }
 
   createForm1() {
-    this.searchPanForm = this.fb.group({
-      search: [''],
+    this.discForm = this.fb.group({
+      membre: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      fonction: ['', [Validators.required]],
+      montant: ['', [Validators.required]],
+      motif: ['', [Validators.required]],
     });
   }
 
@@ -54,6 +65,21 @@ export class AmandesComponent implements OnInit {
 
   ngOnInit() {
     this.allAmandes();
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.userServices.getActiveUsers().subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
   }
 
   allAmandes(){
@@ -88,6 +114,62 @@ export class AmandesComponent implements OnInit {
     if (this.pageForm.controls['page'].value == '1000'){
       this.pages = 1000;
     }
+  }
+
+  addAmande() {
+    const Swal = require('sweetalert2');
+    // this.selectedTontine.name = this.planForm.controls['membre'].value;
+    // this.selectedPlanning.date = this.planForm.controls['date'].value;
+    this.id = this.discForm.controls['membre'].value;
+    this.selectedAmande.credit = this.discForm.controls['fonction'].value == 'Crédit' ? this.discForm.controls['montant'].value : 0;
+    this.selectedAmande.debit = this.discForm.controls['fonction'].value == 'Débit' ? this.discForm.controls['montant'].value : 0;
+    this.selectedAmande.date = this.discForm.controls['date'].value;
+    this.selectedAmande.motif = this.discForm.controls['motif'].value;
+    this.amandeServices.newAmande(this.id, this.selectedAmande).subscribe(
+        res => {
+          // this.initPlan();
+          this.allAmandes();
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec d\'enregistrement',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'nouveau planning créé',
+            title: 'Enregistrement réussi!'
+          });
+        }
+    );
   }
 
 }

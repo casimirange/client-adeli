@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Prêts} from "../../Models/prets";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PretService} from "../../services/pret/pret.service";
 import {TokenStorageService} from "../../auth/token-storage.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Location} from "@angular/common";
+import {User} from "../../Models/users";
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-prets',
@@ -24,13 +26,18 @@ export class PretsComponent implements OnInit {
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
   pageForm: FormGroup;
+  techForm: FormGroup;
+
+  users: User[];
   closeResult: any;
   pages: number;
+  id: number;
   private roles: string[];
   public authority: string;
 
   constructor(private fb: FormBuilder,
               private pretServices: PretService,
+              private userServices: UserService,
               private modalService: NgbModal,
               private tokenStorage: TokenStorageService,
               private _location: Location,
@@ -38,9 +45,18 @@ export class PretsComponent implements OnInit {
     this.selectedPret = new Prêts();
     this.createForm1();
     this.createForms();
+    this.createForm();
     this.pageForms();
     this.pages = 7;
     this.loaders = false;
+  }
+
+  createForm() {
+    this.techForm = this.fb.group({
+      membre: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      montant: ['', [Validators.required]],
+    });
   }
 
   createForm1() {
@@ -163,6 +179,7 @@ export class PretsComponent implements OnInit {
       });
     }
     this.allPrets();
+    this.loadUsers();
   }
 
   allPrets() {
@@ -210,6 +227,76 @@ export class PretsComponent implements OnInit {
 
   rembourser(p: Prêts){
     console.log('remboursé ', p.nom);
+  }
+
+  loadUsers() {
+    this.userServices.getActiveUsers().subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
+  }
+
+  addPret() {
+    const Swal = require('sweetalert2');
+    // this.selectedTontine.name = this.planForm.controls['membre'].value;
+    // this.selectedPlanning.date = this.planForm.controls['date'].value;
+    this.id = this.techForm.controls['membre'].value;
+    this.selectedPret.date_pret = this.techForm.controls['date'].value;
+    this.selectedPret.montant_prete = this.techForm.controls['montant'].value;
+    console.log('membre', this.id);
+    console.log('membre', this.selectedPret);
+    this.pretServices.newPret(this.id, this.selectedPret).subscribe(
+        res => {
+          // this.initPlan();
+          this.allPrets();
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec d\'enregistrement',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'nouveau planning créé',
+            title: 'Enregistrement réussi!'
+          });
+        }
+    );
   }
 
 }

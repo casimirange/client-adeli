@@ -7,6 +7,7 @@ export class Discipline {
     constructor( public date?: Date,
     public name?: string,
     public type?: string,
+    public sanction?: string,
     public id_discipline?: number,
     ) {}
 }

@@ -10,25 +10,27 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <form id="signupForm" class="col-md-10 mx-auto">
+                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="discForm">
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" />
+                                                <input type="date" class="form-control form-control-sm" formControlName="date"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="">
-                                            <div class="position-relative">
-                                                <label for="" class="">Nom</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="pelagie" />
-                                            </div>
-                                        </div>
+                                    <label for="membre" [ngClass]="{'red': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}">Membre</label>
+                                    <select [ngClass]="{'fred': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
+                                        <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                    </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['membre'].invalid && (discForm.controls['membre'].touched) ">
+                                        <span>*</span> Veuillez sélectionner un membre
                                     </div>
+                                </div>
                                 </div>
                             </div>
 
@@ -38,19 +40,17 @@
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="label" class="">Motif</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="retard de cotisation"/>
+                                                <input type="text" class="form-control form-control-sm" placeholder="retard de cotisation"  formControlName="motif"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="liste" class="">Type</label>
-                                                <!--<input type="text" placeholder="155 €">-->
-                                                <select name="" id="" class="form-control form-control-sm">
-                                                    <option value="">--Sélectionner--</option>
-                                                    <option value="">Crédit</option>
-                                                    <option value="">Débit</option>
+                                                <label for="lite"  >Transaction</label>
+                                                <select id="lite" class="form-control-sm form-control" formControlName="fonction" >
+                                                    <option value="" selected disabled hidden>Sélectionner un poste</option>
+                                                    <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -64,7 +64,7 @@
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="label" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="25 €"/>
+                                                <input type="text" class="form-control form-control-sm" placeholder="25 €" formControlName="montant"/>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm"
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addAmande()"
                                 >
                                     Enregistrer
                                 </button>
@@ -127,7 +127,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let session of amandes | paginate:{itemsPerPage: pages, currentPage:7}; ">
+                        <tr *ngFor="let session of amandes | paginate:{itemsPerPage: pages, currentPage:p}; ">
                             <td class="text-center">{{session.date}}</td>
                             <td class="text-left">{{session.name}}</td>
                             <td class="text-left">{{session.motif}}</td>
@@ -163,16 +163,16 @@
                         <!--</form>-->
                     </div>
                     <div class="float-right">
-                        <!--<ul class="pagination pagination-sm mb-0">-->
-                            <!--<li>-->
-                                <!--<pagination-controls (pageChange)="p=$event"-->
-                                                     <!--autoHide = "true"-->
-                                                     <!--responsive = "true"-->
-                                                     <!--previousLabel = "Précédent"-->
-                                                     <!--nextLabel = "Suivant">-->
-                                <!--</pagination-controls>-->
-                            <!--</li>-->
-                        <!--</ul>-->
+                        <ul class="pagination pagination-sm mb-0">
+                            <li>
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide = "true"
+                                                     responsive = "true"
+                                                     previousLabel = "Précédent"
+                                                     nextLabel = "Suivant">
+                                </pagination-controls>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

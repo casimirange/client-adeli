@@ -22,6 +22,7 @@ export class DisciplineComponent implements OnInit {
   discForm: FormGroup;
   users: User[];
   operation: string = 'add';
+  id: number;
 
   constructor(private fb: FormBuilder,
               private userServices: UserService,
@@ -41,6 +42,7 @@ export class DisciplineComponent implements OnInit {
 
   ngOnInit() {
     this.loadDisciplines();
+    this.loadUsers();
   }
 
   loadDisciplines() {
@@ -54,6 +56,77 @@ export class DisciplineComponent implements OnInit {
         },
         () => {
           console.log('chargement des disciplines', this.disciplines);
+        }
+    );
+  }
+
+  loadUsers() {
+    this.userServices.getActiveUsers().subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
+  }
+
+  addDiscipline() {
+    const Swal = require('sweetalert2');
+    // this.selectedTontine.name = this.planForm.controls['membre'].value;
+    // this.selectedPlanning.date = this.planForm.controls['date'].value;
+    this.id = this.discForm.controls['membre'].value;
+    this.selectedDiscipline.date = this.discForm.controls['date'].value;
+    this.selectedDiscipline.type = this.discForm.controls['type'].value;
+    this.selectedDiscipline.sanction = this.discForm.controls['sanction'].value;
+    console.log('membre', this.id);
+    console.log('membre', this.selectedDiscipline);
+    this.disciplineService.newDiscipline(this.id, this.selectedDiscipline).subscribe(
+        res => {
+          // this.initPlan();
+          this.loadDisciplines();
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec d\'enregistrement',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'nouveau planning créé',
+            title: 'Enregistrement réussi!'
+          });
         }
     );
   }

@@ -10,30 +10,32 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <form id="signupForm" class="col-md-10 mx-auto">
+                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="techForm">
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-4">
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" />
+                                                <input type="date" class="form-control form-control-sm" formControlName="date" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="">
-                                            <div class="position-relative">
-                                                <label for="" class="">Nom</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="pelagie" />
-                                            </div>
+                                        <label for="membre" [ngClass]="{'red': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}">Membre</label>
+                                        <select [ngClass]="{'fred': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
+                                            <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                            <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                        </select>
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['membre'].invalid && (techForm.controls['membre'].touched) ">
+                                            <span>*</span> Veuillez sélectionner un membre
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="">
                                             <div class="position-relative">
                                                 <label for="" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="300 €" />
+                                                <input type="text" class="form-control form-control-sm" placeholder="300 €"  formControlName="montant" />
                                             </div>
                                         </div>
                                     </div>
@@ -41,7 +43,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm"
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addPret()"
                                 >
                                     Enregistrer
                                 </button>
