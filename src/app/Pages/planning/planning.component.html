@@ -27,7 +27,7 @@
                             <!--</div>-->
                             <div class="col-md-6">
                                 <label for="membre" [ngClass]="{'red': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}">Membre</label>
-                                <select [ngClass]="{'fred': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre" [(ngModel)]="selectedPlanning.membre">
+                                <select [ngClass]="{'fred': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
                                     <option value="" selected disabled hidden>Sélectionner un membre</option>
                                     <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                 </select>

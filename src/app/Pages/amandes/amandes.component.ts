@@ -17,6 +17,7 @@ export class AmandesComponent implements OnInit {
   subheadings = 'Gestion des amandes ';
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
+  p: number;
   amandes: Amandes[];
   loaders: boolean = false;
   selectedAmande: Amandes;

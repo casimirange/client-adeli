@@ -24,6 +24,7 @@ export class PlanningComponent implements OnInit {
   users: User[];
   id: any;
   operation: string;
+  p: number;
 
   constructor(private fb: FormBuilder,
               private userServices: UserService,

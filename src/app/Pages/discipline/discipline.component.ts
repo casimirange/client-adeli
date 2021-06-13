@@ -23,6 +23,7 @@ export class DisciplineComponent implements OnInit {
   users: User[];
   operation: string = 'add';
   id: number;
+  p: number;
 
   constructor(private fb: FormBuilder,
               private userServices: UserService,

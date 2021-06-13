@@ -31,6 +31,7 @@ export class MangwaComponent implements OnInit {
   users: User[];
   fonction: string[] = ['Crédit', 'Débit'];
 
+  p: number;
   constructor(private fb: FormBuilder,
               private userServices: UserService,
               private mangwaServices: RetenueService,

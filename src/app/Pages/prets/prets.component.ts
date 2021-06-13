@@ -32,6 +32,7 @@ export class PretsComponent implements OnInit {
   closeResult: any;
   pages: number;
   id: number;
+  p: number;
   private roles: string[];
   public authority: string;
 
