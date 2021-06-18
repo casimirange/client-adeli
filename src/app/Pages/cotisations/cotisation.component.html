@@ -37,6 +37,64 @@
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Liste des Bénéficiaires
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-primary" (click)="open(mymodal)">Nouveau</button>
+                        <ng-template #mymodal let-modal >
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Nouveau Bénéficiaire</b></h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                    <span class="timeline-title"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="scroll-area-md">
+                                    <div class="scrollbar-container">
+                                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="rembForm">
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <div class="position-relative">
+                                                        <label for="" class="">Membre</label>
+                                                        <select id="liste" class="form-control-sm form-control" formControlName="membres"  >
+                                                            <option selected disabled hidden>Sélectionner un membre</option>
+                                                            <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <div class="position-relative">
+                                                        <label for="" class="">Montant Bouffé</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="200 €" formControlName="mont" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-sm" (click)="bouffer()">
+                                                    Enregistrer
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-block clearfix card-footer ">
+                                <div class="float-left">
+
+                                </div>
+                                <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                                        <!--<button class=" btn  btn-primary" (click)="modal.close('save click')">Rembourser</button>-->
+                                        <!--&lt;!&ndash;<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>&ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive" >

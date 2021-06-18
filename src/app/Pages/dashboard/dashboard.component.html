@@ -226,7 +226,7 @@
                                 <div class="widget-content p-0">
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left flex2">
-                                            <div class="widget-heading">Montant !cotisation</div>
+                                            <div class="widget-heading">Montant Cotisation</div>
                                             <div class="widget-subheading">Le nouveau montant arrêté pour la tontine est de {{activeSession.montant}} €</div>
                                         </div>
                                     </div>
@@ -235,67 +235,19 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <ul class="todo-list-wrapper list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="todo-indicator bg-warning"></div>
-                                <div class="widget-content p-0">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">Président
-                                            </div>
-                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
+                        <ul class="todo-list-wrapper list-group list-group-flush" *ngFor="let b of bureaux">
+                            <li class="list-group-item" *ngIf="b.fonction != 'Adhérant'">
                                 <div class="todo-indicator bg-focus"></div>
-                                <div class="widget-content p-0">
+                                <div class="widget-content p-0" *ngIf="b.fonction != 'Adhérant'">
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left">
-                                            <div class="widget-heading">Secretaire</div>
+                                            <div class="widget-heading">{{b.fonction | titlecase}}
+                                            </div>
                                             <div class="widget-subheading">
-                                                <div>tagne
-                                                </div>
+
+                                                    {{b.user | titlecase }}
+
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="todo-indicator bg-warning"></div>
-                                <div class="widget-content p-0">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">Scenseur
-                                            </div>
-                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="todo-indicator bg-focus"></div>
-                                <div class="widget-content p-0">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">Trésorier</div>
-                                            <div class="widget-subheading">
-                                                <div>tagne
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="todo-indicator bg-warning"></div>
-                                <div class="widget-content p-0">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">Porte Parole
-                                            </div>
-                                            <div class="widget-subheading"><i>CHIHIMO Sévérin</i></div>
                                         </div>
                                     </div>
                                 </div>

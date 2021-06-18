@@ -4,7 +4,7 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
-                Nouveau Bureau
+                {{operation == 'add' ? 'Nouveau Bureau' : 'Modifier Bureau'}}
             </div>
             <div class="card-body">
                 <div *ngIf="operation == 'add' || operation == 'edit'">
@@ -13,8 +13,8 @@
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <label for="liste" [ngClass]="{'red': bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched)}">Membre</label>
-                                    <select id="liste" class="form-control-sm form-control" formControlName="user"  [(ngModel)]="selectedBureau.user" [ngClass]="{'fred': bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched)}">
-                                        <option value="" selected disabled hidden>Sélectionner membre</option>
+                                    <select id="liste" class="form-control-sm form-control" formControlName="user"  [(ngModel)]="selectedBureau.id" [ngClass]="{'fred': bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched)}">
+                                        <option value="" selected disabled hidden>Sélectionner une période</option>
                                         <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                     </select>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched) ">
@@ -25,7 +25,7 @@
                                 <div class="col-md-4">
                                     <label for="lite"  [ngClass]="{'red': bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched)}">Fonction</label>
                                     <select id="lite" class="form-control-sm form-control" formControlName="fonction"  [(ngModel)]="selectedBureau.fonction" [ngClass]="{'fred': bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched)}">
-                                        <option value="" selected disabled hidden>Sélectionner un poste</option>
+                                        <option value="" selected disabled hidden>Sélectionner une période</option>
                                         <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
                                     </select>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched) ">
@@ -35,7 +35,7 @@
 
                                 <div class="col-md-4">
                                     <label for="montant" [ngClass]="{'red': bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched)}">Montant Cotisation</label>
-                                    <input type="text" placeholder="10 €" id="montant" formControlName="montant" class="form-control-sm form-control" [ngClass]="{'fred': bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched)}">
+                                    <input type="text" placeholder="10 €" id="montant" formControlName="montant" class="form-control-sm form-control" [(ngModel)]="selectedBureau.montant" [ngClass]="{'fred': bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched)}">
                                     <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched) ">
                                         <span>*</span> montant invalide
                                     </div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-sm" [disabled]="bureauForm.invalid || bureauForm.pristine"
-                                    (click)="operation == 'add' ? addBureau() : ''" >
+                                    (click)="operation == 'add' ? addBureau() : updateBureau()" >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
                             </button>
@@ -58,6 +58,11 @@
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Presentation du bureau
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-focus" (click)="operation = 'add'; initBureau();" > <i class="fa fa-plus-circle"></i>Ajouter</button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive" >
@@ -69,7 +74,7 @@
                             <th>Fonction</th>
                             <th>Montant</th>
                             <th>Session</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -81,13 +86,27 @@
                             <td class="text-capitalize">{{bureau.session | date: 'MMM-yyyy' }}</td>
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
-                                    <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedBureau = bureau;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger"><i class="fa fa-times"></i></button>
+                                    <!--<button class=" btn  btn-primary" (click)="operation = 'edit'; selectedBureau = bureau;"><i class="fa fa-pencil"></i></button>-->
+                                    <button class="btn  btn-danger" (click)="swl(bureau)"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide="true"
+                                                 responsive="true"
+                                                 previousLabel=""
+                                                 nextLabel="">
+                            </pagination-controls>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

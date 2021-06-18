@@ -113,7 +113,7 @@
                                         <div class="modal-header bg-transparent">
                                             <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Taux appliqué : </b> {{pret.taux}} % </h6>
                                             <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
-                                                <span class="timeline-title"><b>Bénéfice :</b> {{(pret.taux) * (pret.montant_prete)}} €</span>
+                                                <span class="timeline-title"><b>Bénéfice :</b> {{(pret.taux) * (pret.montant_prete)/100}} €</span>
                                             </div>
                                         </div>
                                         <!--<div class="row">-->
@@ -128,7 +128,7 @@
 
                                     <div class="scroll-area-md">
                                         <div class="scrollbar-container">
-                                            <form id="signupForm" class="col-md-10 mx-auto">
+                                            <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="rembForm">
                                                 <div class="form-group">
                                                     <div class="">
                                                         <div class="position-relative">
@@ -137,19 +137,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <div class="">
-                                                        <div class="position-relative">
-                                                            <label for="" class="">Date Remboursement</label>
-                                                            <input type="date" class="form-control form-control-sm" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <!--<div class="form-group">-->
+                                                    <!--<div class="">-->
+                                                        <!--<div class="position-relative">-->
+                                                            <!--<label for="" class="">Date Remboursement</label>-->
+                                                            <!--<input type="date" class="form-control form-control-sm" />-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
                                                 <div class="form-group">
                                                     <div class="">
                                                         <div class="position-relative">
                                                             <label for="" class="">Montant Remboursé</label>
-                                                            <input type="text" class="form-control form-control-sm" placeholder="pelagie" />
+                                                            <input type="text" class="form-control form-control-sm" placeholder="pelagie" formControlName="montant_remb" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -180,7 +180,7 @@
                             <td class="text-left">{{pret.nom}}</td>
                             <td class="text-left">{{pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.taux}} %</td>
-                            <td class="text-left">{{(pret.taux * pret.montant_prete) + pret.montant_prete}} €</td>
+                            <td class="text-left">{{(pret.taux * pret.montant_prete)/100 + pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.date_remboursement}}</td>
                             <!--<td class="text-left">{{pret.montant_rembourse}} €</td>-->
                             <td class="text-center">

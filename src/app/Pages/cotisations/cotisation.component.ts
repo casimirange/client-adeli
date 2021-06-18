@@ -13,6 +13,7 @@ import {Beneficiaires} from "../../Models/beneficiaires";
 import {BeneficiaireService} from "../../services/beneficiaire/beneficiaire.service";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-cotisation',
@@ -28,6 +29,7 @@ export class CotisationComponent implements OnInit {
   public authority: string;
 
   techForm: FormGroup;
+  rembForm: FormGroup;
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
   pageForm: FormGroup;
@@ -41,9 +43,11 @@ export class CotisationComponent implements OnInit {
   sessions: Sessions[];
   selectedSessions: Sessions;
   selectedTontine: Tontines;
+  selectedBenef: Beneficiaires;
   tontines: any[];
   beneficiaires: Beneficiaires[];
   users: User[];
+  closeResult: any;
 
   selectedTech: Technicien;
   private modelTech: Technicien;
@@ -53,20 +57,28 @@ export class CotisationComponent implements OnInit {
               private sessionService: SessionService,
               private tokenStorage: TokenStorageService,
               private userServices: UserService,
+              private modalService: NgbModal,
               private beneficiaireService: BeneficiaireService,
               private _location: Location,) {
     this.createForm();
     this.createForm1();
     this.createForms();
     this.pageForms();
+    this.rembForms();
     this.selectedSessions = new Sessions;
+    this.selectedBenef = new Beneficiaires;
   }
   createForm() {
     this.techForm = this.fb.group({
       membre: ['', [Validators.required]],
     });
   }
-
+  rembForms() {
+    this.rembForm = this.fb.group({
+      mont: ['', [Validators.required]],
+      membres: ['', [Validators.required]],
+    });
+  }
   createForm1() {
     this.searchPanForm = this.fb.group({
       search: [''],
@@ -117,6 +129,15 @@ export class CotisationComponent implements OnInit {
     this.loadUsers();
   }
 
+
+  open(content){
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
+          this.closeResult = `Closed with: ${result}`;
+        }, (reason) =>{
+
+        }
+    );
+  }
   loadSession() {
     this.sessionService.getAllSession().subscribe(
         data => {
@@ -205,6 +226,61 @@ export class CotisationComponent implements OnInit {
         res => {
           // this.initPlan();
           this.loadActiveTontine();
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec d\'enregistrement',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'nouveau planning créé',
+            title: 'Enregistrement réussi!'
+          });
+        }
+    );
+  }
+
+  bouffer(){
+    // console.log('remboursé ', p.nom);
+    const Swal = require('sweetalert2');
+    this.selectedBenef.montant = this.rembForm.controls['mont'].value;
+    this.id = this.rembForm.controls['membres'].value;
+    console.log('bouf', this.selectedBenef.montant)
+    console.log('id', this.id)
+    console.log('benef', this.selectedBenef)
+    this.beneficiaireService.newBenef(this.id, this.selectedBenef).subscribe(
+        res => {
+          // this.initPlan();
+          this.loadBeneficiaires();
         },
         error => {
           const Toast = Swal.mixin({

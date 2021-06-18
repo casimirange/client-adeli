@@ -36,6 +36,7 @@ export class CompteRenduComponent implements OnInit {
   createForm() {
     this.crForm = this.fb.group({
       dat: ['', [Validators.required]],
+      cp: ['', [Validators.required]],
     });
   }
 
@@ -103,26 +104,26 @@ export class CompteRenduComponent implements OnInit {
     const t = this.crForm.value;
 
     console.log('date', this.crForm.controls['dat'].value);
-    console.log('msg', this.mycontent);
+    console.log('msg', this.crForm.controls['cp'].value);
 
 
     this.compteRendu.date = this.crForm.controls['dat'].value;
-    this.compteRendu.details = this.mycontent;
+    this.compteRendu.details = this.crForm.controls['cp'].value;
 
-    if(this.mycontent == ''){
-      const Swal = require('sweetalert2');
-      console.log('voici le CR:', this.mycontent);
-      Swal.fire({
-        title: 'Attention',
-        icon:'warning' ,
-        showCancelButton: false,
-        html: 'le compte rendu de la séance ne peut être vide!',
-        confirmButtonColor: 'brown',
-        confirmButtonText: 'OK',
-        allowOutsideClick: true,
-        focusConfirm: true,
-      })
-    }
+    // if(this.mycontent == ''){
+    //   const Swal = require('sweetalert2');
+    //   console.log('voici le CR:', this.crForm.controls['cp'].value);
+    //   Swal.fire({
+    //     title: 'Attention',
+    //     icon:'warning' ,
+    //     showCancelButton: false,
+    //     html: 'le compte rendu de la séance ne peut être vide!',
+    //     confirmButtonColor: 'brown',
+    //     confirmButtonText: 'OK',
+    //     allowOutsideClick: true,
+    //     focusConfirm: true,
+    //   })
+    // }
     //dès qu'on crée le département on affiche immédiatement la liste
     this.compteRenduservice.addCR(this.compteRendu).subscribe(
         res => {
@@ -136,7 +137,7 @@ export class CompteRenduComponent implements OnInit {
   loadCR() {
     this.compteRenduservice.getCR().subscribe(
         data => {
-          this.compteRendus = data
+          this.compteRendus = data;
 
         },
         error => {

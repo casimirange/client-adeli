@@ -21,4 +21,8 @@ export class PretService {
   newPret(id: any, info: Prêts): Observable<any> {
     return this.http.post<any>(environment.PRET_URL + `?user=${id}`, info, httpOptions);
   }
+
+  rembourserPret(id: any, info: Prêts): Observable<any> {
+    return this.http.put<any>(environment.PRET_URL + `/rembouser/?pret=${id}`, info, httpOptions);
+  }
 }

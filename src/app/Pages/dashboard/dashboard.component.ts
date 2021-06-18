@@ -30,6 +30,7 @@ import {SessionService} from "../../services/session/session.service";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {AmandesService} from "../../services/amandes/amandes.service";
 import {BureauService} from "../../services/bureau/bureau.service";
+import {Bureau} from "../../Models/bureau";
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
@@ -67,7 +68,7 @@ export class DashboardComponent implements OnInit {
     countUser: any;
 
   headings = 'Tableau de Bord';
-  subheadings = 'Ayez une visuel global su ADELI';
+  subheadings = 'Ayez une visuel global sur ADELI';
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
   searchPanForm: FormGroup;
@@ -282,6 +283,7 @@ export class DashboardComponent implements OnInit {
     cloaders: boolean = false;
     tloaders: boolean = false;
     notifications: any[];
+    bureaux: Bureau[];
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private arretService: ArretsService,
@@ -292,7 +294,7 @@ export class DashboardComponent implements OnInit {
               private planingServices: PlaningService,
               private reuniongServices: ReunionService,
               private sessionServices: SessionService,
-              private bureauServices: BureauService,
+              private bureauService: BureauService,
               private usersServices: UserService,
               private departementService: DepartementsService,
               private userService: UserService,
@@ -396,6 +398,7 @@ export class DashboardComponent implements OnInit {
     this.loadNotifs();
     this.SoldeAmande();
     this.last30days()
+    this.loadBureau();
   }
 
     loadNotifs(){
@@ -604,7 +607,7 @@ export class DashboardComponent implements OnInit {
         yAxisID: 'y-axis-1',
         type: 'line'
     };
-    this.bureauServices.getEvolution().subscribe(
+    this.bureauService.getEvolution().subscribe(
         list => list.forEach(mach => {
             // datasetNbrePanne2.name = (mach.machine);
             this.datas.labels.push(this.datePipe.transform(mach.session, 'MMM-yyyy'));
@@ -1437,5 +1440,19 @@ export class DashboardComponent implements OnInit {
         if (this.pageForm.controls['page'].value == '1000'){
             this.pages = 1000;
         }
+    }
+
+    loadBureau() {
+        this.bureauService.getBureau().subscribe(
+            data => {
+                this.bureaux = data;
+            },
+            error => {
+                console.log('une erreur a été détectée au chargement des sessions!')
+            },
+            () => {
+                console.log('chargement des bureaux', this.bureaux);
+            }
+        );
     }
 }

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Bureau} from "../../Models/bureau";
 
+const httpOptions = {
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +18,19 @@ export class BureauService {
     return this.http.post(environment.ELECTION_URL, b );
   }
 
+  updateBureau(id: number): Observable<any>{
+    return this.http.put(environment.ELECTION_URL + `/?id=${id}`, httpOptions );
+  }
+
   getBureau(): Observable<any>{
     return this.http.get(environment.ELECTION_URL);
   }
 
   getEvolution(): Observable<any>{
     return this.http.get(environment.ELECTION_URL + '/evolution');
+  }
+
+  deletePannes(id: number): Observable<any>{
+    return this.http.delete(environment.ELECTION_URL + `/${id}`);
   }
 }

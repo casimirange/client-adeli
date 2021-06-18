@@ -27,6 +27,7 @@ export class PretsComponent implements OnInit {
   selectPanForm: FormGroup;
   pageForm: FormGroup;
   techForm: FormGroup;
+  rembForm: FormGroup;
 
   users: User[];
   closeResult: any;
@@ -48,6 +49,7 @@ export class PretsComponent implements OnInit {
     this.createForms();
     this.createForm();
     this.pageForms();
+    this.rembForms();
     this.pages = 7;
     this.loaders = false;
   }
@@ -57,6 +59,12 @@ export class PretsComponent implements OnInit {
       membre: ['', [Validators.required]],
       date: ['', [Validators.required]],
       montant: ['', [Validators.required]],
+    });
+  }
+
+  rembForms() {
+    this.rembForm = this.fb.group({
+      montant_remb: ['', [Validators.required]],
     });
   }
 
@@ -228,6 +236,58 @@ export class PretsComponent implements OnInit {
 
   rembourser(p: Prêts){
     console.log('remboursé ', p.nom);
+    const Swal = require('sweetalert2');
+    this.selectedPret = p;
+    this.selectedPret.montant_rembourse = this.rembForm.controls['montant_remb'].value;
+    p.montant_rembourse = this.rembForm.controls['montant_remb'].value;
+    console.log('montant remboursé', p.montant_rembourse);
+    console.log('pret', this.selectedPret);
+    console.log('id', p.id_pret);
+    this.pretServices.rembourserPret(p.id_pret, p).subscribe(
+        res => {
+          // this.initPlan();
+          this.allPrets();
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec d\'enregistrement',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'nouveau planning créé',
+            title: 'Enregistrement réussi!'
+          });
+        }
+    );
   }
 
   loadUsers() {

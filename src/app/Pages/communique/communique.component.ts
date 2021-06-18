@@ -36,9 +36,9 @@ export class CommuniqueComponent implements OnInit {
   }
 
   createForm() {
-    // this.crForm = this.fb.group({
-    //   dat: ['', [Validators.required]],
-    // });
+    this.crForm = this.fb.group({
+      cp: ['', [Validators.required]],
+    });
   }
 
   ngOnInit() {
@@ -108,22 +108,22 @@ export class CommuniqueComponent implements OnInit {
 
 
     // this.communique.date = this.crForm.controls['dat'].value;
-    this.communique.details = this.mycontent;
+    this.communique.details = this.crForm.controls['cp'].value;
 
-    if(this.mycontent == ''){
-      const Swal = require('sweetalert2');
-      console.log('voici le communiqué:', this.mycontent);
-      Swal.fire({
-        title: 'Attention',
-        icon:'warning' ,
-        showCancelButton: false,
-        html: 'le communiqué ne peut être vide!',
-        confirmButtonColor: 'brown',
-        confirmButtonText: 'OK',
-        allowOutsideClick: true,
-        focusConfirm: true,
-      })
-    }
+    // if(this.mycontent == ''){
+    //   const Swal = require('sweetalert2');
+    //   console.log('voici le communiqué:', this.mycontent);
+    //   Swal.fire({
+    //     title: 'Attention',
+    //     icon:'warning' ,
+    //     showCancelButton: false,
+    //     html: 'le communiqué ne peut être vide!',
+    //     confirmButtonColor: 'brown',
+    //     confirmButtonText: 'OK',
+    //     allowOutsideClick: true,
+    //     focusConfirm: true,
+    //   })
+    // }
     //dès qu'on crée le département on affiche immédiatement la liste
     this.communiqueService.addCommunique(this.communique).subscribe(
         res => {
