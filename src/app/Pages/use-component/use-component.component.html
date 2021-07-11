@@ -15,7 +15,7 @@
                         <td class="text-center"><b>Tel: </b> {{selectedUser.tel}}</td>
                         <td class="text-center"><b>Email: </b>{{selectedUser.email}}</td>
                         <td class="text-center"><b>Fonction: </b>{{selectedUser.role}}</td>
-                        <td class="text-center"><b>Email: </b>{{selectedUser.etat == true ? 'Actif' : Inactif}}</td>
+                        <td class="text-center"><b>Email: </b>{{selectedUser.etat == true ? 'Actif' : 'Inactif'}}</td>
                     </tr>
 
                     </tbody>
@@ -92,7 +92,7 @@
                     </tr>
                     </thead>
                     <tbody *ngIf="prets.length && loaders == false ">
-                    <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
+                    <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''">
                         <td class="text-left">{{pret.date_pret}}</td>
                         <td class="text-left">{{pret.montant_prete}} €</td>
                         <td class="text-left">{{pret.taux}} %</td>
