@@ -11,6 +11,8 @@ import {MachinesService} from "../../services/machines/machines.service";
 import {Machine} from "../../Models/machines";
 import {Router} from "@angular/router";
 import {NotificationsService} from "../../services/notifications/notifications.service";
+import {UserService} from "../../services/user/user.service";
+import {User} from "../../Models/users";
 
 @Component({
   selector: 'app-header',
@@ -29,8 +31,10 @@ export class HeaderComponent implements OnInit {
   notifications: any[];
   private roles: string[];
   public authority: string;
+  users: User[];
   public name: string = '';
   constructor(private token: TokenStorageService,
+              private userServices: UserService,
               private notificationService: NotificationsService,
               private router: Router ) {
     // this.selectedUser = new User();
@@ -46,13 +50,14 @@ export class HeaderComponent implements OnInit {
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
+    this.loadUsers();
 
     if (this.token.getToken()) {
       this.roles = this.token.getAuthorities();
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
-          this.name = 'tresorier';
+          this.name = 'Tresorier';
           return false;
         } else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
@@ -60,28 +65,46 @@ export class HeaderComponent implements OnInit {
           return false;
         } else if (role === 'ROLE_SECRETAIRE') {
           this.authority = 'secretaire';
-          this.name = 'secretaire';
+          this.name = 'Secretaire';
           return false;
         } else if (role === 'ROLE_SENSCEUR') {
           this.authority = 'senceur';
-          this.name = 'senceur';
+          this.name = 'Senseur';
           return false;
         } else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
-          this.name = 'president';
+          this.name = 'President';
+          return false;
+        } else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          this.name = 'Comissaire Aux Comptes';
           return false;
         } else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
-          this.name = 'porte parole';
+          this.name = 'Porte Parole';
           return false;
         }
         this.authority = 'membre';
-        this.name = 'user';
+        this.name = 'Adherant';
         return true;
       });
     }
 
     this.loadNotifs();
+  }
+
+  loadUsers() {
+    this.userServices.getActiveUsers().subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
   }
 
   logout() {
@@ -96,5 +119,10 @@ export class HeaderComponent implements OnInit {
 
         }
     );
+  }
+
+  selectedEvent(m: User) {
+    const url = btoa(m.id.toString());
+    this.router.navigateByUrl('machines/'+url);
   }
 }

@@ -19,18 +19,20 @@ export class CompteRenduComponent implements OnInit {
   mycontent: string;
   log: string = '';
   crForm: FormGroup;
-  compteRendus: CompteRendu[];
+  compteRendus: CompteRendu[] = [];
   compteRendu: CompteRendu;
   id: number;
   details: string;
   date: Date;
+  loaders: boolean;
   // @ViewChild("myckeditor", {static: false}) ckeditor: CKEditorComponent;
 
   constructor(private fb: FormBuilder,
   private compteRenduservice: CompteRenduService) {
     this.mycontent = ``;
     this.createForm();
-    this.compteRendu = new CompteRendu;
+    this.compteRendu = new CompteRendu();
+    this.loaders = false;
   }
 
   createForm() {
@@ -135,16 +137,19 @@ export class CompteRenduComponent implements OnInit {
   }
 
   loadCR() {
+    this.loaders = true;
     this.compteRenduservice.getCR().subscribe(
         data => {
           this.compteRendus = data;
 
         },
         error => {
-          console.log('une erreur de chargement des CR a été détectée!')
+          console.log('une erreur de chargement des Comptes rendus!');
+          this.loaders = false;
         },
         () => {
           console.log('chargement des comptes rendus', this.compteRendus);
+          this.loaders = false;
         }
     );
   }

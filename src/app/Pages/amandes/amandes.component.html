@@ -2,7 +2,7 @@
 
 <div class="tabs-animation">
 
-    <div class="row">
+    <div class="row" *ngIf="authority === 'super_admin' || authority === 'senceur' || authority === 'comissaire'">
         <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
@@ -16,8 +16,11 @@
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" formControlName="date"/>
+                                                <label for="dat" [ngClass]="{'red': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}">Date</label>
+                                                <input [ngClass]="{'fred': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}" type="date" id="dat" class="form-control form-control-sm" formControlName="date"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['date'].invalid && (discForm.controls['date'].touched) ">
+                                                    <span>*</span> Veuillez renseigner une date valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -39,19 +42,25 @@
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="label" class="">Motif</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="retard de cotisation"  formControlName="motif"/>
+                                                <label for="labels" [ngClass]="{'red': discForm.controls['motif'].invalid && (discForm.controls['motif'].touched)}">Motif</label>
+                                                <input [ngClass]="{'fred': discForm.controls['motif'].invalid && (discForm.controls['motif'].touched)}" type="text" id="labels" class="form-control form-control-sm" placeholder="retard de cotisation"  formControlName="motif"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['motif'].invalid && (discForm.controls['motif'].touched) ">
+                                                    <span>*</span> Motif obligatoire
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="lite"  >Transaction</label>
-                                                <select id="lite" class="form-control-sm form-control" formControlName="fonction" >
-                                                    <option value="" selected disabled hidden>Sélectionner un poste</option>
+                                                <label for="lite" [ngClass]="{'red': discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched)}" >Transaction</label>
+                                                <select [ngClass]="{'fred': discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched)}" id="lite" class="form-control-sm form-control" formControlName="fonction" >
+                                                    <option value="" selected disabled hidden>Sélectionner une transaction</option>
                                                     <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
                                                 </select>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un type de transaction
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -63,8 +72,11 @@
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="label" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="25 €" formControlName="montant"/>
+                                                <label for="label" [ngClass]="{'red': discForm.controls['montant'].invalid && (discForm.controls['montant'].touched)}">Montant</label>
+                                                <input [ngClass]="{'fred': discForm.controls['montant'].invalid && (discForm.controls['montant'].touched)}" type="text" id="label" class="form-control form-control-sm" placeholder="25 €" formControlName="montant"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['montant'].invalid && (discForm.controls['montant'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un montant valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +84,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm" (click)="addAmande()"
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addAmande()" [disabled]="discForm.invalid || discForm.pristine"
                                 >
                                     Enregistrer
                                 </button>
@@ -123,10 +135,10 @@
                             <th class="text-center">Crédit</th>
                             <th class="text-center">Débit</th>
                             <th class="text-center">Solde</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center"  *ngIf="authority === 'super_admin'">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="amandes.length && loaders == false ">
                         <tr *ngFor="let session of amandes | paginate:{itemsPerPage: pages, currentPage:p}; ">
                             <td class="text-center">{{session.date}}</td>
                             <td class="text-left">{{session.name}}</td>
@@ -134,7 +146,7 @@
                             <td class="text-center">{{session.credit}} €</td>
                             <td class="text-center">{{session.debit}} €</td>
                             <td class="text-center">{{session.solde}} €</td>
-                            <td class="text-center">
+                            <td class="text-center" *ngIf="authority === 'super_admin'">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedAmande = session;"><i class="fa fa-pencil"></i></button>
                                     <button class="btn  btn-danger" (click)="selectedAmande = session;"><i class="fa fa-times"></i></button>
@@ -144,6 +156,21 @@
                         </tbody>
 
                     </table>
+                    <p *ngIf="!amandes.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune amande trouvée !</p>
+                    <div *ngIf="!amandes.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-block clearfix card-footer">

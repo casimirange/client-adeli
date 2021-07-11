@@ -15,12 +15,12 @@ import {UserService} from "../../services/user/user.service";
 })
 export class PretsComponent implements OnInit {
 
-  headings = 'Amandes';
+  headings = 'Prêts';
   subheadings = 'Gestion des amandes ';
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
-  prets: Prêts[];
-  loaders: boolean;
+  prets: Prêts[] = [];
+  loaders: boolean = false;
   selectedPret: Prêts;
   amandeForm: FormGroup;
   searchPanForm: FormGroup;
@@ -90,100 +90,36 @@ export class PretsComponent implements OnInit {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
       const Swal = require('sweetalert2');
-      var content = document.createElement('div');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
-          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
           return false;
-        } else if (role === 'ROLE_SUPER_ADMIN') {
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_SECRETAIRE') {
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
           this.authority = 'secretaire';
-          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
           return false;
-        } else if (role === 'ROLE_SENSCEUR') {
+        }
+        else if (role === 'ROLE_SENSCEUR') {
           this.authority = 'senceur';
-          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
           return false;
-        } else if (role === 'ROLE_PRESIDENT') {
+        }
+        else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
-          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
           return false;
-        } else if (role === 'ROLE_PORTE_PAROLE') {
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
-          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
           return false;
         }
         this.authority = 'membre';
-        content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-        Swal.fire({
-          title: 'Aucun Accès!',
-          html: content,
-          icon: 'error',
-          showCancelButton: false,
-          confirmButtonText: 'OK',
-          allowOutsideClick: false,
-          focusConfirm: true,
-        }).then((result) => {
-          this._location.back();
-        })
         return true;
       });
     }
@@ -192,6 +128,7 @@ export class PretsComponent implements OnInit {
   }
 
   allPrets() {
+    this.loaders = true;
     this.pretServices.getPrets().subscribe(
         data => {
           this.prets = data;

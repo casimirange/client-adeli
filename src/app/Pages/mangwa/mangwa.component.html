@@ -2,11 +2,11 @@
 
 <div class="tabs-animation">
 
-    <div class="row">
+    <div class="row" *ngIf="authority === 'super_admin' || authority === 'president'">
         <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Ajout / Retrait Mangwa
+                    Nouveau Mouvement Caisse Mangwa
                 </div>
                 <div class="card-body">
                     <div>
@@ -16,37 +16,46 @@
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" formControlName="date" />
+                                                <label [ngClass]="{'red': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}" for="" class="">Date</label>
+                                                <input [ngClass]="{'fred': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}" type="date" class="form-control form-control-sm" formControlName="date" />
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['date'].invalid && (techForm.controls['date'].touched) ">
+                                                    <span>*</span> entrez une date valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="liste" class="">Membre</label>
-                                        <select id="liste" class="form-control-sm form-control" formControlName="membre"  >
-                                            <option selected disabled hidden>Sélectionner un membre</option>
+                                        <label [ngClass]="{'red': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" for="liste" class="">Membre</label>
+                                        <select [ngClass]="{'fred': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" id="liste" class="form-control-sm form-control" formControlName="membre"  >
+                                            <option value="" selected disabled hidden>Sélectionner un membre</option>
                                             <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                         </select>
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['membre'].invalid && (techForm.controls['membre'].touched) ">
+                                            <span>*</span> Veuillez choisir un membre
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6">
-                                        <label for="lite"  >Transaction</label>
-                                        <select id="lite" class="form-control-sm form-control" formControlName="fonction" >
-                                            <option value="" selected disabled hidden>Sélectionner un poste</option>
+                                        <label [ngClass]="{'red': techForm.controls['fonction'].invalid && (techForm.controls['fonction'].touched)}" for="lite"  >Transaction</label>
+                                        <select [ngClass]="{'fred': techForm.controls['fonction'].invalid && (techForm.controls['fonction'].touched)}" id="lite" class="form-control-sm form-control" formControlName="fonction" >
+                                            <option value="" selected disabled hidden>Sélectionner une transaction</option>
                                             <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
                                         </select>
-                                        <!--<div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched) ">-->
-                                        <!--<span>*</span> selectionner une fonction-->
-                                        <!--</div>-->
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['fonction'].invalid && (techForm.controls['fonction'].touched) ">
+                                            <span>*</span> sélectionner une transaction
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" formControlName="montant" placeholder="300 €" />
+                                                <label [ngClass]="{'red': techForm.controls['montant'].invalid && (techForm.controls['montant'].touched)}" for="" class="">Montant</label>
+                                                <input [ngClass]="{'fred': techForm.controls['montant'].invalid && (techForm.controls['montant'].touched)}" type="text" class="form-control form-control-sm" formControlName="montant" placeholder="300 €" />
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['montant'].invalid && (techForm.controls['montant'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un montant valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -57,8 +66,11 @@
                                     <div class="col-md-12">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Motif</label>
-                                                <input type="text" class="form-control form-control-sm" formControlName="motif" placeholder="motif" />
+                                                <label [ngClass]="{'red': techForm.controls['motif'].invalid && (techForm.controls['motif'].touched)}" for="" class="">Motif</label>
+                                                <input [ngClass]="{'fred': techForm.controls['motif'].invalid && (techForm.controls['motif'].touched)}" type="text" class="form-control form-control-sm" formControlName="motif" placeholder="motif" />
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['motif'].invalid && (techForm.controls['motif'].touched) ">
+                                                    <span>*</span> minimum 5 charactères
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +78,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm" (click) = "addMangwa()"
+                                <button type="submit" class="btn btn-primary btn-sm" [disabled]="techForm.invalid || techForm.pristine" (click) = "addMangwa()"
                                 >
                                     Enregistrer
                                 </button>
@@ -83,7 +95,7 @@
         <div class="col-md-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Mouvements Caisse Mangwa
+                    Historique des Mouvements Caisse Mangwa
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -117,10 +129,10 @@
                             <th class="text-left">Crédit</th>
                             <th class="text-left">Débit</th>
                             <th class="text-center">Solde</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center"  *ngIf="authority === 'super_admin'">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="mangwas.length && loaders == false ">
                         <tr *ngFor="let mangwa of mangwas | paginate:{itemsPerPage: 7, currentPage:p}; "  [ngClass]="mangwa.debit == 0 ? 'bg-w' : ''">
                             <td class="text-center">{{mangwa.date}}</td>
                             <td class="text-left">{{mangwa.nom}}</td>
@@ -128,7 +140,7 @@
                             <td class="text-left">{{mangwa.credit}} €</td>
                             <td class="text-left">{{mangwa.debit}} €</td>
                             <td class="text-center">{{mangwa.solde}} €</td>
-                            <td class="text-center">
+                            <td class="text-center" *ngIf="authority === 'super_admin'">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedMangwa = mangwa;"><i class="fa fa-pencil"></i></button>
                                     <button class="btn  btn-danger" (click)="selectedMangwa = mangwa;"><i class="fa fa-times"></i></button>
@@ -138,6 +150,21 @@
                         </tbody>
 
                     </table>
+                    <p *ngIf="!mangwas.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun mangwa trouvé !</p>
+                    <div *ngIf="!mangwas.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-block clearfix card-footer">

@@ -49,7 +49,7 @@ export type ChartOptions = {
 })
 export class DashboardComponent implements OnInit {
     private roles: string[];
-    public authority: string;
+    authority: string;
     public chartOptions: Partial<any>;
     ranger: string = "false";
     ranges: string = "false";
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     soldeTontine: number;
     soldeAmande: number;
     soldeMangwa: number;
-    planings: Planing[];
+    planings: Planing[] = [];
     date_creation_reunion: any;
     fondateur_reunion: string;
     activeSession: any = {};
@@ -272,9 +272,10 @@ export class DashboardComponent implements OnInit {
     p: number;
     f: Date;
     d: Date;
-    loader: boolean = false;
+    loade: boolean = false;
     mini_loader: boolean = false;
     loaders: boolean = false;
+    loader: boolean = false;
     periode_panne: string = 'pannes de la semaine';
     nombre: number = 0;
     per_dash: string;
@@ -346,23 +347,33 @@ export class DashboardComponent implements OnInit {
 
       if (this.tokenStorage.getToken()) {
           this.roles = this.tokenStorage.getAuthorities();
+          const Swal = require('sweetalert2');
           this.roles.every(role => {
               if (role === 'ROLE_TRESORIER') {
                   this.authority = 'tresorier';
                   return false;
-              } else if (role === 'ROLE_SUPER_ADMIN') {
+              }
+              else if (role === 'ROLE_SUPER_ADMIN') {
                   this.authority = 'super_admin';
                   return false;
-              } else if (role === 'ROLE_SECRETAIRE') {
+              }
+              else if (role === 'ROLE_SECRETAIRE') {
                   this.authority = 'secretaire';
                   return false;
-              } else if (role === 'ROLE_SENSCEUR') {
+              }
+              else if (role === 'ROLE_SENSCEUR') {
                   this.authority = 'senceur';
                   return false;
-              } else if (role === 'ROLE_PRESIDENT') {
+              }
+              else if (role === 'ROLE_PRESIDENT') {
                   this.authority = 'president';
                   return false;
-              } else if (role === 'ROLE_PORTE_PAROLE') {
+              }
+              else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+                  this.authority = 'comissaire';
+                  return false;
+              }
+              else if (role === 'ROLE_PORTE_PAROLE') {
                   this.authority = 'porte parole';
                   return false;
               }
@@ -631,26 +642,25 @@ export class DashboardComponent implements OnInit {
 
     }
     SoldeTontine() {
-        this.soldeTontine = 0;
+        // this.soldeTontine = 0;
         this.dashboardService.getSolde().subscribe(
             data => {
-                this.soldeTontine = (data.solde ? data.solde : 0 );
+                this.soldeTontine = data.solde;
 
             } ,
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('une erreur solde tontine observée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde tontine');
+                console.log('solde tontine', this.soldeTontine);
                 this.loaders = false;
-                console.log("test007: "+this.soldeTontine)
             }
         );
     }
 
     SoldeAmande() {
-        this.soldeAmande = 0;
+        // this.soldeAmande = 0;
         this.amandeService.getSolde().subscribe(
             data => {
                 this.soldeAmande = data.solde;
@@ -668,7 +678,7 @@ export class DashboardComponent implements OnInit {
     }
 
     SoldeMangwa() {
-        this.soldeMangwa = 0;
+        // this.soldeMangwa = 0;
         this.retenueServices.getSolde().subscribe(
             data => {
                 this.soldeMangwa = data.solde;
@@ -679,12 +689,15 @@ export class DashboardComponent implements OnInit {
                 this.loaders = false;
             },
             () => {
+                console.log('solde mangwa ', this.soldeMangwa);
                 this.loaders = false;
             }
         );
     }
 
     Planing(){
+
+        this.loade = true;
         this.planingServices.getPlaning().subscribe(
             data => {
                 this.planings = data;
@@ -692,11 +705,11 @@ export class DashboardComponent implements OnInit {
             } ,
             error => {
                 console.log('une erreur sur planing a été détectée!')
-                this.loaders = false;
+                this.loade = false;
             },
             () => {
-                this.loaders = false;
-                console.log("Planing: ",this.planings)
+                this.loade = false;
+                console.log("Planing: ",this.planings);
             }
         );
     }
@@ -737,9 +750,9 @@ export class DashboardComponent implements OnInit {
     }
 
     CountUsers(){
-        this.userService.countUsers().subscribe(
+        this.bureauService.getBureau().subscribe(
             data => {
-                this.countUser = data ? data : 0;
+                this.countUser = data ? data.length : 0;
 
             } ,
             error => {

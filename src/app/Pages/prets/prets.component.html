@@ -2,7 +2,7 @@
 
 <div class="tabs-animation">
 
-    <div class="row">
+    <div class="row" *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">
         <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
@@ -16,8 +16,12 @@
                                     <div class="col-md-4">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Date</label>
-                                                <input type="date" class="form-control form-control-sm" formControlName="date" />
+                                                <label for="" [ngClass]="{'red': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}">Date</label>
+                                                <input [ngClass]="{'fred': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}" type="date" class="form-control form-control-sm" formControlName="date" />
+
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['date'].invalid && (techForm.controls['date'].touched) ">
+                                                    <span>*</span> Veuillez entrer une date valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -34,8 +38,11 @@
                                     <div class="col-md-4">
                                         <div class="">
                                             <div class="position-relative">
-                                                <label for="" class="">Montant</label>
-                                                <input type="text" class="form-control form-control-sm" placeholder="300 €"  formControlName="montant" />
+                                                <label for="mon" [ngClass]="{'red': techForm.controls['montant'].invalid && (techForm.controls['montant'].touched)}">Montant</label>
+                                                <input [ngClass]="{'fred': techForm.controls['montant'].invalid && (techForm.controls['montant'].touched)}" type="text" class="form-control form-control-sm" placeholder="entrer un montant"  formControlName="montant" id="mon" />
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['montant'].invalid && (techForm.controls['montant'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un montant valide
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -43,8 +50,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-sm" (click)="addPret()"
-                                >
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addPret()" [disabled]="techForm.invalid || techForm.pristine" >
                                     Enregistrer
                                 </button>
                             </div>
@@ -95,13 +101,13 @@
                             <th class="text-left">A Rembourser</th>
                             <th class="text-left">Date Remb.</th>
                             <!--<th class="text-center">Montant Remboursé</th>-->
-                            <th class="text-center">Actions</th>
+                            <th class="text-center" *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="prets.length && loaders == false ">
                         <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
 
-                            <ng-template #mymodal let-modal >
+                            <ng-template *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'" #mymodal let-modal >
                                 <div class="modal-header">
                                     <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Remboursement du prêt de </b>{{pret.montant_prete}} € </h6>
                                     <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
@@ -183,7 +189,7 @@
                             <td class="text-left">{{(pret.taux * pret.montant_prete)/100 + pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.date_remboursement}}</td>
                             <!--<td class="text-left">{{pret.montant_rembourse}} €</td>-->
-                            <td class="text-center">
+                            <td class="text-center" *ngIf="authority === 'super_admin'">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedPret = pret;"><i class="fa fa-pencil"></i></button>
                                     <button class="btn  btn-danger" (click)="selectedPret = pret;"><i class="fa fa-times"></i></button>
@@ -193,6 +199,22 @@
                         </tbody>
 
                     </table>
+
+                    <p *ngIf="!prets.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun Prêt trouvé !</p>
+                    <div *ngIf="!prets.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-block clearfix card-footer">

@@ -1,4 +1,5 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority == 'super_admin'"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"
+                *ngIf="authority == 'super_admin'"></app-page-title>
 
 <div class="row" *ngIf="authority == 'super_admin'">
     <div class="col-lg-12">
@@ -9,7 +10,8 @@
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="searchPanForm">
-                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm"
+                                   [(ngModel)]="term" formControlName="search">
                         </form>
                     </div>
                 </div>
@@ -25,7 +27,7 @@
 
             </div>
             <div class="card-body">
-                <div class="table-responsive" >
+                <div class="table-responsive">
                     <table class="align-middle mb-0 table table-sm table-borderless table-hover">
                         <thead>
                         <tr>
@@ -39,8 +41,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="widget-content" *ngFor="let user of users | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; " [ngClass]="{'bg-n': user.etat == false }">
-                            <th scope="row" >{{user.email}}</th>
+                        <tr class="widget-content"
+                            *ngFor="let user of users | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; "
+                            [ngClass]="{'bg-n': user.etat == false }">
+                            <th scope="row">{{user.email}}</th>
                             <td>{{user.name}}</td>
                             <td class="text-capitalize">{{user.username}}</td>
                             <td class="text-capitalize">{{user.tel}}</td>
@@ -49,21 +53,26 @@
 
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
-                                    <button class=" btn  btn-primary" (click)="SelectedUser = user; modal(extendPanne)"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="swl(user)"><i class="fa fa-times"></i></button>
+                                    <button [ngClass]="{'bg-b': user.etat == false }" class=" btn  btn-primary" (click)="SelectedUser = user; modal(extendPanne)">
+                                        <i class="fa fa-pencil"></i></button>
+                                    <button [ngClass]="{'bg-r': user.etat == false }" class="btn  btn-danger" (click)="swl(user)"><i class="fa fa-times"></i>
+                                    </button>
                                 </div>
                             </td>
 
-                            <ng-template #extendPanne let-modal >
+                            <ng-template #extendPanne let-modal>
                                 <div class="modal-header">
-                                    <h6 class="modal-title timeline-title" id="modal-basic-title"><b>MODIFICATION</b></h6>
-                                    <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                    <h6 class="modal-title timeline-title" id="modal-basic-title"><b>MODIFICATION</b>
+                                    </h6>
+                                    <div class="close vertical-timeline-element-content bounce-in"
+                                         (click)="modal.close('save click')">
                                         <span class="timeline-title"><b><i class="fa fa-times"></i></b></span>
                                     </div>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-9 col-lg-9 col-xl-9" style="border-right: groove #0b5885 1px">
+                                        <div class="col-md-9 col-lg-9 col-xl-9"
+                                             style="border-right: groove #0b5885 1px">
 
                                             <div class="scroll-area-lg">
                                                 <div class="scrollbar-container">
@@ -71,47 +80,80 @@
                                                         <div class="form-row">
                                                             <div class="col-md-6">
                                                                 <div class="position-relative form-group">
-                                                                    <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
-                                                                    <input formControlName="email" name="email" id="exampleEmail" placeholder="Email here..." type="email" class="form-control form-control-sm" [(ngModel)]="SelectedUser.email">
+                                                                    <label for="exampleEmail" class=""><span
+                                                                            class="text-danger">*</span> Email</label>
+                                                                    <input formControlName="email" name="email"
+                                                                           id="exampleEmail" placeholder="Email here..."
+                                                                           type="email"
+                                                                           class="form-control form-control-sm"
+                                                                           [(ngModel)]="SelectedUser.email">
                                                                 </div>
-                                                                <div style="color: #f65656" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched)">
+                                                                <div style="color: #f65656"
+                                                                     *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched)">
                                                                     <span>*</span> entrez une adresse mail valide
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="position-relative form-group">
-                                                                    <label for="exampleName" class="">Nom & Prénom</label>
-                                                                    <input name="text" id="exampleName" placeholder="Name here..." formControlName="name" type="text" class="form-control form-control-sm" [(ngModel)]="SelectedUser.name">
+                                                                    <label for="exampleName" class="">Nom &
+                                                                        Prénom</label>
+                                                                    <input name="text" id="exampleName"
+                                                                           placeholder="Name here..."
+                                                                           formControlName="name" type="text"
+                                                                           class="form-control form-control-sm"
+                                                                           [(ngModel)]="SelectedUser.name">
                                                                 </div>
-                                                                <div style="color: #f65656" *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].touched)">
+                                                                <div style="color: #f65656"
+                                                                     *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].touched)">
                                                                     <span>*</span> au moins 4 caractères requis
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="position-relative form-group">
-                                                                    <label for="examplePassword" class=""><span class="text-danger">*</span> Username</label>
-                                                                    <input name="password" formControlName="username" id="examplePassword" placeholder="Username" type="text" class="form-control form-control-sm" [(ngModel)]="SelectedUser.username">
+                                                                    <label for="examplePassword" class=""><span
+                                                                            class="text-danger">*</span>
+                                                                        Username</label>
+                                                                    <input name="password" formControlName="username"
+                                                                           id="examplePassword" placeholder="Username"
+                                                                           type="text"
+                                                                           class="form-control form-control-sm"
+                                                                           [(ngModel)]="SelectedUser.username">
                                                                 </div>
-                                                                <div style="color: #f65656" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched)">
+                                                                <div style="color: #f65656"
+                                                                     *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched)">
                                                                     <span>*</span> au moins 3 caractères requis
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="position-relative form-group">
-                                                                    <label for="tel" class=""><span class="text-danger">*</span> Username</label>
-                                                                    <input name="password" formControlName="tel" id="tel" placeholder="tel" type="text" class="form-control form-control-sm" [(ngModel)]="SelectedUser.tel">
+                                                                    <label for="tel" class=""><span class="text-danger">*</span>
+                                                                        Username</label>
+                                                                    <input name="password" formControlName="tel"
+                                                                           id="tel" placeholder="tel" type="text"
+                                                                           class="form-control form-control-sm"
+                                                                           [(ngModel)]="SelectedUser.tel">
                                                                 </div>
-                                                                <div style="color: #f65656" *ngIf="registerForm.controls['tel'].invalid && (registerForm.controls['tel'].touched)">
+                                                                <div style="color: #f65656"
+                                                                     *ngIf="registerForm.controls['tel'].invalid && (registerForm.controls['tel'].touched)">
                                                                     <span>*</span> au moins 3 caractères requis
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="position-relative form-group">
-                                                                    <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Password</label>
-                                                                    <input name="passwordrep" id="examplePasswordRep" formControlName="password" placeholder="Password here..." type="password" class="form-control form-control-sm" [(ngModel)]="SelectedUser.password">
+                                                                    <label for="examplePasswordRep" class=""><span
+                                                                            class="text-danger">*</span>
+                                                                        Password</label>
+                                                                    <input name="passwordrep" id="examplePasswordRep"
+                                                                           formControlName="password"
+                                                                           placeholder="Password here..."
+                                                                           type="password"
+                                                                           class="form-control form-control-sm"
+                                                                           [(ngModel)]="SelectedUser.password">
                                                                 </div>
-                                                                <div style="color: #f65656" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched)">
-                                                                    <span>*</span> le mot de passe doit comporter au moins 6 caractères
+                                                                <div style="color: #f65656"
+                                                                     *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched)">
+                                                                    <span>*</span> le mot de passe doit comporter au
+                                                                    moins 6 caractères
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -123,50 +165,87 @@
                                                             <div class="col-md-4">
                                                                 <div class="form-group position-relative">
                                                                     <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="RespCP" class="custom-control-input" value="tresorier" formControlName="tresorier">
-                                                                        <label class="custom-control-label" for="RespCP">Tresorier</label>
+                                                                        <input type="checkbox" id="RespCP"
+                                                                               class="custom-control-input"
+                                                                               value="tresorier"
+                                                                               formControlName="tresorier">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespCP">Tresorier</label>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group position-relative">
 
-                                                                <div class="custom-checkbox custom-control custom-control-inline">
-                                                                    <input type="checkbox" id="RespPlacage" class="custom-control-input" value="president" formControlName="president">
-                                                                    <label class="custom-control-label" for="RespPlacage">President</label>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group position-relative">
-                                                                <div class="custom-checkbox custom-control custom-control-inline">
-                                                                    <input type="checkbox" id="RespSc" class="custom-control-input" value="secretaire" formControlName="secretaire">
-                                                                    <label class="custom-control-label" for="RespSc">Secretaire</label>
-                                                                </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespPlacage"
+                                                                               class="custom-control-input"
+                                                                               value="president"
+                                                                               formControlName="president">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespPlacage">President</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group position-relative">
-                                                                <div class="custom-checkbox custom-control custom-control-inline">
-                                                                    <input type="checkbox" id="RespBRA" class="custom-control-input" value="senceur" formControlName="senceur">
-                                                                    <label class="custom-control-label" for="RespBRA">Sensceur</label>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group position-relative">
-                                                                <div class="custom-checkbox custom-control custom-control-inline">
-                                                                    <input type="checkbox" id="RespMaint" class="custom-control-input" value="porte_parole" formControlName="porte_parole">
-                                                                    <label class="custom-control-label" for="RespMaint">Porte Parole</label>
-                                                                </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespSc"
+                                                                               class="custom-control-input"
+                                                                               value="secretaire"
+                                                                               formControlName="secretaire">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespSc">Secretaire</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group position-relative">
-                                                                <div class="custom-checkbox custom-control custom-control-inline">
-                                                                    <input type="checkbox" id="RespMind" class="custom-control-input" value="adherent" formControlName="adherent">
-                                                                    <label class="custom-control-label" for="RespMind">Adherent</label>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespBRA"
+                                                                               class="custom-control-input"
+                                                                               value="senceur"
+                                                                               formControlName="senceur">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespBRA">Sensceur</label>
+                                                                    </div>
                                                                 </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespMaint"
+                                                                               class="custom-control-input"
+                                                                               value="porte_parole"
+                                                                               formControlName="porte_parole">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespMaint">Porte Parole</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespMaint"
+                                                                               class="custom-control-input"
+                                                                               value="comissaire"
+                                                                               formControlName="comissaire">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespMaint">Comissaire aux
+                                                                            comptes</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespMind"
+                                                                               class="custom-control-input"
+                                                                               value="adherent"
+                                                                               formControlName="adherent">
+                                                                        <label class="custom-control-label"
+                                                                               for="RespMind">Adherent</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -177,8 +256,11 @@
                                                         </div>
                                                         <div class="mt-4 d-flex align-items-center">
                                                             <div class="ml-auto">
-                                                                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onUpdate(user); modal.close('save click')"><span>
-                                                                    <i class="fa fa-pencil"></i> Modifier</span></button>
+                                                                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm"
+                                                                        [disabled]="registerForm.invalid"
+                                                                        (click)="onUpdate(user); modal.close('save click')"><span>
+                                                                    <i class="fa fa-pencil"></i> Modifier</span>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -187,7 +269,7 @@
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
                                             <div class="tabs-animation">
-                                                <div class="row" >
+                                                <div class="row">
                                                     <span class="timeline-title ml-2"><b>Sa Fonction</b></span>
                                                 </div>
                                             </div>
@@ -199,7 +281,15 @@
                                                             <div>
                                                                 <span class="vertical-timeline-element-icon bounce-in"></span>
                                                                 <div class="vertical-timeline-element-content bounce-in">
-                                                                    <h4 class="timeline-title text-uppercase font-weight-bold">{{SelectedUser.role == 'ROLE_SECRETAIRE' ? 'Secrétaire' : SelectedUser.role == 'ROLE_SUPER_ADMIN' ? 'Super Admin' : SelectedUser.role == 'ROLE_SENSCEUR' ? 'Scensceur' : SelectedUser.role == 'ROLE_PRESIDENT' ? 'Président' : SelectedUser.role == 'ROLE_PORTE_PAROLE' ? 'Porte Parole' : 'Adhérent'}}</h4>
+                                                                    <h4 class="timeline-title text-uppercase font-weight-bold">
+                                                                        {{SelectedUser.role == 'ROLE_SECRETAIRE' ?
+                                                                        'Secrétaire' : SelectedUser.role ==
+                                                                        'ROLE_SUPER_ADMIN' ? 'Super Admin' :
+                                                                        SelectedUser.role == 'ROLE_SENSCEUR' ?
+                                                                        'Scensceur' : SelectedUser.role ==
+                                                                        'ROLE_PRESIDENT' ? 'Président' :
+                                                                        SelectedUser.role == 'ROLE_PORTE_PAROLE' ?
+                                                                        'Porte Parole' : 'Adhérent'}}</h4>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -226,10 +316,10 @@
                     <ul class="pagination pagination-sm mb-0">
                         <li>
                             <pagination-controls (pageChange)="p=$event"
-                                                 autoHide = "true"
-                                                 responsive = "true"
-                                                 previousLabel = "Précédent"
-                                                 nextLabel = "Suivant">
+                                                 autoHide="true"
+                                                 responsive="true"
+                                                 previousLabel="Précédent"
+                                                 nextLabel="Suivant">
                             </pagination-controls>
                         </li>
                     </ul>

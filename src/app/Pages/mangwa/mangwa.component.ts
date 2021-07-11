@@ -18,7 +18,7 @@ export class MangwaComponent implements OnInit {
   subheadings = 'Gestion du Mangwa ';
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
-  mangwas: Mangwas[];
+  mangwas: Mangwas[] = [];
   loaders: boolean = false;
   selectedMangwa: Mangwas;
   amandeForm: FormGroup;
@@ -30,6 +30,8 @@ export class MangwaComponent implements OnInit {
   techForm: FormGroup;
   users: User[];
   fonction: string[] = ['Crédit', 'Débit'];
+  private roles: string[];
+  public authority: string;
 
   p: number;
   constructor(private fb: FormBuilder,
@@ -51,7 +53,7 @@ export class MangwaComponent implements OnInit {
       date: ['', [Validators.required]],
       fonction: ['', [Validators.required]],
       montant: ['', [Validators.required]],
-      motif: ['', [Validators.required]],
+      motif: ['', [Validators.required, Validators.minLength(5)]],
     });
   }
 
@@ -74,21 +76,58 @@ export class MangwaComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      this.roles.every(role => {
+        if (role === 'ROLE_TRESORIER') {
+          this.authority = 'tresorier';
+          return false;
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
+          this.authority = 'secretaire';
+          return false;
+        }
+        else if (role === 'ROLE_SENSCEUR') {
+          this.authority = 'senceur';
+          return false;
+        }
+        else if (role === 'ROLE_PRESIDENT') {
+          this.authority = 'president';
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
+          this.authority = 'porte parole';
+          return false;
+        }
+        this.authority = 'membre';
+        return true;
+      });
+    }
     this.loadMangwa();
   }
 
   loadMangwa(){
+    this.loaders =  true;
     this.mangwaServices.getMangwa().subscribe(
         data => {
           this.mangwas = data;
         } ,
         error => {
-          console.log('les amandes ne se sont pas chargées correctement')
+          console.log('erreur chargement mangwa')
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log("Liste des amandes: ",this.mangwas)
+          console.log("Liste mangwa: ",this.mangwas)
         }
     );
   }

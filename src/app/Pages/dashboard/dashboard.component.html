@@ -1,6 +1,15 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
-<div class="row">
+<div class="row" *ngIf="
+authority === 'super_admin' ||
+authority === 'tresorier' ||
+authority === 'comissaire' ||
+authority === 'president' ||
+authority === 'secretaire' ||
+authority === 'membre' ||
+authority === 'senceur' ||
+authority === 'porte_parole'
+">
     <div class="col-md-3 col-xl-3">
         <div class="card mb-3 widget-content bg-white card-shadow-danger">
             <div class="widget-content-wrapper ">
@@ -56,7 +65,16 @@
 </div>
 
 
-<div class="tabs-animation">
+<div class="tabs-animation"  *ngIf="
+authority === 'super_admin' ||
+authority === 'tresorier' ||
+authority === 'comissaire' ||
+authority === 'president' ||
+authority === 'secretaire' ||
+authority === 'membre' ||
+authority === 'senceur' ||
+authority === 'porte_parole'
+">
     <div class="row">
         <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="main-card mb-3 card">
@@ -119,7 +137,7 @@
                             <th class="text-left">Réceptionniste</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="planings.length && loade == false ">
                         <tr style="cursor: pointer"
                             *ngFor="let planing of planings | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; ">
                             <td class="text-center text-muted">{{ planing.date | date: 'dd/MM/y'}}</td>
@@ -131,9 +149,9 @@
 
                     </table>
                     <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>-->
-                    <p *ngIf="!planings && loader == false" style="color: grey; font-size: 1.5rem;"
-                       class="text-center">Aucun Planning pour la session !</p>
-                    <div *ngIf="!planings && loader == true" class="text-center">
+                    <p *ngIf="!planings.length && loade == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucun Planning pour cette session !</p>
+                    <div *ngIf="!planings.length && loade == true" class="text-center">
                         <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
                             <div class="loader-wrapper d-flex justify-content-center align-items-center"
                                  style="vertical-align: middle;">
@@ -216,7 +234,7 @@
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left">
                                             <div class="widget-heading">Prêts (%)</div>
-                                            <div class="widget-subheading">le taux appliqué sur le prêt est de {{activeSession.taux}} %</div>
+                                            <div class="widget-subheading">le taux appliqué sur le prêt est de {{activeSession ? activeSession.taux : 0}} %</div>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +245,7 @@
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left flex2">
                                             <div class="widget-heading">Montant Cotisation</div>
-                                            <div class="widget-subheading">Le nouveau montant arrêté pour la tontine est de {{activeSession.montant}} €</div>
+                                            <div class="widget-subheading">Le nouveau montant arrêté pour la tontine est de {{activeSession ? activeSession.montant : 0}} €</div>
                                         </div>
                                     </div>
                                 </div>

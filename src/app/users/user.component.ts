@@ -71,6 +71,7 @@ export class UserComponent implements OnInit {
       tel: ['', [Validators.minLength(9), Validators.required, Validators.pattern("^[0-9]{9,13}$") ]],
       tresorier: ['',],
       secretaire: ['',],
+      comissaire: ['',],
       senceur: ['',],
       president: ['',],
       porte_parole: ['',],
@@ -137,6 +138,22 @@ export class UserComponent implements OnInit {
         }
         else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',

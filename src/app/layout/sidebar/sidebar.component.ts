@@ -23,31 +23,41 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
-      this.roles = this.tokenStorage.getAuthorities();
-      this.roles.every(role => {
-        if (role === 'ROLE_TRESORIER') {
-          this.authority = 'tresorier';
-          return false;
-        } else if (role === 'ROLE_SUPER_ADMIN') {
-          this.authority = 'super_admin';
-          return false;
-        } else if (role === 'ROLE_SECRETAIRE') {
-          this.authority = 'secretaire';
-          return false;
-        } else if (role === 'ROLE_SENSCEUR') {
-          this.authority = 'senceur';
-          return false;
-        } else if (role === 'ROLE_PRESIDENT') {
-          this.authority = 'president';
-          return false;
-        } else if (role === 'ROLE_PORTE_PAROLE') {
-          this.authority = 'porte parole';
-          return false;
-        }
-        this.authority = 'membre';
-        return true;
-      });
-    }
+    this.roles = this.tokenStorage.getAuthorities();
+    const Swal = require('sweetalert2');
+    this.roles.every(role => {
+      if (role === 'ROLE_TRESORIER') {
+        this.authority = 'tresorier';
+        return false;
+      }
+      else if (role === 'ROLE_SUPER_ADMIN') {
+        this.authority = 'super_admin';
+        return false;
+      }
+      else if (role === 'ROLE_SECRETAIRE') {
+        this.authority = 'secretaire';
+        return false;
+      }
+      else if (role === 'ROLE_SENSCEUR') {
+        this.authority = 'senceur';
+        return false;
+      }
+      else if (role === 'ROLE_PRESIDENT') {
+        this.authority = 'president';
+        return false;
+      }
+      else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+        this.authority = 'comissaire';
+        return false;
+      }
+      else if (role === 'ROLE_PORTE_PAROLE') {
+        this.authority = 'porte parole';
+        return false;
+      }
+      this.authority = 'membre';
+      return true;
+    });
+  }
   }
 
 }

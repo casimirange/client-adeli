@@ -32,6 +32,7 @@ export class RegisterComponent implements OnInit {
   respMIND: string;
   respMAINT: string;
   admin: string;
+  comissaire: string;
   userMIND: string;
   userAL: string;
 
@@ -47,6 +48,7 @@ export class RegisterComponent implements OnInit {
       tresorier: ['',],
       secretaire: ['',],
       senceur: ['',],
+      comissaire: ['',],
       president: ['',],
       porte_parole: ['',],
       adherent: ['',],
@@ -126,6 +128,22 @@ export class RegisterComponent implements OnInit {
           })
           return false;
         }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        }
         else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
@@ -178,6 +196,7 @@ export class RegisterComponent implements OnInit {
     this.respMIND =  'porte_parole';
     this.respMAINT =  'adherent';
     this.admin =  'tresorier';
+    this.comissaire =  'comissaire';
 
     this.registerForm.controls['tresorier'].value != '' ? this.role.push(this.admin) : '';
     this.registerForm.controls['president'].value != '' ? this.role.push(this.respCP): '';
@@ -185,6 +204,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm.controls['senceur'].value != '' ? this.role.push(this.respBRA): '';
     this.registerForm.controls['porte_parole'].value != '' ? this.role.push(this.respMIND): '';
     this.registerForm.controls['adherent'].value != '' ? this.role.push(this.respMAINT): '';
+    this.registerForm.controls['comissaire'].value != '' ? this.role.push(this.comissaire): '';
 
     this.signupInfos = new SignUpInfo(
       this.registerForm.controls['name'].value,

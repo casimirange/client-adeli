@@ -40,12 +40,14 @@ export class CotisationComponent implements OnInit {
   techniciens: Technicien[];
   term: string;
   p: number;
+  loade: boolean = false;
+  loader: boolean = false;
   sessions: Sessions[];
   selectedSessions: Sessions;
   selectedTontine: Tontines;
   selectedBenef: Beneficiaires;
-  tontines: any[];
-  beneficiaires: Beneficiaires[];
+  tontines: any[] = [];
+  beneficiaires: Beneficiaires[] = [];
   users: User[];
   closeResult: any;
 
@@ -75,7 +77,7 @@ export class CotisationComponent implements OnInit {
   }
   rembForms() {
     this.rembForm = this.fb.group({
-      mont: ['', [Validators.required]],
+      mont: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
       membres: ['', [Validators.required]],
     });
   }
@@ -99,23 +101,33 @@ export class CotisationComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
           return false;
-        } else if (role === 'ROLE_SUPER_ADMIN') {
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_SECRETAIRE') {
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
           this.authority = 'secretaire';
           return false;
-        } else if (role === 'ROLE_SENSCEUR') {
+        }
+        else if (role === 'ROLE_SENSCEUR') {
           this.authority = 'senceur';
           return false;
-        } else if (role === 'ROLE_PRESIDENT') {
+        }
+        else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
           return false;
-        } else if (role === 'ROLE_PORTE_PAROLE') {
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
           return false;
         }
@@ -154,31 +166,36 @@ export class CotisationComponent implements OnInit {
   }
   // //
   loadActiveTontine() {
+    this.loade = true;
     this.tontineService.getHistoriqueActiveSession().subscribe(
         data => {
           this.tontines = data
 
         },
         error => {
-          console.log('une erreur a été détectée!')
+          console.log('une erreur tontine active');
+          this.loade = false;
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          console.log('chargement tontine active', this.tontines);
+          this.loade = false;
         }
     );
   }
 
   loadBeneficiaires() {
+    this.loader = true;
     this.beneficiaireService.getBeneficiaireSession().subscribe(
         data => {
-          this.beneficiaires = data
-
+          this.beneficiaires = data;
         },
         error => {
-          console.log('une erreur a été détectée!')
+          console.log('une erreur chargement des bénéficiaires!')
+          this.loader = false;
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          console.log('chargement des bénéficiaires', this.beneficiaires);
+          this.loader = false;
         }
     );
   }
@@ -193,7 +210,7 @@ export class CotisationComponent implements OnInit {
           console.log('une erreur a été détectée lors du chargement des utilisateurs!')
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          console.log('chargement des utilisateurs', this.users);
         }
     );
   }

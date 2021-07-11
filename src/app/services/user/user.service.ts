@@ -41,9 +41,25 @@ export class UserService {
     return this.http.get(environment.URERS +'/active');
   }
 
-  // getUsers(): Observable <any>{
-  //   return this.http.get(API_URLS.USERS_URL);
-  // }
+  getUser(id: number): Observable <any> {
+    return this.http.get(environment.URERS + `/id/${id}`);
+  }
+
+  getPret(id: number): Observable <any> {
+    return this.http.get(environment.PRET_URL + `/id/${id}`);
+  }
+
+  getTontine(id: number): Observable <any> {
+    return this.http.get(environment.TONTINE_URL + `/id/${id}`);
+  }
+
+  getAmande(id: number): Observable <any> {
+    return this.http.get(environment.AMANDE_URL + `/id/${id}`);
+  }
+
+  getDiscipline(id: number): Observable <any> {
+    return this.http.get(environment.DISCIPLINE_URL + `/id/${id}`);
+  }
   //
   // addUser(users: User ): Observable<any>{
   //   return this.http.post(API_URLS.USERS_URL + `/users`, users);

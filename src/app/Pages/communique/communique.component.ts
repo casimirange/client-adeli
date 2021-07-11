@@ -5,6 +5,7 @@ import {CompteRenduService} from "../../services/compte_rendu/compte-rendu.servi
 import {CompteRendu} from "../../Models/cr";
 import {Communique} from "../../Models/communique";
 import {CommuniqueService} from "../../services/communique/communique.service";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 @Component({
   selector: 'app-communique',
@@ -21,18 +22,23 @@ export class CommuniqueComponent implements OnInit {
   mycontent: string;
   log: string = '';
   crForm: FormGroup;
-  communiques: Communique[];
+  communiques: Communique[] = [];
   communique: Communique;
   id: number;
   details: string;
   date: Date;
+  loaders: boolean;
+  private roles: string[];
+  public authority: string;
   // @ViewChild("myckeditor", {static: false}) ckeditor: CKEditorComponent;
 
   constructor(private fb: FormBuilder,
+              private tokenStorage: TokenStorageService,
               private communiqueService: CommuniqueService) {
     this.mycontent = ``;
     this.createForm();
     this.communique = new Communique;
+    this.loaders = false;
   }
 
   createForm() {
@@ -42,6 +48,42 @@ export class CommuniqueComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      this.roles.every(role => {
+        if (role === 'ROLE_TRESORIER') {
+          this.authority = 'tresorier';
+          return false;
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
+          this.authority = 'secretaire';
+          return false;
+        }
+        else if (role === 'ROLE_SENSCEUR') {
+          this.authority = 'senceur';
+          return false;
+        }
+        else if (role === 'ROLE_PRESIDENT') {
+          this.authority = 'president';
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
+          this.authority = 'porte parole';
+          return false;
+        }
+        this.authority = 'membre';
+        return true;
+      });
+    }
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -135,16 +177,19 @@ export class CommuniqueComponent implements OnInit {
   }
 
   loadCommunique() {
+    this.loaders = true;
     this.communiqueService.getCommunique().subscribe(
         data => {
-          this.communiques = data
+          this.communiques = data;
 
         },
         error => {
-          console.log('une erreur de chargement des CR a été détectée!')
+          console.log('une erreur de chargement des Communiqué!');
+          this.loaders = false;
         },
         () => {
           console.log('chargement des communiqués', this.communiques);
+          this.loaders = false;
         }
     );
   }

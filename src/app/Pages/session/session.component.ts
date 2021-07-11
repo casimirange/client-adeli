@@ -43,10 +43,10 @@ export class SessionComponent implements OnInit {
       dd: ['', [Validators.required]],
       df: ['', [Validators.required]],
       taux: ['', [Validators.required]],
-      mangwa: ['', [Validators.required]],
-      fond: ['', [Validators.required]],
-      cotisation: ['', [Validators.required]],
-      membres: ['', [Validators.required]],
+      mangwa: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
+      fond: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
+      cotisation: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
+      membres: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
     });
   }
 
@@ -77,10 +77,12 @@ export class SessionComponent implements OnInit {
             this._location.back();
           })
           return false;
-        } else if (role === 'ROLE_SUPER_ADMIN') {
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_SECRETAIRE') {
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
           this.authority = 'secretaire';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
@@ -95,7 +97,8 @@ export class SessionComponent implements OnInit {
             this._location.back();
           })
           return false;
-        } else if (role === 'ROLE_SENSCEUR') {
+        }
+        else if (role === 'ROLE_SENSCEUR') {
           this.authority = 'senceur';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
@@ -110,7 +113,8 @@ export class SessionComponent implements OnInit {
             this._location.back();
           })
           return false;
-        } else if (role === 'ROLE_PRESIDENT') {
+        }
+        else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
@@ -125,7 +129,24 @@ export class SessionComponent implements OnInit {
             this._location.back();
           })
           return false;
-        } else if (role === 'ROLE_PORTE_PAROLE') {
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
           content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
@@ -143,17 +164,17 @@ export class SessionComponent implements OnInit {
         }
         this.authority = 'membre';
         content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
-          Swal.fire({
-            title: 'Aucun Accès!',
-            html: content,
-            icon: 'error',
-            showCancelButton: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            focusConfirm: true,
-          }).then((result) => {
-            this._location.back();
-          })
+        Swal.fire({
+          title: 'Aucun Accès!',
+          html: content,
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          focusConfirm: true,
+        }).then((result) => {
+          this._location.back();
+        })
         return true;
       });
     }

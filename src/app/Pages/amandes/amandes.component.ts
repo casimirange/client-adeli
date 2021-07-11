@@ -18,7 +18,7 @@ export class AmandesComponent implements OnInit {
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
   p: number;
-  amandes: Amandes[];
+  amandes: Amandes[] = [];
   loaders: boolean = false;
   selectedAmande: Amandes;
   amandeForm: FormGroup;
@@ -28,6 +28,8 @@ export class AmandesComponent implements OnInit {
   pages: number = 7;
   id: number;
   users: User[];
+  private roles: string[];
+  public authority: string;
 
   fonction: string[] = ['Crédit', 'Débit'];
 
@@ -36,7 +38,7 @@ export class AmandesComponent implements OnInit {
               private userServices: UserService,
               private tokenStorage: TokenStorageService,
   ) {
-    this.selectedAmande = new Amandes
+    this.selectedAmande = new Amandes();
     this.createForm1();
     this.createForms();
     this.pageForms();
@@ -65,6 +67,42 @@ export class AmandesComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      this.roles.every(role => {
+        if (role === 'ROLE_TRESORIER') {
+          this.authority = 'tresorier';
+          return false;
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
+          this.authority = 'secretaire';
+          return false;
+        }
+        else if (role === 'ROLE_SENSCEUR') {
+          this.authority = 'senceur';
+          return false;
+        }
+        else if (role === 'ROLE_PRESIDENT') {
+          this.authority = 'president';
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
+          this.authority = 'porte parole';
+          return false;
+        }
+        this.authority = 'membre';
+        return true;
+      });
+    }
     this.allAmandes();
     this.loadUsers();
   }
@@ -84,17 +122,18 @@ export class AmandesComponent implements OnInit {
   }
 
   allAmandes(){
+    this.loaders = true;
     this.amandeServices.getAmandes().subscribe(
         data => {
           this.amandes = data;
         } ,
         error => {
-          console.log('les amandes ne se sont pas chargées correctement')
+          console.log('les amandes ne se sont pas chargées correctement');
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log("Liste des amandes: ",this.amandes)
+          console.log('Liste des amandes: ', this.amandes);
         }
     );
   }

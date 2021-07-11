@@ -12,7 +12,7 @@ import {SingleLigneComponent} from "./Pages/lignes/single-ligne/single-ligne.com
 import {TechniciensComponent} from "./Pages/technicien/techniciens.component";
 import {SingleTechnicienComponent} from "./Pages/technicien/single-technicien/single-technicien.component";
 import {MachinesComponent} from "./Pages/machines/machines.component";
-import {SingleMachineComponent} from "./Pages/machines/single-machine/single-machine.component";
+import {SingleMachineComponent} from './Pages/machines/single-machine/single-machine.component';
 import {OperateursComponent} from "./Pages/operateurs/operateurs.component";
 import {SingleOperateurComponent} from "./Pages/operateurs/single-operateur/single-operateur.component";
 import {BaseLayoutComponent} from "./layout/base-layout/base-layout.component";
@@ -49,6 +49,7 @@ import {ProjetsComponent} from "./Pages/projets/projets.component";
 import {SessionComponent} from "./Pages/session/session.component";
 import {ReunionComponent} from "./Pages/reunion/reunion.component";
 import {PlanningComponent} from "./Pages/planning/planning.component";
+import {UseComponentComponent} from "./Pages/use-component/use-component.component";
 
 const routes: Routes = [
 
@@ -98,7 +99,7 @@ const routes: Routes = [
   {path: 'operateurs', canActivate:[AuthGuardService], component: OperateursComponent },
   // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
   {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
-  {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
+  {path: 'machines/:id', canActivate:[AuthGuardService], component: UseComponentComponent },
   {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuardService] },
   {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
   {path: 'arrets', canActivate:[AuthGuardService], component: ArretsComponent },

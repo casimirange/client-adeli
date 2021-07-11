@@ -1,7 +1,7 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin'"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
-<div *ngIf="authority === 'super_admin' || authority === 'tresorier'" class="row">
-    <div class="col-lg-6">
+<div class="row">
+    <div *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'" class="col-lg-6">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Nouvelle Cotisation
@@ -12,11 +12,14 @@
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
-                                    <label for="liste" class="">Membre</label>
-                                    <select id="liste" class="form-control-sm form-control" formControlName="membre"  >
-                                        <option selected disabled hidden>Sélectionner un membre</option>
+                                    <label [ngClass]="{'red': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" for="liste" class="">Membre</label>
+                                    <select [ngClass]="{'fred': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" id="liste" class="form-control-sm form-control" formControlName="membre"  >
+                                        <option value="" selected disabled hidden>Sélectionner un membre</option>
                                         <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                     </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['membre'].invalid && (techForm.controls['membre'].touched) ">
+                                        <span>*</span> veuillez sélectionner un membre
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +40,7 @@
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Liste des Bénéficiaires
-                <div class="btn-actions-pane-right">
+                <div class="btn-actions-pane-right"  *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">
                     <div role="group" class="btn-group-sm btn-group">
                         <button class="btn btn-primary" (click)="open(mymodal)">Nouveau</button>
                         <ng-template #mymodal let-modal >
@@ -51,29 +54,36 @@
 
                                 <div class="scroll-area-md">
                                     <div class="scrollbar-container">
-                                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="rembForm">
+                                        <form class="col-md-10 mx-auto" [formGroup]="rembForm">
                                             <div class="form-group">
                                                 <div class="">
                                                     <div class="position-relative">
-                                                        <label for="" class="">Membre</label>
-                                                        <select id="liste" class="form-control-sm form-control" formControlName="membres"  >
-                                                            <option selected disabled hidden>Sélectionner un membre</option>
+                                                        <label [ngClass]="{'red': rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched)}" for="mem" class="">Membre</label>
+                                                        <select [ngClass]="{'fred': rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched)}" id="mem" class="form-control-sm form-control" formControlName="membres"  >
+                                                            <option value="" selected disabled hidden>Sélectionner un membre</option>
                                                             <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                                         </select>
+
+                                                        <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched) ">
+                                                            <span>*</span> entrez une date valide
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="">
                                                     <div class="position-relative">
-                                                        <label for="" class="">Montant Bouffé</label>
-                                                        <input type="text" class="form-control form-control-sm" placeholder="200 €" formControlName="mont" />
+                                                        <label [ngClass]="{'red': rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched)}" for="" class="">Montant Bouffé</label>
+                                                        <input [ngClass]="{'fred': rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched)}" type="text" class="form-control form-control-sm" placeholder="200 €" formControlName="mont" />
+                                                        <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched) ">
+                                                            <span>*</span> montant invalide!
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-primary btn-sm" (click)="bouffer()">
+                                                <button type="submit" class="btn btn-primary btn-sm" (click)="bouffer()" [disabled]="rembForm.invalid || rembForm.pristine">
                                                     Enregistrer
                                                 </button>
                                             </div>
@@ -106,14 +116,31 @@
                             <th>Montant</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr class="widget-content" *ngFor="let benef of beneficiaires | filter: term | paginate:{itemsPerPage: pages, currentPage:p}">
+                        <tbody *ngIf="beneficiaires.length && loader == false ">
+                        <tr class="widget-content" *ngFor="let benef of beneficiaires">
                         <th scope="row" >{{ benef.date | date: 'dd-MM-yyyy'}}</th>
                         <td>{{benef.nom | titlecase}}</td>
                         <td class="text-capitalize">{{benef.montant}} €</td>
                         </tr>
                         </tbody>
                     </table>
+                    <p *ngIf="!beneficiaires.length && loader == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucun bénéficiaire pour cette session !</p>
+                    <div *ngIf="!beneficiaires.length && loader == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,7 +195,7 @@
                             <th class="text-center">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="tontines.length && loade == false ">
                         <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
                             <th scope="row" >{{ tontine.date | date: 'dd-MM-yyyy'}}</th>
                             <td>{{tontine.debit}} €</td>
@@ -189,6 +216,23 @@
                         </tr>
                         </tbody>
                     </table>
+                    <p *ngIf="!tontines.length && loade == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucune cotisation enregistrée pour cette session !</p>
+                    <div *ngIf="!tontines.length && loade == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="d-block clearfix card-footer">

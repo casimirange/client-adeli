@@ -119,6 +119,7 @@ import {CommuniqueService} from "./services/communique/communique.service";
 import {DisciplineService} from "./services/discipline/discipline.service";
 import { PlanningComponent } from './Pages/planning/planning.component';
 import {BureauService} from "./services/bureau/bureau.service";
+import { UseComponentComponent } from './Pages/use-component/use-component.component';
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
 
@@ -186,6 +187,7 @@ import {BureauService} from "./services/bureau/bureau.service";
     ReunionComponent,
     // HelloComponent,
     PlanningComponent,
+    UseComponentComponent,
   ],
   imports: [
     BrowserModule,
@@ -210,7 +212,6 @@ import {BureauService} from "./services/bureau/bureau.service";
     jqxGridModule,
     AutocompleteLibModule,
     // CKEditorModule
-
     // IgxGridModule
     // NgScrollbarModule
     // DpDatePickerModule,

@@ -5,6 +5,7 @@ import {Planing} from "../../Models/Planing";
 import {DisciplineService} from "../../services/discipline/discipline.service";
 import {PlaningService} from "../../services/planing/planing.service";
 import {User} from "../../Models/users";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 @Component({
   selector: 'app-planning',
@@ -17,7 +18,7 @@ export class PlanningComponent implements OnInit {
   subheadings = 'Gerez le calendrier des jours de réunion';
   icons = 'pe-7s-news-paper icon-gradient bg-mixed-hopes';
 
-  planings: Planing[];
+  planings: Planing[] = [];
   selectedPlanning: Planing;
   loaders: boolean = false;
   planForm: FormGroup;
@@ -25,9 +26,12 @@ export class PlanningComponent implements OnInit {
   id: any;
   operation: string;
   p: number;
+  private roles: string[];
+  public authority: string;
 
   constructor(private fb: FormBuilder,
               private userServices: UserService,
+              private tokenStorage: TokenStorageService,
               private planingServices: PlaningService) {
     this.createForm();
     this.selectedPlanning = new Planing();
@@ -35,6 +39,42 @@ export class PlanningComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      this.roles.every(role => {
+        if (role === 'ROLE_TRESORIER') {
+          this.authority = 'tresorier';
+          return false;
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
+          this.authority = 'secretaire';
+          return false;
+        }
+        else if (role === 'ROLE_SENSCEUR') {
+          this.authority = 'senceur';
+          return false;
+        }
+        else if (role === 'ROLE_PRESIDENT') {
+          this.authority = 'president';
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
+          this.authority = 'porte parole';
+          return false;
+        }
+        this.authority = 'membre';
+        return true;
+      });
+    }
     this.Planing();
     this.loadUsers();
   }
@@ -54,6 +94,7 @@ export class PlanningComponent implements OnInit {
 
   Planing(){
     this.planings = [];
+    this.loaders = true;
     this.planingServices.getPlaning().subscribe(
         data => {
           this.planings = data;

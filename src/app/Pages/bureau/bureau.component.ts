@@ -23,11 +23,12 @@ export class BureauComponent implements OnInit {
   public authority: string;
   term: string;
   p: number;
+  loaders: boolean = false;
   sessions: Sessions[];
   users: User[];
-  fonction: string[] = ['Adhérant', 'Porte Parole', 'Président', 'Secrétaire', 'Sensceur', 'Trésorier'];
+  fonction: string[] = ['Adhérant', 'Commissaire aux Comptes', 'Porte Parole', 'Président', 'Secrétaire', 'Sensceur', 'Trésorier'];
   selectedBureau: Bureau;
-  bureaux: Bureau[];
+  bureaux: Bureau[] = [];
   bureauForm: FormGroup;
   operation: string = 'add';
 
@@ -57,23 +58,33 @@ export class BureauComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
           return false;
-        } else if (role === 'ROLE_SUPER_ADMIN') {
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_SECRETAIRE') {
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
           this.authority = 'secretaire';
           return false;
-        } else if (role === 'ROLE_SENSCEUR') {
+        }
+        else if (role === 'ROLE_SENSCEUR') {
           this.authority = 'senceur';
           return false;
-        } else if (role === 'ROLE_PRESIDENT') {
+        }
+        else if (role === 'ROLE_PRESIDENT') {
           this.authority = 'president';
           return false;
-        } else if (role === 'ROLE_PORTE_PAROLE') {
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
           this.authority = 'porte parole';
           return false;
         }
@@ -101,15 +112,18 @@ export class BureauComponent implements OnInit {
   }
 
   loadBureau() {
+    this.loaders = true;
     this.bureauService.getBureau().subscribe(
         data => {
           this.bureaux = data;
         },
         error => {
-          console.log('une erreur a été détectée au chargement des sessions!')
+          console.log('erreur chargement bureaux');
+          this.loaders = false;
         },
         () => {
           console.log('chargement des bureaux', this.bureaux);
+          this.loaders = false;
         }
     );
   }
