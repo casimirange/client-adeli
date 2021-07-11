@@ -107,7 +107,7 @@
                         <tbody *ngIf="prets.length && loaders == false ">
                         <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
 
-                            <ng-template *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'" #mymodal let-modal >
+                            <ng-template #mymodal let-modal >
                                 <div class="modal-header">
                                     <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Remboursement du prêt de </b>{{pret.montant_prete}} € </h6>
                                     <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
@@ -160,7 +160,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group"*ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">
                                                     <button type="submit" class="btn btn-primary btn-sm" (click)="rembourser(pret)">
                                                         Enregistrer
                                                     </button>
