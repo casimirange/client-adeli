@@ -44,6 +44,7 @@ export class UserComponent implements OnInit {
   respMIND: string;
   respMAINT: string;
   admin: string;
+  comissaire: string;
   userMIND: string;
   userAL: string;
   signupInfos: SignUpInfo;
@@ -280,6 +281,7 @@ export class UserComponent implements OnInit {
     this.respMIND =  'porte_parole';
     this.respMAINT =  'adherent';
     this.admin =  'tresorier';
+    this.comissaire =  'comissaire';
 
     this.registerForm.controls['tresorier'].value != '' ? this.role.push(this.admin) : '';
     this.registerForm.controls['president'].value != '' ? this.role.push(this.respCP): '';
@@ -287,6 +289,7 @@ export class UserComponent implements OnInit {
     this.registerForm.controls['senceur'].value != '' ? this.role.push(this.respBRA): '';
     this.registerForm.controls['porte_parole'].value != '' ? this.role.push(this.respMIND): '';
     this.registerForm.controls['adherent'].value != '' ? this.role.push(this.respMAINT): '';
+    this.registerForm.controls['comissaire'].value != '' ? this.role.push(this.comissaire): '';
 
     this.signupInfos = new SignUpInfo(
         this.registerForm.controls['name'].value,
