@@ -26,4 +26,8 @@ export class PlaningService {
   updatePlanning(info: Planing, user: any, id: number ): Observable<any> {
     return this.http.put<any>(environment.PLANING_URL + `?user=${user}&id=${id}`, info, httpOptions);
   }
+
+  deletePlaning(id: number): Observable<any>{
+    return this.http.delete(environment.PLANING_URL + `?id=${id}`);
+  }
 }

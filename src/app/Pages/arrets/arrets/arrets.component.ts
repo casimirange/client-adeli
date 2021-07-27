@@ -742,7 +742,7 @@ export class ArretsComponent implements OnInit {
           !this.arr.cause){
           Swal.fire({
           title: 'Impossible',
-          text: "Tous les champs ne sont pas correctement remplis",
+          text: 'Tous les champs ne sont pas correctement remplis',
           icon: 'warning',
           showCancelButton: false,
           confirmButtonColor: '#b97a56',

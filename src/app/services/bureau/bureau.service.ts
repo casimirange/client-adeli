@@ -18,8 +18,8 @@ export class BureauService {
     return this.http.post(environment.ELECTION_URL, b );
   }
 
-  updateBureau(id: number): Observable<any>{
-    return this.http.put(environment.ELECTION_URL + `/?id=${id}`, httpOptions );
+  updateBureau(user: any, id: number, info: Bureau): Observable<any>{
+    return this.http.put(environment.ELECTION_URL + `/?user=${user}&id=${id}`, info, httpOptions );
   }
 
   getBureau(): Observable<any>{

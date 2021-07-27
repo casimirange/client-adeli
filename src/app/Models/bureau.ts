@@ -7,6 +7,7 @@ export class Bureau {
     session?: Date;
     id_election?: number;
     id?: number;
+    sess?: number;
     montant?: number;
     tel?: number;
 }

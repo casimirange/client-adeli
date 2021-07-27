@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CompteRenduService} from "../../services/compte_rendu/compte-rendu.service";
 import {CompteRendu} from "../../Models/cr";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 @Component({
   selector: 'app-compte-rendu',
@@ -18,20 +19,26 @@ export class CompteRenduComponent implements OnInit {
   ckeConfig: any;
   mycontent: string;
   log: string = '';
+  operation: string = 'add';
   crForm: FormGroup;
   compteRendus: CompteRendu[] = [];
   compteRendu: CompteRendu;
+  selectedCompteRendu: CompteRendu;
   id: number;
   details: string;
   date: Date;
   loaders: boolean;
+  private roles: string[];
+  public authority: string;
   // @ViewChild("myckeditor", {static: false}) ckeditor: CKEditorComponent;
 
   constructor(private fb: FormBuilder,
-  private compteRenduservice: CompteRenduService) {
+              private tokenStorage: TokenStorageService,
+              private compteRenduservice: CompteRenduService) {
     this.mycontent = ``;
     this.createForm();
     this.compteRendu = new CompteRendu();
+    this.selectedCompteRendu = new CompteRendu();
     this.loaders = false;
   }
 
@@ -49,6 +56,42 @@ export class CompteRenduComponent implements OnInit {
       forcePasteAsPlainText: true
     };
 
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      this.roles.every(role => {
+        if (role === 'ROLE_TRESORIER') {
+          this.authority = 'tresorier';
+          return false;
+        }
+        else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        }
+        else if (role === 'ROLE_SECRETAIRE') {
+          this.authority = 'secretaire';
+          return false;
+        }
+        else if (role === 'ROLE_SENSCEUR') {
+          this.authority = 'senceur';
+          return false;
+        }
+        else if (role === 'ROLE_PRESIDENT') {
+          this.authority = 'president';
+          return false;
+        }
+        else if (role === 'ROLE_COMISSAIRE_AU_COMPTE') {
+          this.authority = 'comissaire';
+          return false;
+        }
+        else if (role === 'ROLE_PORTE_PAROLE') {
+          this.authority = 'porte parole';
+          return false;
+        }
+        this.authority = 'membre';
+        return true;
+      });
+    }
     this.loadCR();
   }
 
@@ -98,6 +141,7 @@ export class CompteRenduComponent implements OnInit {
 
   initCR() {
     this.compteRendu = new CompteRendu();
+    this.selectedCompteRendu = new CompteRendu();
     this.createForm();
     this.mycontent = '';
   }
@@ -154,4 +198,91 @@ export class CompteRenduComponent implements OnInit {
     );
   }
 
+  updateCR() {
+    console.log('update', this.selectedCompteRendu);
+    const Swal = require('sweetalert2');
+    this.selectedCompteRendu.details = this.crForm.controls['cp'].value;
+    this.compteRenduservice.putCompteRendu(this.selectedCompteRendu.id_compte_rendu, this.selectedCompteRendu).subscribe(
+        res => {
+          this.initCR();
+          this.loadCR();
+          this.operation = 'add';
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec de modification',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'modification updated',
+            title: 'Modification réussi!'
+          });
+        }
+    );
+  }
+
+  deleteCompteRendu(tec: CompteRendu){
+    const Swal = require('sweetalert2');
+    Swal.fire({
+      title: 'Suppression',
+      icon: 'error',
+      html: 'Voulez-vous supprimer ce communique du ' + tec.date + ' ?',
+      showCancelButton: true,
+      footer: '<a >Cette action est irréversible</a>',
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: false,
+      showLoaderOnConfirm: true
+    }).then((result) => {
+      if (result.value) {
+        this.compteRenduservice.deleteCompteRendu(tec.id_compte_rendu).subscribe(
+            data => { this.loadCR(); },
+            error => {
+              console.log('une erreur a été détectée lors de la suppression du compte rendu');
+            },
+            () => {
+              console.log('compte rendu supprimé');
+            }
+        );
+        Swal.fire({
+          title: 'Suppression',
+          text: 'Compte Rendu supprimé avec succès!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
+  }
 }

@@ -27,7 +27,7 @@
                             <!--</div>-->
                             <div class="col-md-6">
                                 <label for="membre" [ngClass]="{'red': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}">Membre</label>
-                                <select [ngClass]="{'fred': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
+                                <select [ngClass]="{'fred': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre" [(ngModel)]="selectedPlanning.id_user">
                                     <option value="" selected disabled hidden>Sélectionner un membre</option>
                                     <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                 </select>
@@ -75,7 +75,7 @@
                             <td class="text-center" *ngIf="authority === 'super_admin'">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="selectedPlanning = plan; operation = 'edit'"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="selectedPlanning = plan;"><i class="fa fa-times"></i></button>
+                                    <button class="btn  btn-danger" (click)="deletePlaning(plan);"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -114,18 +114,18 @@
                 <!--<span style="display: inline-block">données</span>-->
                 <!--</form>-->
                 <!--</div>-->
-                <!--<div class="float-right">-->
-                <!--<ul class="pagination pagination-sm mb-0">-->
-                <!--<li>-->
-                <!--<pagination-controls (pageChange)="p=$event"-->
-                <!--autoHide = "true"-->
-                <!--responsive = "true"-->
-                <!--previousLabel = "Précédent"-->
-                <!--nextLabel = "Suivant">-->
-                <!--</pagination-controls>-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--</div>-->
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide="true"
+                                                 responsive="true"
+                                                 previousLabel="Précédent"
+                                                 nextLabel="Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

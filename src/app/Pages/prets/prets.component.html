@@ -182,7 +182,7 @@
                                 </div>
                             </ng-template>
 
-                            <td class="text-center">{{pret.date_pret}}</td>
+                            <td class="text-center">{{pret.date_pret  | date: 'dd-MM-y'}}</td>
                             <td class="text-left">{{pret.nom}}</td>
                             <td class="text-left">{{pret.montant_prete}} €</td>
                             <td class="text-left">{{pret.taux}} %</td>

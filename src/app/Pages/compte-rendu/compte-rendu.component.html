@@ -4,7 +4,8 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
-                Compte Rendu de la reunion
+
+                {{operation == 'add' ? "Nouveau Compte Rendu de la reunion" : "Modifier Compte Rendu du "+compteRendu.date}}
             </div>
             <div class="card-body">
                 <form class="col-md-12 mx-auto" [formGroup]="crForm">
@@ -12,7 +13,7 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label [ngClass]="{'red': crForm.controls['dat'].invalid && (crForm.controls['dat'].touched)}" for="liste2">Date</label>
-                                <input [ngClass]="{'fred': crForm.controls['dat'].invalid && (crForm.controls['dat'].touched)}" id="liste2" type="date" class="form-control-sm form-control"
+                                <input [ngClass]="{'fred': crForm.controls['dat'].invalid && (crForm.controls['dat'].touched)}" id="liste2" type="date" class="form-control-sm form-control" [(ngModel)]="compteRendu.date"
                                        formControlName="dat"/>
                                 <div style="color: #f65656; font-style: italic;" *ngIf="crForm.controls['dat'].invalid && (crForm.controls['dat'].touched) ">
                                     <span>*</span> Veuillez entrer une date valide
@@ -35,7 +36,7 @@
                                               <!--(paste)="onPaste($event)"-->
                                               <!--(change)="onChange($event)">-->
                                     <!--</ckeditor>-->
-                                <textarea [ngClass]="{'fred': crForm.controls['cp'].invalid && (crForm.controls['cp'].touched)}" for="liste2" name="" class="form-control form-control-sm" id="" cols="30" rows="10" formControlName="cp" placeholder="compte rendu"></textarea>
+                                <textarea [ngClass]="{'fred': crForm.controls['cp'].invalid && (crForm.controls['cp'].touched)}" for="liste2" name="" class="form-control form-control-sm" id="" cols="30" rows="10" formControlName="cp" placeholder="compte rendu" [(ngModel)]="compteRendu.details"></textarea>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="crForm.controls['cp'].invalid && (crForm.controls['cp'].touched) ">
                                         <span>*</span> minimum 20 caractères
                                     </div>
@@ -57,9 +58,10 @@
                     <!--</div>-->
                     <!--</div>-->
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm" (click)="addCR()" [disabled]="crForm.invalid || crForm.pristine">
-                            Enregistrer
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="operation == 'add' ? addCR(): updateCR()" [disabled]="crForm.invalid || crForm.pristine">
+                            {{operation == 'add' ? "Enregistrer" : "Modifier"}}
+                        </button> &nbsp;
+                        <button *ngIf="operation != 'add'" class="btn btn-focus btn-sm" (click)="operation = 'add'; initCR()" >Annuler</button>
                     </div>
                 </form>
                 <!--<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
@@ -95,7 +97,7 @@
                         <div class="p-3">
                             <div class="dropdown-menu nav p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                                 <h6 tabindex="-1" class="pt-0 dropdown-header">Dates</h6>
-                                <a *ngFor="let cr of compteRendus" (click)="onChange2(cr)" href="#tab-faq-{{cr.id_compte_rendu}}"
+                                <a *ngFor="let cr of compteRendus" (click)="onChange2(cr); selectedCompteRendu = cr" href="#tab-faq-{{cr.id_compte_rendu}}"
                                    data-toggle="tab" tabindex="0" class="mb-1 dropdown-item">{{cr.date}}</a>
                             </div>
                         </div>
@@ -109,6 +111,12 @@
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab-faq-{{id}}">
                                     <h4>Ordre du Jour du {{date}}</h4>
+                                    <div class="btn-actions-pane-right" *ngIf="authority === 'super_admin'">
+                                        <div role="group" class="btn-group-sm btn-group">
+                                            <button class=" btn  btn-primary" (click)="operation = 'edit'; compteRendu = selectedCompteRendu"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn  btn-danger" (click)="deleteCompteRendu(selectedCompteRendu)"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
                                     <div class="divider"></div>
                                     <div [innerHTML]="details"></div>
                                 </div>

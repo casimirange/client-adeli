@@ -50,7 +50,7 @@ export class BureauComponent implements OnInit {
     });
   }
 
-  initBureau(){
+  initBureau() {
     this.selectedBureau = new Bureau();
     this.createForm();
   }
@@ -213,14 +213,17 @@ export class BureauComponent implements OnInit {
     );
   }
 
-  updateBureau() {
+  updateBureau(p: Bureau) {
 
     const t = this.bureauForm.value;
-    console.log(t);
+    console.log('yes', p);
     this.selectedBureau = t;
     const Swal = require('sweetalert2');
-    console.log(this.selectedBureau);
-    this.bureauService.updateBureau(this.selectedBureau.id_election).subscribe(
+    console.log(this.selectedBureau.id_election);
+    console.log(this.selectedBureau.id);
+    console.log(this.selectedBureau.tel);
+    console.log('buereau', this.selectedBureau);
+    this.bureauService.updateBureau(p.id, p.id_election, p).subscribe(
         res => {
           this.initBureau();
           this.loadBureau();

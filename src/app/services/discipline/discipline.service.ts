@@ -26,4 +26,12 @@ export class DisciplineService {
   newDiscipline(id: any, info: Discipline): Observable<any> {
     return this.http.post<any>(environment.DISCIPLINE_URL + `?user=${id}`, info, httpOptions);
   }
+
+  putDiscipline(user: any, id: any,  info: Discipline): Observable<any> {
+    return this.http.put<any>(environment.DISCIPLINE_URL + `?user=${user}&id=${id}`, info, httpOptions);
+  }
+
+  deleteDiscipline(id: any): Observable<any> {
+    return this.http.delete<any>(environment.DISCIPLINE_URL + `?id=${id}`, httpOptions);
+  }
 }

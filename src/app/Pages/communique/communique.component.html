@@ -4,7 +4,8 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
-                Nouveau Communiqué
+                <!--Nouveau Communiqué-->
+                {{operation == 'add' ? "Nouveau Communiqué" : "Modifier Communiqué du "+communique.date}}
             </div>
             <div class="card-body">
                 <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="crForm">
@@ -22,7 +23,7 @@
                                               <!--(paste)="onPaste($event)"-->
                                               <!--(change)="onChange($event)">-->
                                     <!--</ckeditor>-->
-                                    <textarea [ngClass]="{'red': crForm.controls['cp'].invalid && (crForm.controls['cp'].touched)}"  name="" class="form-control form-control-sm" id="" cols="30" rows="10" formControlName="cp" placeholder="communiqué"></textarea>
+                                    <textarea [ngClass]="{'red': crForm.controls['cp'].invalid && (crForm.controls['cp'].touched)}"  name="" class="form-control form-control-sm" id="" cols="30" rows="10" formControlName="cp" [(ngModel)]="communique.details"placeholder="communiqué"></textarea>
                                     <!--<div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Champs-->
                                         <!--Obligatoire!-->
                                     <!--</div>-->
@@ -31,9 +32,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm" (click)="addCR()" [disabled]="crForm.invalid || crForm.pristine">
-                            Enregistrer
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="operation == 'add' ? addCR(): updateCommunique()" [disabled]="crForm.invalid || crForm.pristine">
+                            {{operation == 'add' ? "Enregistrer" : "Modifier"}}
+                        </button> &nbsp;
+                        <button *ngIf="operation != 'add'" class="btn btn-focus btn-sm" (click)="operation = 'add'; initCR()" >Annuler</button>
                     </div>
                 </form>
             </div>
@@ -53,8 +55,8 @@
                         <div class="p-3">
                             <div class="dropdown-menu nav p-0 dropdown-menu-inline dropdown-menu-rounded dropdown-menu-hover-primary">
                                 <h6 tabindex="-1" class="pt-0 dropdown-header">Dates</h6>
-                                <a *ngFor="let cr of communiques" (click)="onChange2(cr)" href="#tab-faq-{{cr.id_communique}}"
-                                   data-toggle="tab" tabindex="0" class="mb-1 dropdown-item">{{cr.date}}</a>
+                                <a *ngFor="let cr of communiques" (click)="onChange2(cr); selectedCommunique = cr" href="#tab-faq-{{cr.id_communique}}"
+                                   data-toggle="tab" tabindex="0" class="mb-1 dropdown-item">{{cr.date | date: 'dd-MM-yyyy'}}</a>
                             </div>
                         </div>
                     </div>
@@ -66,7 +68,14 @@
                             </div>
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab-faq-{{id}}">
-                                    <h4>Communiqué du {{date}}</h4>
+                                    <h4>Communiqué du {{date | date: 'dd-MM-yyyy'}}
+                                    </h4>
+                                    <div class="btn-actions-pane-right" *ngIf="authority === 'super_admin' || authority === 'porte parole'">
+                                        <div role="group" class="btn-group-sm btn-group">
+                                            <button class=" btn  btn-primary" (click)="operation = 'edit'; communique = selectedCommunique"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn  btn-danger" (click)="deleteCommunique(selectedCommunique)"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
                                     <div class="divider"></div>
                                     <div [innerHTML]="details"></div>
                                 </div>

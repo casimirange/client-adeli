@@ -5,4 +5,5 @@ export class Planing {
     date?: Date;
     name?: string;
     id?: number;
+    id_user?: number;
 }

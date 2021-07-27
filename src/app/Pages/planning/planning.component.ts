@@ -228,4 +228,40 @@ export class PlanningComponent implements OnInit {
         }
     );
   }
+
+  deletePlaning(tec: Planing){
+    const Swal = require('sweetalert2');
+    Swal.fire({
+      title: 'Suppression',
+      icon: 'error',
+      html: 'Voulez-vous supprimer cette date ' + tec.date + ' du planing de la session?',
+      showCancelButton: true,
+      footer: '<a >Cette action est irréversible</a>',
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: false,
+      showLoaderOnConfirm: true
+    }).then((result) => {
+      if (result.value) {
+        this.planingServices.deletePlaning(tec.id).subscribe(
+            data => { this.Planing(); },
+            error => {
+              console.log('une erreur a été détectée lors de la suppression du planing');
+            },
+            () => {
+              console.log('planing supprimé');
+            }
+        );
+        Swal.fire({
+          title: 'Suppression',
+          text: 'planing supprimé avec succès!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
+  }
 }

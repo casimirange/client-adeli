@@ -3,11 +3,12 @@
  */
 
 export class Discipline {
+    public date?: Date;
+    public name?: string;
+    public type?: string;
+    public sanction?: string;
+    public id_discipline?: number;
+    public id?: number;
 
-    constructor( public date?: Date,
-    public name?: string,
-    public type?: string,
-    public sanction?: string,
-    public id_discipline?: number,
-    ) {}
+    constructor() {}
 }

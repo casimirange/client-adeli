@@ -38,6 +38,10 @@ export class DisciplineComponent implements OnInit {
     this.createForm();
   }
 
+  initDisci() {
+    this.createForm();
+    this.selectedDiscipline = new Discipline();
+  }
   createForm() {
     this.discForm = this.fb.group({
       date: ['', [Validators.required]],
@@ -120,6 +124,20 @@ export class DisciplineComponent implements OnInit {
     );
   }
 
+  // deleteDiscipline() {
+  //   this.disciplineService.deleteDiscipline(this.selectedDiscipline.id_discipline).subscribe(
+  //       data => {
+  //         this.users = data;
+  //       },
+  //       error => {
+  //         console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+  //       },
+  //       () => {
+  //         console.log('chargement des techniciens actifs');
+  //       }
+  //   );
+  // }
+
   addDiscipline() {
     const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
@@ -132,7 +150,7 @@ export class DisciplineComponent implements OnInit {
     console.log('membre', this.selectedDiscipline);
     this.disciplineService.newDiscipline(this.id, this.selectedDiscipline).subscribe(
         res => {
-          // this.initPlan();
+          this.initDisci();
           this.loadDisciplines();
         },
         error => {
@@ -175,5 +193,99 @@ export class DisciplineComponent implements OnInit {
           });
         }
     );
+  }
+
+  updateDiscipline() {
+    const Swal = require('sweetalert2');
+    // this.selectedTontine.name = this.planForm.controls['membre'].value;
+    // this.selectedPlanning.date = this.planForm.controls['date'].value;
+    this.id = this.discForm.controls['membre'].value;
+    this.selectedDiscipline.date = this.discForm.controls['date'].value;
+    this.selectedDiscipline.type = this.discForm.controls['type'].value;
+    this.selectedDiscipline.sanction = this.discForm.controls['sanction'].value;
+    console.log('membre', this.id);
+    console.log('membre', this.selectedDiscipline);
+    this.disciplineService.putDiscipline(this.id, this.selectedDiscipline.id_discipline,this.selectedDiscipline).subscribe(
+        res => {
+          this.initDisci();
+          this.loadDisciplines();
+          this.operation = 'add';
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec de modification',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'modification updated',
+            title: 'Modification réussi!'
+          });
+        }
+    );
+  }
+
+  deleteDiscipline(tec: Discipline){
+    const Swal = require('sweetalert2');
+    Swal.fire({
+      title: 'Suppression',
+      icon: 'error',
+      html: 'Voulez-vous supprimer cette sanction de ' + tec.name.bold() + ' ?',
+      showCancelButton: true,
+      footer: '<a >Cette action est irréversible</a>',
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: false,
+      showLoaderOnConfirm: true
+    }).then((result) => {
+      if (result.value) {
+        this.disciplineService.deleteDiscipline(tec.id_discipline).subscribe(
+            data => { this.loadDisciplines(); },
+            error => {
+              console.log('une erreur a été détectée lors de la suppression de la discipline');
+            },
+            () => {
+              console.log('sanction supprimée');
+            }
+        );
+        Swal.fire({
+          title: 'Suppression',
+          text: 'Sanction supprimée avec succès!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
   }
 }

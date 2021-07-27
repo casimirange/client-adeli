@@ -21,9 +21,11 @@ export class CommuniqueComponent implements OnInit {
   ckeConfig: any;
   mycontent: string;
   log: string = '';
+  operation: string = 'add';
   crForm: FormGroup;
   communiques: Communique[] = [];
   communique: Communique;
+  selectedCommunique: Communique;
   id: number;
   details: string;
   date: Date;
@@ -37,7 +39,7 @@ export class CommuniqueComponent implements OnInit {
               private communiqueService: CommuniqueService) {
     this.mycontent = ``;
     this.createForm();
-    this.communique = new Communique;
+    this.communique = new Communique();
     this.loaders = false;
   }
 
@@ -45,6 +47,11 @@ export class CommuniqueComponent implements OnInit {
     this.crForm = this.fb.group({
       cp: ['', [Validators.required]],
     });
+  }
+
+  initCom(){
+    this.createForm();
+    this.communique = new Communique();
   }
 
   ngOnInit() {
@@ -138,7 +145,8 @@ export class CommuniqueComponent implements OnInit {
 
   initCR() {
     this.communique = new Communique();
-    // this.createForm();
+    this.selectedCommunique = new Communique();
+    this.createForm();
     this.mycontent = '';
   }
 
@@ -174,6 +182,94 @@ export class CommuniqueComponent implements OnInit {
         }
     );
 
+  }
+
+  updateCommunique() {
+    console.log('update', this.selectedCommunique);
+    const Swal = require('sweetalert2');
+    this.selectedCommunique.details = this.crForm.controls['cp'].value;
+    this.communiqueService.putCommunique(this.selectedCommunique.id_communique, this.selectedCommunique).subscribe(
+        res => {
+          this.initCR();
+          this.loadCommunique();
+          this.operation = 'add';
+        },
+        error => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            background: '#f7d3dc',
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: 'error',
+            text: error.error.message,
+            title: 'Echec de modification',
+          });
+        },
+        () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          });
+
+          Toast.fire({
+            icon: 'success',
+            text: 'modification updated',
+            title: 'Modification réussi!'
+          });
+        }
+    );
+  }
+
+  deleteCommunique(tec: Communique){
+    const Swal = require('sweetalert2');
+    Swal.fire({
+      title: 'Suppression',
+      icon: 'error',
+      html: 'Voulez-vous supprimer ce communique du ' + tec.date + ' ?',
+      showCancelButton: true,
+      footer: '<a >Cette action est irréversible</a>',
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: false,
+      showLoaderOnConfirm: true
+    }).then((result) => {
+      if (result.value) {
+        this.communiqueService.deleteCommunique(tec.id_communique).subscribe(
+            data => { this.loadCommunique(); },
+            error => {
+              console.log('une erreur a été détectée lors de la suppression du communiqué');
+            },
+            () => {
+              console.log('communique supprimé');
+            }
+        );
+        Swal.fire({
+          title: 'Suppression',
+          text: 'Communiqué supprimé avec succès!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
   }
 
   loadCommunique() {

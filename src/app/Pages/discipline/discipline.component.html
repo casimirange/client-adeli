@@ -4,7 +4,8 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
-                Nouvelle Sanction
+                {{operation == 'add' ? "Nouvelle Sanction" : "Modifier Sanction"}}
+
             </div>
             <div class="card-body">
                 <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="discForm">
@@ -12,7 +13,7 @@
                         <div class="form-row">
                             <div class="col-md-4">
                                 <label for="date" [ngClass]="{'red': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}">Date</label>
-                                <input [ngClass]="{'fred': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}" id="date" type="date" class="form-control-sm form-control"
+                                <input [ngClass]="{'fred': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}" id="date" type="date" class="form-control-sm form-control" [(ngModel)]="selectedDiscipline.date"
                                        formControlName="date"/>
                                 <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['date'].invalid && (discForm.controls['date'].touched) ">
                                     <span>*</span> Veuillez rentrer une date valide
@@ -20,7 +21,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="membre" [ngClass]="{'red': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}">Membre</label>
-                                <select [ngClass]="{'fred': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
+                                <select [ngClass]="{'fred': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre" [(ngModel)]="selectedDiscipline.id">
                                     <option value="" selected disabled hidden>Sélectionner un membre</option>
                                     <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
                                 </select>
@@ -30,7 +31,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="type" [ngClass]="{'red': discForm.controls['type'].invalid && (discForm.controls['type'].touched)}">Motif</label>
-                                <select [ngClass]="{'fred': discForm.controls['type'].invalid && (discForm.controls['type'].touched)}" name="" id="type" class="form-control form-control-sm" formControlName="type">
+                                <select [ngClass]="{'fred': discForm.controls['type'].invalid && (discForm.controls['type'].touched)}" name="" id="type" class="form-control form-control-sm" formControlName="type" [(ngModel)]="selectedDiscipline.type">
                                     <option value="" selected disabled hidden>Sélectionner un motif</option>
                                     <option *ngFor="let typ of type"  [ngValue]="typ" >
                                         {{typ}}
@@ -44,7 +45,7 @@
                         <div class="form-group">
                             <label for="sanction" [ngClass]="{'red': discForm.controls['sanction'].invalid && (discForm.controls['sanction'].touched)}">Sanction prévue</label>
                             <div>
-                                <textarea rows="2" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="sanction" placeholder="Sanction..."  formControlName="sanction"  [ngClass]="{'fred': discForm.controls['sanction'].invalid && (discForm.controls['sanction'].touched)}"></textarea>
+                                <textarea rows="2" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="sanction" placeholder="Sanction..."  formControlName="sanction"  [ngClass]="{'fred': discForm.controls['sanction'].invalid && (discForm.controls['sanction'].touched)}" [(ngModel)]="selectedDiscipline.sanction"></textarea>
                             </div>
                             <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['sanction'].invalid && (discForm.controls['sanction'].touched) ">
                                 <span>*</span> Minimum 5 caractères sont requis
@@ -52,9 +53,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-sm" (click)="addDiscipline()" [disabled]="discForm.invalid || discForm.pristine" >
-                            Enregistrer
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="operation == 'add' ? addDiscipline(): updateDiscipline()" [disabled]="discForm.invalid || discForm.pristine" >
+                            {{operation == 'add' ? "Enregistrer" : "Modifier"}}
+                        </button> &nbsp;
+                        <button *ngIf="operation != 'add'" class="btn btn-focus btn-sm" (click)="operation = 'add'; initDisci()" >Annuler</button>
+
                     </div>
                 </form>
                 <!--<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
@@ -97,7 +100,7 @@
                             <td class="text-center" *ngIf="authority === 'super_admin' ">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedDiscipline = disc;"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger" (click)="selectedDiscipline = disc;"><i class="fa fa-times"></i></button>
+                                    <button class="btn  btn-danger" (click)="deleteDiscipline(disc)"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
