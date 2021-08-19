@@ -1,4 +1,4 @@
-const url = 'https://adeli-server.herokuapp.com';
+const url = 'https://adeli-serveur.herokuapp.com';
 export const environment = {
   production: true,
   // api_url: 'https://acon-stats-server.herokuapp.com',
