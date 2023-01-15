@@ -1,0 +1,132 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row" *ngIf="authority === 'super_admin' || authority === 'secretaire' || authority === 'porte parole'">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                {{operation == 'add' ? 'Nouveau Planning de Réunion' : 'Modification Planning'}}
+
+            </div>
+            <div class="card-body">
+                <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="planForm">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="date" [ngClass]="{'red': planForm.controls['date'].invalid && (planForm.controls['date'].touched)}">Date</label>
+                                <input [ngClass]="{'fred': planForm.controls['date'].invalid && (planForm.controls['date'].touched)}" id="date" type="date" class="form-control-sm form-control" [(ngModel)]="selectedPlanning.date" formControlName="date"/>
+                                <div style="color: #f65656; font-style: italic;" *ngIf="planForm.controls['date'].invalid && (planForm.controls['date'].touched) ">
+                                    <span>*</span> Veuillez rentrer une date valide
+                                </div>
+                            </div>
+                            <!--<div class="col-md-4">-->
+                                <!--<label for="ev" [ngClass]="{'red': planForm.controls['evenement'].invalid && (planForm.controls['evenement'].touched)}">Evènement</label>-->
+                                <!--<input [ngClass]="{'fred': planForm.controls['evenement'].invalid && (planForm.controls['evenement'].touched)}" id="ev" type="text" class="form-control-sm form-control" formControlName="date"/>-->
+                                <!--<div style="color: #f65656; font-style: italic;" *ngIf="planForm.controls['evenement'].invalid && (planForm.controls['evenement'].touched) ">-->
+                                    <!--<span>*</span> Veuillez saisir l'évènement-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="col-md-6">
+                                <label for="membre" [ngClass]="{'red': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}">Membre</label>
+                                <select [ngClass]="{'fred': planForm.controls['membre'].invalid && (planForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre" [(ngModel)]="selectedPlanning.id_user">
+                                    <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                    <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                </select>
+                                <div style="color: #f65656; font-style: italic;" *ngIf="planForm.controls['membre'].invalid && (planForm.controls['membre'].touched) ">
+                                    <span>*</span> Veuillez sélectionner un membre
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm" (click)="operation == 'add' ? addPlanning() : updatePlanning(selectedPlanning)" [disabled]="planForm.invalid || planForm.pristine">
+                            {{operation == 'add' ? 'Enregistrer' : 'Modifier'}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Calendrier de la session
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Evenement</th>
+                            <th>Réceptionniste</th>
+                            <th class="text-center" *ngIf="authority === 'super_admin'">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="planings.length && loaders == false ">
+                        <tr class="widget-content" *ngFor="let plan of planings | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                            <th scope="row" >{{ plan.date | date: 'dd/MM/yyyy'}}</th>
+                            <td>{{plan.evenement | uppercase}}</td>
+                            <td>{{plan.membre | uppercase}}</td>
+                            <td class="text-center" *ngIf="authority === 'super_admin'">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary" (click)="selectedPlanning = plan; operation = 'edit'"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="deletePlaning(plan);"><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="!planings.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun Planing trouvé !</p>
+                    <div *ngIf="!planings.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <!--<div class="float-left">-->
+                <!--<form [formGroup]="pageForm">-->
+                <!--<span style="display: inline-block">Afficher</span>&nbsp;-->
+                <!--<span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">-->
+
+                <!--<option value="" selected disabled hidden>10</option>-->
+                <!--<option value="10">10</option>-->
+                <!--<option value="25">25</option>-->
+                <!--<option value="50">50</option>-->
+                <!--<option value="100">100</option>-->
+                <!--<option value="1000">1000</option>-->
+                <!--</select></span>&nbsp;-->
+                <!--<span style="display: inline-block">données</span>-->
+                <!--</form>-->
+                <!--</div>-->
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide="true"
+                                                 responsive="true"
+                                                 previousLabel="Précédent"
+                                                 nextLabel="Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,216 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="tabs-animation">
+
+    <div class="row" *ngIf="authority === 'super_admin' || authority === 'senceur' || authority === 'comissaire'">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Nouvelle Amande
+                </div>
+                <div class="card-body">
+                    <div>
+                        <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="discForm">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="dat" [ngClass]="{'red': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}">Date</label>
+                                                <input [ngClass]="{'fred': discForm.controls['date'].invalid && (discForm.controls['date'].touched)}" type="date" id="dat" class="form-control form-control-sm" formControlName="date"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['date'].invalid && (discForm.controls['date'].touched) ">
+                                                    <span>*</span> Veuillez renseigner une date valide
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <label for="membre" [ngClass]="{'red': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}">Membre</label>
+                                    <select [ngClass]="{'fred': discForm.controls['membre'].invalid && (discForm.controls['membre'].touched)}" name="" id="membre" class="form-control form-control-sm" formControlName="membre">
+                                        <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                    </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['membre'].invalid && (discForm.controls['membre'].touched) ">
+                                        <span>*</span> Veuillez sélectionner un membre
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="labels" [ngClass]="{'red': discForm.controls['motif'].invalid && (discForm.controls['motif'].touched)}">Motif</label>
+                                                <input [ngClass]="{'fred': discForm.controls['motif'].invalid && (discForm.controls['motif'].touched)}" type="text" id="labels" class="form-control form-control-sm" placeholder="retard de cotisation"  formControlName="motif"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['motif'].invalid && (discForm.controls['motif'].touched) ">
+                                                    <span>*</span> Motif obligatoire
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="lite" [ngClass]="{'red': discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched)}" >Transaction</label>
+                                                <select [ngClass]="{'fred': discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched)}" id="lite" class="form-control-sm form-control" formControlName="fonction" >
+                                                    <option value="" selected disabled hidden>Sélectionner une transaction</option>
+                                                    <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
+                                                </select>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['fonction'].invalid && (discForm.controls['fonction'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un type de transaction
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <label for="label" [ngClass]="{'red': discForm.controls['montant'].invalid && (discForm.controls['montant'].touched)}">Montant</label>
+                                                <input [ngClass]="{'fred': discForm.controls['montant'].invalid && (discForm.controls['montant'].touched)}" type="text" id="label" class="form-control form-control-sm" placeholder="25 €" formControlName="montant"/>
+                                                <div style="color: #f65656; font-style: italic;" *ngIf="discForm.controls['montant'].invalid && (discForm.controls['montant'].touched) ">
+                                                    <span>*</span> Veuillez renseigner un montant valide
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-sm" (click)="addAmande()" [disabled]="discForm.invalid || discForm.pristine"
+                                >
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
+                <div class="card-header">
+                    Toutes les Amandes
+                    <div class="btn-actions-pane-right">
+                        <div role="group" class="btn-group-sm btn-group">
+                            <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                            <!--<form [formGroup]="searchPanForm">-->
+                                <!--<input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">-->
+                            <!--</form>-->
+                        </div>
+                    </div>
+                    <div class="btn-actions-pane-right">
+                        <div role="group" class="btn-group-sm btn-group">
+                            <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
+                            <!--<form [formGroup]="selectPanForm">-->
+                                <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
+                                    <!--<option value="" selected disabled hidden>Afficher Tout</option>-->
+                                    <!--<option value="tous">Tous les Techniciens</option>-->
+                                    <!--<option value="actifs" >Actifs</option>-->
+                                    <!--<option value="inactifs" >Inactifs</option>-->
+                                <!--</select>-->
+                            <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Date</th>
+                            <th class="text-left">Noms</th>
+                            <th class="text-left">Motif</th>
+                            <th class="text-center">Crédit</th>
+                            <th class="text-center">Débit</th>
+                            <th class="text-center">Solde</th>
+                            <th class="text-center"  *ngIf="authority === 'super_admin'">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="amandes.length && loaders == false ">
+                        <tr *ngFor="let session of amandes | paginate:{itemsPerPage: pages, currentPage:p}; ">
+                            <td class="text-center">{{session.date}}</td>
+                            <td class="text-left">{{session.name}}</td>
+                            <td class="text-left">{{session.motif}}</td>
+                            <td class="text-center">{{session.credit}} €</td>
+                            <td class="text-center">{{session.debit}} €</td>
+                            <td class="text-center">{{session.solde}} €</td>
+                            <td class="text-center" *ngIf="authority === 'super_admin'">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary" (click)="selectedAmande = session;"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedAmande = session;"><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    <p *ngIf="!amandes.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune amande trouvée !</p>
+                    <div *ngIf="!amandes.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-block clearfix card-footer">
+                    <div class="float-left">
+                        <!--<form [formGroup]="pageForm">-->
+                            <!--<span style="display: inline-block">Afficher</span>&nbsp;-->
+                            <!--<span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">-->
+
+                            <!--<option value="" selected disabled hidden>10</option>-->
+                            <!--<option value="10">10</option>-->
+                            <!--<option value="25">25</option>-->
+                            <!--<option value="50">50</option>-->
+                            <!--<option value="100">100</option>-->
+                            <!--<option value="1000">1000</option>-->
+                        <!--</select></span>&nbsp;-->
+                            <!--<span style="display: inline-block">données</span>-->
+                        <!--</form>-->
+                    </div>
+                    <div class="float-right">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li>
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide = "true"
+                                                     responsive = "true"
+                                                     previousLabel = "Précédent"
+                                                     nextLabel = "Suivant">
+                                </pagination-controls>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+

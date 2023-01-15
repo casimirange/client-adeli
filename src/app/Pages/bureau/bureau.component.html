@@ -1,0 +1,135 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-12"  *ngIf="authority === 'super_admin' || authority === 'president'">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                {{operation == 'add' ? 'Nouveau Bureau' : 'Modifier Bureau'}}
+            </div>
+            <div class="card-body">
+                <div>
+                    <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="bureauForm">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <label for="liste" [ngClass]="{'red': bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched)}">Membre</label>
+                                    <select id="liste" class="form-control-sm form-control" formControlName="user"  [(ngModel)]="selectedBureau.id" [ngClass]="{'fred': bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched)}">
+                                        <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                    </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['user'].invalid && (bureauForm.controls['user'].touched) ">
+                                        <span>*</span> selectionner un membre
+                                    </div>
+                                    id: {{selectedBureau.id_election}}
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="lite"  [ngClass]="{'red': bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched)}">Fonction</label>
+                                    <select id="lite" class="form-control-sm form-control" formControlName="fonction"  [(ngModel)]="selectedBureau.fonction" [ngClass]="{'fred': bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched)}">
+                                        <option value="" selected disabled hidden>Sélectionner une fonction</option>
+                                        <option *ngFor="let fon of fonction" [ngValue]="fon"  >{{fon}}</option>
+                                    </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['fonction'].invalid && (bureauForm.controls['fonction'].touched) ">
+                                        <span>*</span> selectionner une fonction
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="montant" [ngClass]="{'red': bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched)}">Montant Cotisation</label>
+                                    <input type="text" placeholder="10 €" id="montant" formControlName="montant" class="form-control-sm form-control" [(ngModel)]="selectedBureau.montant" [ngClass]="{'fred': bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched)}">
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="bureauForm.controls['montant'].invalid && (bureauForm.controls['montant'].touched) ">
+                                        <span>*</span> montant invalide
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm" [disabled]="bureauForm.invalid || bureauForm.pristine"
+                                    (click)="operation == 'add' ? addBureau() : updateBureau(selectedBureau)" >
+                                {{operation == 'add' ? 'Enregistrer' :
+                                operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Presentation du bureau
+                <!--<div class="btn-actions-pane-right">-->
+                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                        <!--<button class="btn btn-focus" (click)="operation = 'add'; initBureau();" > <i class="fa fa-plus-circle"></i>Ajouter</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Membre</th>
+                            <th>Tel</th>
+                            <th>Fonction</th>
+                            <th>Montant</th>
+                            <th>Session</th>
+                            <th *ngIf="authority === 'super_admin' || authority === 'president'">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="bureaux.length && loaders == false ">
+                        <tr class="widget-content" *ngFor="let bureau of bureaux | filter: term | paginate:{itemsPerPage: 7, currentPage:p}">
+                            <td scope="row" >{{ bureau.user | titlecase}}</td>
+                            <td scope="row" >{{ bureau.tel}}</td>
+                            <td class="text-capitalize">{{bureau.fonction }}</td>
+                            <td>{{bureau.montant }} €</td>
+                            <td class="text-capitalize">{{bureau.session | date: 'MMM-yyyy' }}</td>
+                            <td class="text-center" *ngIf="authority === 'super_admin' || authority === 'president'">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <!--<button class=" btn  btn-primary" (click)="operation = 'edit'; selectedBureau = bureau;"><i class="fa fa-pencil"></i></button>-->
+                                    <button class="btn  btn-danger" (click)="swl(bureau)"><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="!bureaux.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Liste membres du bureau vide !</p>
+                    <div *ngIf="!bureaux.length && loaders == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide="true"
+                                                 responsive="true"
+                                                 previousLabel=""
+                                                 nextLabel="">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

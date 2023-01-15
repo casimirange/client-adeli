@@ -1,0 +1,248 @@
+<app-page-title id="heads" [heading]="noms | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
+" [bg]="bg"></app-page-title>
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Information utilisateur
+            </div>
+            <div class="table-responsive">
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                    <tbody>
+                    <tr style="cursor: pointer">
+                        <td class="text-center"><b>Nom: </b>{{ noms | uppercase}}</td>
+                        <td class="text-center"><b>Tel: </b> {{selectedUser.tel}}</td>
+                        <td class="text-center"><b>Email: </b>{{selectedUser.email}}</td>
+                        <td class="text-center"><b>Fonction: </b>{{selectedUser.role}}</td>
+                        <td class="text-center"><b>Email: </b>{{selectedUser.etat == true ? 'Actif' : 'Inactif'}}</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Ses cotisations
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Entrée</th>
+                            <th>Sortie</th>
+                            <th>Motif</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="tontines.length && loade == false ">
+                        <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
+                            <th scope="row" >{{ tontine.date | date: 'dd-MM-yyyy'}}</th>
+                            <td>{{tontine.debit}} €</td>
+                            <td class="text-capitalize">{{tontine.credit}} €</td>
+                            <!--<td class="text-capitalize">{{tontine.montant}} €</td>-->
+                            <td class="text-capitalize">{{tontine.motif}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="!tontines.length && loade == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucune cotisation enregistrée !</p>
+                    <div *ngIf="!tontines.length && loade == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Ses prêts
+            </div>
+            <div class="table-responsive">
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                    <thead>
+                    <tr>
+                        <th class="text-left">Date</th>
+                        <th class="text-left">Prêt</th>
+                        <th class="text-left">Taux</th>
+                        <th class="text-left">A Rembourser</th>
+                        <th class="text-left">Date Remb.</th>
+                        <!--<th class="text-center">Montant Remboursé</th>-->
+                        <!--<th class="text-center" *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">Actions</th>-->
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="prets.length && loaders == false ">
+                    <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''">
+                        <td class="text-left">{{pret.date_pret}}</td>
+                        <td class="text-left">{{pret.montant_prete}} €</td>
+                        <td class="text-left">{{pret.taux}} %</td>
+                        <td class="text-left">{{(pret.taux * pret.montant_prete)/100 + pret.montant_prete}} €</td>
+                        <td class="text-left">{{pret.date_remboursement}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <p *ngIf="!prets.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun Prêt trouvé !</p>
+                <div *ngIf="!prets.length && loaders == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <!--<form [formGroup]="pageForm">-->
+                    <!--<span style="display: inline-block">Afficher</span>&nbsp;-->
+                    <!--<span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">-->
+
+                    <!--<option value="" selected disabled hidden>10</option>-->
+                    <!--<option value="10">10</option>-->
+                    <!--<option value="25">25</option>-->
+                    <!--<option value="50">50</option>-->
+                    <!--<option value="100">100</option>-->
+                    <!--<option value="1000">1000</option>-->
+                    <!--</select></span>&nbsp;-->
+                    <!--<span style="display: inline-block">données</span>-->
+                    <!--</form>-->
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="main-card mb-3 card">
+                <div class="card-header">
+                    Ses amandes
+                </div>
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Date</th>
+                            <th class="text-left">Motif</th>
+                            <th class="text-center">Crédit</th>
+                            <th class="text-center">Débit</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="amandes.length && loadeAmande == false ">
+                        <tr *ngFor="let session of amandes | paginate:{itemsPerPage: pages, currentPage:p}; ">
+                            <td class="text-center">{{session.date}}</td>
+                            <td class="text-left">{{session.motif}}</td>
+                            <td class="text-center">{{session.credit}} €</td>
+                            <td class="text-center">{{session.debit}} €</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    <p *ngIf="!amandes.length && loadeAmande == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune amande trouvée !</p>
+                    <div *ngIf="!amandes.length && loadeAmande == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="main-card mb-3 card">
+                <div class="card-header">
+                    discipline
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive" >
+                        <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Faute</th>
+                                <th>Sanction</th>
+                            </tr>
+                            </thead>
+                            <tbody *ngIf="disciplines.length && loadeDiscipline == false ">
+                            <tr class="widget-content" *ngFor="let disc of disciplines | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                                <th scope="row" >{{ disc.date | date: 'dd/MM/yyyy'}}</th>
+                                <!--<td>{{disc.name | uppercase}}</td>-->
+                                <td> <div [ngClass]="disc.type == 'retard' ? 'badge badge-warning' : 'badge badge-danger'">
+                                    {{disc.type}}
+                                </div>
+                                </td>
+                                <td>
+                                    {{disc.sanction}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p *ngIf="!disciplines.length && loadeDiscipline == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun élément trouvé !</p>
+                        <div *ngIf="!disciplines.length && loadeDiscipline == true" class="text-center">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="ball-scale-multiple">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

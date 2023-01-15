@@ -1,0 +1,274 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'" class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Nouvelle Cotisation
+            </div>
+            <div class="card-body">
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-12 mx-auto" [formGroup]="techForm">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <label [ngClass]="{'red': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" for="liste" class="">Membre</label>
+                                    <select [ngClass]="{'fred': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" id="liste" class="form-control-sm form-control" formControlName="membre"  >
+                                        <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                    </select>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['membre'].invalid && (techForm.controls['membre'].touched) ">
+                                        <span>*</span> veuillez sélectionner un membre
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm" (click)="addTontine()" [disabled]="techForm.invalid || techForm.pristine"
+                                     >
+                                <!--{{operation == 'add' ? 'Enregistrer' :-->
+                                <!--operation == 'edit' ? 'Modifier ' : ''}}-->
+                                Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Liste des Bénéficiaires
+                <div class="btn-actions-pane-right"  *ngIf="authority === 'super_admin' || authority === 'president' || authority === 'comissaire'">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-primary" (click)="open(mymodal)">Nouveau</button>
+                        <ng-template #mymodal let-modal >
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Nouveau Bénéficiaire</b></h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                    <span class="timeline-title"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="scroll-area-md">
+                                    <div class="scrollbar-container">
+                                        <form class="col-md-10 mx-auto" [formGroup]="rembForm">
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <div class="position-relative">
+                                                        <label [ngClass]="{'red': rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched)}" for="mem" class="">Membre</label>
+                                                        <select [ngClass]="{'fred': rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched)}" id="mem" class="form-control-sm form-control" formControlName="membres"  >
+                                                            <option value="" selected disabled hidden>Sélectionner un membre</option>
+                                                            <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>
+                                                        </select>
+
+                                                        <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['membres'].invalid && (rembForm.controls['membres'].touched) ">
+                                                            <span>*</span> entrez une date valide
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <div class="position-relative">
+                                                        <label [ngClass]="{'red': rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched)}" for="" class="">Montant Bouffé</label>
+                                                        <input [ngClass]="{'fred': rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched)}" type="text" class="form-control form-control-sm" placeholder="200 €" formControlName="mont" />
+                                                        <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched) ">
+                                                            <span>*</span> montant invalide!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-sm" (click)="bouffer()" [disabled]="rembForm.invalid || rembForm.pristine">
+                                                    Enregistrer
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-block clearfix card-footer ">
+                                <div class="float-left">
+
+                                </div>
+                                <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                                        <!--<button class=" btn  btn-primary" (click)="modal.close('save click')">Rembourser</button>-->
+                                        <!--&lt;!&ndash;<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>&ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Membre</th>
+                            <th>Montant</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="beneficiaires.length && loader == false ">
+                        <tr class="widget-content" *ngFor="let benef of beneficiaires">
+                        <th scope="row" >{{ benef.date | date: 'dd-MM-yyyy'}}</th>
+                        <td>{{benef.nom | titlecase}}</td>
+                        <td class="text-capitalize">{{benef.montant}} €</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="!beneficiaires.length && loader == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucun bénéficiaire pour cette session !</p>
+                    <div *ngIf="!beneficiaires.length && loader == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Historique de la tontine
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <!--<form [formGroup]="selectPanForm">-->
+                            <!--&lt;!&ndash;<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">&ndash;&gt;-->
+
+                            <!--<select class="form-control-sm form-control"   [(ngModel)]="selectedSessions.id_session">-->
+                                <!--<option value="" selected disabled hidden>Filtrer par session</option>-->
+                                <!--<option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>-->
+                            <!--</select>-->
+                        <!--</form>-->
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <!--<div role="group" class="btn-group-sm btn-group">-->
+                        <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
+                        <!--<button class="btn btn-secondary float-right" (click)="operation = 'add'; ">-->
+                            <!--<i class="fa fa-plus-circle"></i>-->
+                            <!--Nouvelle Cotisation-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Entrée</th>
+                            <th>Sortie</th>
+                            <th>Solde</th>
+                            <th>Motif</th>
+                            <th>Membre</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="tontines.length && loade == false ">
+                        <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
+                            <th scope="row" >{{ tontine.date | date: 'dd-MM-yyyy'}}</th>
+                            <td>{{tontine.debit}} €</td>
+                            <td class="text-capitalize">{{tontine.credit}} €</td>
+                            <td class="text-capitalize">{{tontine.montant}} €</td>
+                            <td class="text-capitalize">{{tontine.motif}}</td>
+                            <td class="text-capitalize">{{tontine.name}}</td>
+                            <!--<td> <div [ngClass]="tech.etat == true ? 'badge badge-success' : 'badge badge-focus'">-->
+                                <!--{{tech.etat == true ? 'En Service' : 'Hors Service'}}-->
+                            <!--</div>-->
+                            <!--</td>-->
+                            <td class="text-center">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedTontine = tontine;"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="selectedTontine = tontine; " ><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p *ngIf="!tontines.length && loade == false" style="color: grey; font-size: 1.5rem;"
+                       class="text-center">Aucune cotisation enregistrée pour cette session !</p>
+                    <div *ngIf="!tontines.length && loade == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center"
+                                 style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
