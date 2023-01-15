@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 const url = 'http://ServeurADELI-0.0.1-SNAPSHOT:8080';
-=======
-const url = 'https://adeli-serveur.herokuapp.com';
->>>>>>> 9ea166a4db4c72e9402f9b3deb65e47a2b687839
+// const url = 'https://adeli-serveur.herokuapp.com';
 export const environment = {
   production: true,
   // api_url: 'https://acon-stats-server.herokuapp.com',
