@@ -3,9 +3,7 @@
 # compiled output
 <<<<<<< HEAD
 #/dist
-=======
-/dist
->>>>>>> 9ea166a4db4c72e9402f9b3deb65e47a2b687839
+
 /tmp
 /out-tsc
 # Only exists if Bazel was run
