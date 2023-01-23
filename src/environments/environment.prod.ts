@@ -1,5 +1,5 @@
 
-const url = 'http://localhost:8080/ServeurADELI-0.0.1-SNAPSHOT';
+const url = 'http://141.94.17.128:8080/ServeurADELI-0.0.1-SNAPSHOT';
 // const url = 'https://adeli-serveur.herokuapp.com';
 export const environment = {
   production: true,
