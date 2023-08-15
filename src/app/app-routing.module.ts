@@ -57,54 +57,22 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent
   },
-  // {
-  //   path: 'user',
-  //   component: UserComponent
-  // },
-  // {
-  //   path: 'pm',
-  //   component: PmComponent
-  // },
-  // {
-  //   path: 'admin',
-  //   component: AdminComponent
-  // },
   {
-    path: 'auth/login',
-    component: LoginComponent
-  },
-  {
-    path: 'chart',
-    component: RadialBarComponent
+    path: 'auth/login',  loadChildren: () => import('./logins/login.module').then(m => m.LoginModule)
+
   },
   {
     path: 'signup',
     component: RegisterComponent
   },
-
-
   {
     path: '',
     component: BaseLayoutComponent,
     canActivate:[AuthGuardService],
     children: [
 
-  {path: 'departements', canActivate:[AuthGuardService], component: DepartementsComponent },
-  // {path: 'homes', component: HomeComponent, canActivate:[AuthGuardService] },
-  {path: 'departements/:id', canActivate:[AuthGuardService], component: SingleDepartementComponent },
-  {path: 'lignes', canActivate:[AuthGuardService], component: LignesComponent },
-  // {path: 'lignes/:id', canActivate:[AuthGuardService], component: SingleLigneComponent },
-  {path: 'techniciens', canActivate:[AuthGuardService], component: TechniciensComponent },
-  // {path: 'techniciens/:id', canActivate:[AuthGuardService], component: SingleTechnicienComponent },
-  {path: 'operateurs', canActivate:[AuthGuardService], component: OperateursComponent },
-  // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
-  {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
-  {path: 'machines/:id', canActivate:[AuthGuardService], component: UseComponentComponent },
   {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuardService] },
-  {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
-  {path: 'arrets', canActivate:[AuthGuardService], component: ArretsComponent },
   {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent },
-  // {path: 'statistiques/alpicam', canActivate:[AuthGuardService], component: StatsGlobalComponent }
   {path: 'cotisations', canActivate:[AuthGuardService], component: CotisationComponent },
   {path: 'mangwa', canActivate:[AuthGuardService], component: MangwaComponent },
   {path: 'prêts', canActivate:[AuthGuardService], component: PretsComponent },
@@ -129,18 +97,6 @@ const routes: Routes = [
   // {path: 'logins', component: LoginComponent },
   {path: 'erreur', component: Erreur404Component }
 
-    ]
-  },
-  {
-    path: '',
-    component: PaddingLayoutComponent,
-    canActivate:[AuthGuardService],
-    children: [
-
-  {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent },
-  {path: 'new-panne/:numero', canActivate:[AuthGuardService], component: SinglePanneComponent },
-  {path: 'pannes/panne/edit/:numero', canActivate:[AuthGuardService], component: EditPanneComponent },
-  {path: 'tempsMachine', canActivate:[AuthGuardService], component: HeuresMachinesComponent },
     ]
   },
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},

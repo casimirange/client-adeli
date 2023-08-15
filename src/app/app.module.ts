@@ -75,7 +75,7 @@ import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {TokenStorageService} from "./services/auth/token storage/token-storage.service";
 import {AdminComponent} from "./admin/admin.component";
 import {PmComponent} from "./pm/pm.component";
-import {LoginComponent} from "./logins/logins.component";
+// import {LoginComponent} from "./logins/logins.component";
 import {HomeComponent} from "./home/home.component";
 import {RegisterComponent} from "./register/register.component";
 import {UserComponent} from "./users/user.component";
@@ -161,7 +161,7 @@ import { UseComponentComponent } from './Pages/use-component/use-component.compo
     StatsGlobalComponent,
     DoughnutChartComponent,
     // RegisterComponent,
-    LoginComponent,
+
     UserComponent,
     RegisterComponent,
     HomeComponent,
