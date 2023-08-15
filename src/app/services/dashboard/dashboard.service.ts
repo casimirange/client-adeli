@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {API_URLS} from "../../configs/api.url.configs";
+// import {API_URLS} from "../../configs/api.url.configs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 

@@ -9,7 +9,7 @@ import {Bureau} from "../../Models/bureau";
 import {BureauService} from "../../services/bureau/bureau.service";
 import {UserService} from "../../services/user/user.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-bureau',
   templateUrl: './bureau.component.html',
@@ -58,7 +58,7 @@ export class BureauComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -103,10 +103,10 @@ export class BureauComponent implements OnInit {
           this.sessions = data
         },
         error => {
-          console.log('une erreur a été détectée au chargement des sessions!')
+          // // console.log('une erreur a été détectée au chargement des sessions!')
         },
         () => {
-          console.log('chargement des sessions', this.sessions);
+          // // console.log('chargement des sessions', this.sessions);
         }
     );
   }
@@ -118,11 +118,11 @@ export class BureauComponent implements OnInit {
           this.bureaux = data;
         },
         error => {
-          console.log('erreur chargement bureaux');
+          // console.log('erreur chargement bureaux');
           this.loaders = false;
         },
         () => {
-          console.log('chargement des bureaux', this.bureaux);
+          // console.log('chargement des bureaux', this.bureaux);
           this.loaders = false;
         }
     );
@@ -134,10 +134,10 @@ export class BureauComponent implements OnInit {
           this.users = data
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!')
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!')
         },
         () => {
-          console.log('chargement des users', this.users);
+          // console.log('chargement des users', this.users);
         }
     );
   }
@@ -145,10 +145,10 @@ export class BureauComponent implements OnInit {
   addBureau() {
 
     const t = this.bureauForm.value;
-    console.log(t);
+    // console.log(t);
     this.selectedBureau = t;
-    const Swal = require('sweetalert2');
-    console.log(this.selectedBureau);
+    // const Swal = require('sweetalert2');
+    // console.log(this.selectedBureau);
     this.bureauService.addBureau(this.selectedBureau).subscribe(
         res => {
           this.initBureau();
@@ -216,13 +216,13 @@ export class BureauComponent implements OnInit {
   updateBureau(p: Bureau) {
 
     const t = this.bureauForm.value;
-    console.log('yes', p);
+    // console.log('yes', p);
     this.selectedBureau = t;
-    const Swal = require('sweetalert2');
-    console.log(this.selectedBureau.id_election);
-    console.log(this.selectedBureau.id);
-    console.log(this.selectedBureau.tel);
-    console.log('buereau', this.selectedBureau);
+    // const Swal = require('sweetalert2');
+    // console.log(this.selectedBureau.id_election);
+    // console.log(this.selectedBureau.id);
+    // console.log(this.selectedBureau.tel);
+    // console.log('buereau', this.selectedBureau);
     this.bureauService.updateBureau(p.id, p.id_election, p).subscribe(
         res => {
           this.initBureau();
@@ -288,7 +288,7 @@ export class BureauComponent implements OnInit {
   }
 
   swl(pan: Bureau){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     var content = document.createElement('div');
     content.innerHTML = 'Voulez-vous vraiment supprimer <strong>' + pan.user.toString() + '</strong> ?';
     Swal.fire({
@@ -314,7 +314,7 @@ export class BureauComponent implements OnInit {
       if (result.value) {
         this.bureauService.deletePannes(pan.id_election).subscribe(
             res => {
-              console.log('panne supprimée')
+              // console.log('panne supprimée')
               this.modalService.dismissAll();
               this.loadBureau();
             }

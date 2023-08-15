@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {API_URLS} from "../../configs/api.url.configs";
+// import {API_URLS} from "../../configs/api.url.configs";
 import { CookieService } from 'ngx-cookie-service';
 
 import 'rxjs';

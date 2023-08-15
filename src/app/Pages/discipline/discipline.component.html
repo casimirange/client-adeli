@@ -87,7 +87,7 @@
                         </tr>
                         </thead>
                         <tbody *ngIf="disciplines.length && loaders == false ">
-                        <tr class="widget-content" *ngFor="let disc of disciplines | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                        <tr class="widget-content" *ngFor="let disc of disciplines | paginate:{id: 'discipline', itemsPerPage: 7, currentPage:p}; ">
                             <th scope="row" >{{ disc.date | date: 'dd-MM-yyyy'}}</th>
                             <td>{{disc.name | uppercase}}</td>
                             <td> <div [ngClass]="disc.type == 'retard' ? 'badge badge-warning' : 'badge badge-danger'">
@@ -143,6 +143,7 @@
                     <ul class="pagination pagination-sm mb-0">
                         <li>
                             <pagination-controls (pageChange)="p=$event"
+                                                 id="discipline"
                                                  autoHide = "true"
                                                  responsive = "true"
                                                  previousLabel = "Précédent"

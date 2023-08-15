@@ -4,7 +4,7 @@ import {TokenStorageService} from "../../auth/token-storage.service";
 import {SessionService} from "../../services/session/session.service";
 import {Sessions} from "../../Models/Sessions";
 import {Location} from "@angular/common";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-session',
   templateUrl: './session.component.html',
@@ -59,7 +59,7 @@ export class SessionComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       var content = document.createElement('div');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
@@ -230,7 +230,7 @@ export class SessionComponent implements OnInit {
     this.selectedSession.retenue = this.sessForm.controls['mangwa'].value;
     this.selectedSession.taux = this.sessForm.controls['taux'].value;
     this.selectedSession.participants = this.sessForm.controls['membres'].value;
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     console.log(this.selectedSession);
     this.sessionServices.newSession(this.selectedSession).subscribe(
         res => {
@@ -291,7 +291,7 @@ export class SessionComponent implements OnInit {
   }
 
   swl(tec: Sessions){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Clôture de Session',
       html: "Voulez-vous fermer la session de "+ tec.debut+" ?",
@@ -304,8 +304,6 @@ export class SessionComponent implements OnInit {
       allowOutsideClick: true,
       focusConfirm: false,
       focusCancel: false,
-      focusDeny: true,
-      footerTemplate: 'Attention! cette action est irréversible',
       showLoaderOnConfirm: true
     }).then((result) => {
       if (result.value) {

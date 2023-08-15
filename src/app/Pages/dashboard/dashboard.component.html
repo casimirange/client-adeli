@@ -18,7 +18,7 @@ authority === 'porte_parole'
                     <div class="widget-subheading">Solde Tontine</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-danger"><span>{{soldeTontine}} €</span></div>
+                    <div class="widget-numbers text-danger"><span>{{soldeTontine | number: '1.2-2'}} €</span></div>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@ authority === 'porte_parole'
                     <div class="widget-subheading">Solde Mangwa</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-success"><span>{{soldeMangwa}} €</span></div>
+                    <div class="widget-numbers text-success"><span>{{soldeMangwa | number: '1.2-2'}} €</span></div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@ authority === 'porte_parole'
                     <div class="widget-subheading">Solde Amandes</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-primary"><span>{{soldeAmande}} €</span></div>
+                    <div class="widget-numbers text-primary"><span>{{soldeAmande | number: '1.2-2'}} €</span></div>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@ authority === 'porte_parole'
                     <div class="widget-subheading">Total en caisse</div>
                 </div>
                 <div class="widget-content-right">
-                    <div class="widget-numbers text-warning"><span>{{soldeTontine + soldeMangwa + soldeAmande}} €</span></div>
+                    <div class="widget-numbers text-warning"><span>{{(soldeTontine + soldeMangwa + soldeAmande) | number: '1.2-2'}} €</span></div>
                 </div>
             </div>
         </div>
@@ -75,51 +75,51 @@ authority === 'membre' ||
 authority === 'senceur' ||
 authority === 'porte_parole'
 ">
-    <div class="row">
-        <div class="col-md-12 col-lg-12 col-xl-12">
-            <div class="main-card mb-3 card">
-                <div class="rm-border card-header">
-                    <div>
-                        <h5 class="menu-header-title text-capitalize text-secondary">Evolution des Membres et cotisations par session</h5>
-                    </div>
+<!--    <div class="row">-->
+<!--        <div class="col-md-12 col-lg-12 col-xl-12">-->
+<!--            <div class="main-card mb-3 card">-->
+<!--                <div class="rm-border card-header">-->
+<!--                    <div>-->
+<!--                        <h5 class="menu-header-title text-capitalize text-secondary">Evolution des Membres et cotisations par session</h5>-->
+<!--                    </div>-->
 
-                </div>
-                <div class="card-body p-2" *ngIf="(datas.labels && dah != 0) && loaders == false ">
-                    <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 testss">
-                        <div style="height: auto">
-                            <div class="flex-item">
-                                <div style="display: block; height: auto;">
-                                    <app-chart
-                                            [type]="'line'"
-                                            [data]="datas.datasets"
-                                            [lineChartLabels]="datas.labels"
-                                    ></app-chart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == false ">
-                    <p class="text-center" style="color: grey; font-size: 1.8em">Aucune donnée disponible!</p>
-                </div>
-                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == true ">
-                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
-                        <div class="loader-wrapper d-flex justify-content-center align-items-center"
-                             style="vertical-align: middle;">
-                            <div class="loader">
-                                <div class="ball-scale-multiple">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="vertical-align: middle">Chargement...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--                </div>-->
+<!--                <div class="card-body p-2" *ngIf="(datas.labels && dah != 0) && loaders == false ">-->
+<!--                    <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 testss">-->
+<!--                        <div style="height: auto">-->
+<!--                            <div class="flex-item">-->
+<!--                                <div style="display: block; height: auto;">-->
+<!--                                    <app-chart-->
+<!--                                            [type]="'line'"-->
+<!--                                            [data]="datas.datasets"-->
+<!--                                            [lineChartLabels]="datas.labels"-->
+<!--                                    ></app-chart>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == false ">-->
+<!--                    <p class="text-center" style="color: grey; font-size: 1.8em">Aucune donnée disponible!</p>-->
+<!--                </div>-->
+<!--                <div class="card-body p-2 text-center" *ngIf="(!datas.labels || dah == 0)&& loaders == true ">-->
+<!--                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">-->
+<!--                        <div class="loader-wrapper d-flex justify-content-center align-items-center"-->
+<!--                             style="vertical-align: middle;">-->
+<!--                            <div class="loader">-->
+<!--                                <div class="ball-scale-multiple">-->
+<!--                                    <div></div>-->
+<!--                                    <div></div>-->
+<!--                                    <div></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <p style="vertical-align: middle">Chargement...</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="row">
         <div class="col-md-5">
@@ -139,7 +139,7 @@ authority === 'porte_parole'
                         </thead>
                         <tbody *ngIf="planings.length && loade == false ">
                         <tr style="cursor: pointer"
-                            *ngFor="let planing of planings | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; ">
+                            *ngFor="let planing of planings | filter: term | paginate:{id: 'plan', itemsPerPage: pages, currentPage:p}; ">
                             <td class="text-center text-muted">{{ planing.date | date: 'dd/MM/y'}}</td>
                             <td class="text-left text-muted">{{ planing.evenement}}</td>
                             <td class="text-left text-muted">{{ planing.membre}}</td>
@@ -172,6 +172,7 @@ authority === 'porte_parole'
                         <ul class="pagination pagination-sm mb-0">
                             <li>
                                 <pagination-controls (pageChange)="p=$event"
+                                                     id="plan"
                                                      autoHide="true"
                                                      responsive="true"
                                                      previousLabel=""

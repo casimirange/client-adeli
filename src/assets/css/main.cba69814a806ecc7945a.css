@@ -11224,7 +11224,7 @@ a, button, .btn {
 .app-header__logo .logo-src {
     height: 46px;
     width: 201px;
-    background: url(/assets/images/Fichier1.png)
+    background-image: url("../images/Fichier1.png");
 }
 
 .app-header__menu, .app-header__mobile-menu {
@@ -20856,7 +20856,7 @@ legend {
 .app-logo-inverse {
     height: 23px;
     width: 97px;
-    background: url(/assets/images/logo25.png)
+    /*background: url(/assets/images/logo25.png)*/
 }
 
 .app-login-box .app-logo {

@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CompteRenduService} from "../../services/compte_rendu/compte-rendu.service";
 import {CompteRendu} from "../../Models/cr";
 import {TokenStorageService} from "../../auth/token-storage.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-compte-rendu',
   templateUrl: './compte-rendu.component.html',
@@ -58,7 +58,7 @@ export class CompteRenduComponent implements OnInit {
 
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -96,7 +96,7 @@ export class CompteRenduComponent implements OnInit {
   }
 
   onChange($event: any): void {
-    console.log("onChange");
+    // console.log("onChange");
     //this.log += new Date() + "<br />";
   }
 
@@ -108,13 +108,13 @@ export class CompteRenduComponent implements OnInit {
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
+    // console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
 
   swl(tec: any){
-    const Swal = require('sweetalert2');
-    console.log('voici le CR:', this.mycontent);
+    // const Swal = require('sweetalert2');
+    // console.log('voici le CR:', this.mycontent);
     Swal.fire({
       title: 'test',
       html:  tec,
@@ -128,7 +128,7 @@ export class CompteRenduComponent implements OnInit {
       allowOutsideClick: true,
       focusConfirm: false,
       focusCancel: false,
-      focusDeny: true,
+
       showLoaderOnConfirm: true
     }).then((result) => {
       if (result.value) {
@@ -149,8 +149,8 @@ export class CompteRenduComponent implements OnInit {
   addCR() {
     const t = this.crForm.value;
 
-    console.log('date', this.crForm.controls['dat'].value);
-    console.log('msg', this.crForm.controls['cp'].value);
+    // console.log('date', this.crForm.controls['dat'].value);
+    // console.log('msg', this.crForm.controls['cp'].value);
 
 
     this.compteRendu.date = this.crForm.controls['dat'].value;
@@ -158,7 +158,7 @@ export class CompteRenduComponent implements OnInit {
 
     // if(this.mycontent == ''){
     //   const Swal = require('sweetalert2');
-    //   console.log('voici le CR:', this.crForm.controls['cp'].value);
+    //   // console.log('voici le CR:', this.crForm.controls['cp'].value);
     //   Swal.fire({
     //     title: 'Attention',
     //     icon:'warning' ,
@@ -188,19 +188,19 @@ export class CompteRenduComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur de chargement des Comptes rendus!');
+          // console.log('une erreur de chargement des Comptes rendus!');
           this.loaders = false;
         },
         () => {
-          console.log('chargement des comptes rendus', this.compteRendus);
+          // console.log('chargement des comptes rendus', this.compteRendus);
           this.loaders = false;
         }
     );
   }
 
   updateCR() {
-    console.log('update', this.selectedCompteRendu);
-    const Swal = require('sweetalert2');
+    // console.log('update', this.selectedCompteRendu);
+    // const Swal = require('sweetalert2');
     this.selectedCompteRendu.details = this.crForm.controls['cp'].value;
     this.compteRenduservice.putCompteRendu(this.selectedCompteRendu.id_compte_rendu, this.selectedCompteRendu).subscribe(
         res => {
@@ -251,7 +251,7 @@ export class CompteRenduComponent implements OnInit {
   }
 
   deleteCompteRendu(tec: CompteRendu){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Suppression',
       icon: 'error',
@@ -269,10 +269,10 @@ export class CompteRenduComponent implements OnInit {
         this.compteRenduservice.deleteCompteRendu(tec.id_compte_rendu).subscribe(
             data => { this.loadCR(); },
             error => {
-              console.log('une erreur a été détectée lors de la suppression du compte rendu');
+              // console.log('une erreur a été détectée lors de la suppression du compte rendu');
             },
             () => {
-              console.log('compte rendu supprimé');
+              // console.log('compte rendu supprimé');
             }
         );
         Swal.fire({

@@ -3,10 +3,9 @@ import {Store} from "@ngrx/store";
 // import {PrincipalState} from "../../Models/principal.state";
 // import {Principal} from "../../Models/principal";
 import {TokenStorageService} from "../../auth/token-storage.service";
-import {Departement} from "../../Models/departement";
 import {DepartementsService} from "../../services/departements/departements.service";
 import {Router} from "@angular/router";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -16,7 +15,6 @@ export class SidebarComponent implements OnInit {
 
   private roles: string[];
   public authority: string;
-  departement: Departement[];
 
   constructor(private tokenStorage: TokenStorageService,
               private departementService: DepartementsService,private router: Router ) { }
@@ -24,7 +22,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
     this.roles = this.tokenStorage.getAuthorities();
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     this.roles.every(role => {
       if (role === 'ROLE_TRESORIER') {
         this.authority = 'tresorier';

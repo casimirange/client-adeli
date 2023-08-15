@@ -99,10 +99,10 @@ export class HeaderComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }

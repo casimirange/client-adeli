@@ -14,7 +14,7 @@ import {BeneficiaireService} from "../../services/beneficiaire/beneficiaire.serv
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-cotisation',
   templateUrl: './cotisation.component.html',
@@ -103,7 +103,7 @@ export class CotisationComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -159,10 +159,10 @@ export class CotisationComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur a été détectée au chargement des sessions!')
+          // console.log('une erreur a été détectée au chargement des sessions!')
         },
         () => {
-          console.log('chargement des sessions', this.sessions);
+          // console.log('chargement des sessions', this.sessions);
         }
     );
   }
@@ -175,11 +175,11 @@ export class CotisationComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur tontine active');
+          // console.log('une erreur tontine active');
           this.loade = false;
         },
         () => {
-          console.log('chargement tontine active', this.tontines);
+          // console.log('chargement tontine active', this.tontines);
           this.loade = false;
         }
     );
@@ -192,11 +192,11 @@ export class CotisationComponent implements OnInit {
           this.beneficiaires = data;
         },
         error => {
-          console.log('une erreur chargement des bénéficiaires!')
+          // console.log('une erreur chargement des bénéficiaires!')
           this.loader = false;
         },
         () => {
-          console.log('chargement des bénéficiaires', this.beneficiaires);
+          // console.log('chargement des bénéficiaires', this.beneficiaires);
           this.loader = false;
         }
     );
@@ -209,10 +209,10 @@ export class CotisationComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!')
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!')
         },
         () => {
-          console.log('chargement des utilisateurs', this.users);
+          // console.log('chargement des utilisateurs', this.users);
         }
     );
   }
@@ -236,11 +236,11 @@ export class CotisationComponent implements OnInit {
   }
 
   addTontine() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.techForm.controls['membre'].value;
-    console.log('membre', this.id);
+    // console.log('membre', this.id);
     this.tontineService.newCotisation(this.id, this.techForm.controls['date'].value).subscribe(
         res => {
           // this.initPlan();
@@ -289,14 +289,14 @@ export class CotisationComponent implements OnInit {
   }
 
   bouffer(){
-    // console.log('remboursé ', p.nom);
-    const Swal = require('sweetalert2');
+    // // console.log('remboursé ', p.nom);
+    // const Swal = require('sweetalert2');
     this.selectedBenef.montant = this.rembForm.controls['mont'].value;
     this.selectedBenef.date = this.rembForm.controls['date'].value;
     this.id = this.rembForm.controls['membres'].value;
-    console.log('bouf', this.selectedBenef.montant)
-    console.log('id', this.id)
-    console.log('benef', this.selectedBenef)
+    // console.log('bouf', this.selectedBenef.montant)
+    // console.log('id', this.id)
+    // console.log('benef', this.selectedBenef)
     this.beneficiaireService.newBenef(this.id, this.selectedBenef, this.selectedBenef.date).subscribe(
         res => {
           // this.initPlan();

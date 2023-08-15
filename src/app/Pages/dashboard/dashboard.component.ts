@@ -19,7 +19,8 @@ import {
     ApexChart, ApexFill, ApexNonAxisChartSeries, ApexPlotOptions, ApexStroke, ChartComponent
 } from "ng-apexcharts";
 import {UserService} from "../../services/user/user.service";
-import * as jsPDF from 'jspdf';
+// import * as jsPDF from 'jspdf';
+import Swal from "sweetalert2";
 import  * as html2canvas from "html2canvas";
 import {TokenStorageService} from "../../auth/token-storage.service";
 import {RetenueService} from "../../services/retenue/retenue.service";
@@ -347,7 +348,7 @@ export class DashboardComponent implements OnInit {
 
       if (this.tokenStorage.getToken()) {
           this.roles = this.tokenStorage.getAuthorities();
-          const Swal = require('sweetalert2');
+          // const Swal = require('sweetalert2');
           this.roles.every(role => {
               if (role === 'ROLE_TRESORIER') {
                   this.authority = 'tresorier';
@@ -438,14 +439,14 @@ export class DashboardComponent implements OnInit {
                 this.cloaders = false
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.cloaders = false
             },
             () => {
-                console.log('Total');
-                console.log(this.count);
-                console.log('machines totales');
-                console.log(this.cpannes);
+                // // console.log('Total');
+                // // console.log(this.count);
+                // // console.log('machines totales');
+                // // console.log(this.cpannes);
             }
         );
     }
@@ -456,7 +457,7 @@ export class DashboardComponent implements OnInit {
       const dat = new Date();
       const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
       const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
-      console.log('last Month: '+ dat1);
+      // // console.log('last Month: '+ dat1);
       this.per_pan = dat1+" "+x;
         this.panneService.getCountLastPannes().subscribe(
             data => {
@@ -470,13 +471,13 @@ export class DashboardComponent implements OnInit {
             },
             error => {
                 this.cloaders = false
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('Total');
-                console.log(this.count);
-                console.log('machines totales');
-                console.log(this.cpannes);
+                // // console.log('Total');
+                // // console.log(this.count);
+                // // console.log('machines totales');
+                // // console.log(this.cpannes);
             }
         );
     }
@@ -499,13 +500,13 @@ export class DashboardComponent implements OnInit {
             },
             error => {
                 this.cloaders = false
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('Total');
-                console.log(this.count);
-                console.log('machines totales');
-                console.log(this.cpannes);
+                // // console.log('Total');
+                // // console.log(this.count);
+                // // console.log('machines totales');
+                // // console.log(this.cpannes);
             }
       );
   }
@@ -521,12 +522,12 @@ export class DashboardComponent implements OnInit {
                 this.tloaders = false
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.tloaders = false
             },
             () => {
-                console.log('Total');
-                console.log(this.StatsTec);
+                // // console.log('Total');
+                // // console.log(this.StatsTec);
             }
         );
     }
@@ -536,7 +537,7 @@ export class DashboardComponent implements OnInit {
       const dat = new Date();
       const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
       const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
-      console.log('last Month: '+ dat1);
+      // // console.log('last Month: '+ dat1);
       this.per_tec = dat1+" "+x;
         this.dashboardService.statsTechniciensLastMonth().subscribe(
             data => {
@@ -544,12 +545,12 @@ export class DashboardComponent implements OnInit {
                 this.tloaders = false
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.tloaders = false
             },
             () => {
-                console.log('Total');
-                console.log(this.StatsTec);
+                // // console.log('Total');
+                // // console.log(this.StatsTec);
             }
         );
     }
@@ -565,12 +566,12 @@ export class DashboardComponent implements OnInit {
                 this.tloaders = false
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.tloaders = false
             },
             () => {
-                console.log('Total');
-                console.log(this.StatsTec);
+                // // console.log('Total');
+                // // console.log(this.StatsTec);
             }
         );
     }
@@ -589,11 +590,11 @@ export class DashboardComponent implements OnInit {
 
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('Total');
-                console.log(this.cdount);
+                // // console.log('Total');
+                // // console.log(this.cdount);
             }
         );
     }
@@ -629,13 +630,13 @@ export class DashboardComponent implements OnInit {
             // this.loaders = false
         } ),
         error => {
-            console.log('une erreur a été détectée!')
+            // // console.log('une erreur a été détectée!')
             this.loaders = false;
         },
         () => {
-            console.log('chargement des pannes');
+            // // console.log('chargement des pannes');
             this.loaders = false;
-            console.log("test007: "+this.dah)
+            // // console.log("test007: "+this.dah)
         }) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
@@ -649,11 +650,11 @@ export class DashboardComponent implements OnInit {
 
             } ,
             error => {
-                console.log('une erreur solde tontine observée!')
+                // // console.log('une erreur solde tontine observée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde tontine', this.soldeTontine);
+                // // console.log('solde tontine', this.soldeTontine);
                 this.loaders = false;
             }
         );
@@ -667,11 +668,11 @@ export class DashboardComponent implements OnInit {
 
             } ,
             error => {
-                console.log('erreur solde amande détectée!')
+                // // console.log('erreur solde amande détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde amande ', this.soldeAmande);
+                // // console.log('solde amande ', this.soldeAmande);
                 this.loaders = false;
             }
         );
@@ -685,11 +686,11 @@ export class DashboardComponent implements OnInit {
 
             } ,
             error => {
-                console.log('erreur solde mangwa a été détectée!')
+                // // console.log('erreur solde mangwa a été détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('solde mangwa ', this.soldeMangwa);
+                // // console.log('solde mangwa ', this.soldeMangwa);
                 this.loaders = false;
             }
         );
@@ -704,12 +705,12 @@ export class DashboardComponent implements OnInit {
 
             } ,
             error => {
-                console.log('une erreur sur planing a été détectée!')
+                // // console.log('une erreur sur planing a été détectée!')
                 this.loade = false;
             },
             () => {
                 this.loade = false;
-                console.log("Planing: ",this.planings);
+                // // console.log("Planing: ",this.planings);
             }
         );
     }
@@ -719,10 +720,10 @@ export class DashboardComponent implements OnInit {
             data => {
                 this.date_creation_reunion = data ? data.date : '';
                 this.fondateur_reunion = data ? data.fondateur : '';
-                console.log('info réunion', data);
+                // // console.log('info réunion', data);
             } ,
             error => {
-                console.log('une erreur sur infos réunion!')
+                // // console.log('une erreur sur infos réunion!')
                 this.loaders = false;
             },
             () => {
@@ -736,11 +737,11 @@ export class DashboardComponent implements OnInit {
         this.sessionServices.getActiveSession().subscribe(
             data => {
                 this.activeSession = data;
-                console.log('session active', this.activeSession);
+                // // console.log('session active', this.activeSession);
 
             } ,
             error => {
-                console.log('une erreur sur la session active')
+                // // console.log('une erreur sur la session active')
                 this.loaders = false;
             },
             () => {
@@ -756,7 +757,7 @@ export class DashboardComponent implements OnInit {
 
             } ,
             error => {
-                console.log('une erreur sur planing a été détectée!')
+                // // console.log('une erreur sur planing a été détectée!')
                 this.loaders = false;
             },
             () => {
@@ -773,7 +774,7 @@ export class DashboardComponent implements OnInit {
         const dat = new Date();
         const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
         const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
-        console.log('last Month: '+ dat1);
+        // // console.log('last Month: '+ dat1);
         this.per_dash = dat1+" "+x;
     const datasetNbrePanne3 = {
         data: [],
@@ -793,18 +794,18 @@ export class DashboardComponent implements OnInit {
             // datasetNbrePanne2.name = (mach.machine);
             this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
             this.dah = this.datas.labels.length;
-            console.log("test007: "+this.dah)
+            // // console.log("test007: "+this.dah)
             datasetNbrePanne3.data.push(mach.nbre);
             datasetNbrePanne4.data.push(mach.dt);this.loaders = false
         } ),
         error => {
-            console.log('une erreur a été détectée!')
+            // // console.log('une erreur a été détectée!')
             this.loaders = false;
         },
         () => {
-            console.log('chargement des pannes');
+            // // console.log('chargement des pannes');
             this.loaders = false;
-            console.log("test007: "+this.dah)
+            // // console.log("test007: "+this.dah)
         }) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
@@ -844,13 +845,13 @@ export class DashboardComponent implements OnInit {
 
             } ),
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('chargement des pannes');
+                // // console.log('chargement des pannes');
                 this.loaders = false;
-                console.log("test007: "+this.dah)
+                // // console.log("test007: "+this.dah)
             }) ;
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
@@ -875,11 +876,11 @@ export class DashboardComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line'
         };
-        console.log('rien');
+        // // console.log('rien');
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
 
-        console.log(d1 + ' et '+ d2);
+        // // console.log(d1 + ' et '+ d2);
         this.per_dash = d1 + ' au '+ d2;
         this.dashboardService.getCountRangePannes(d1, d2).subscribe(
             list => list.forEach(mach => {
@@ -893,13 +894,13 @@ export class DashboardComponent implements OnInit {
                 this.loaders = false
             } ),
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.loaders = false;
             },
             () => {
-                console.log('chargement des pannes');
+                // // console.log('chargement des pannes');
                 this.loaders = false;
-                console.log("test007: "+this.dah)
+                // // console.log("test007: "+this.dah)
             }) ;
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
@@ -936,11 +937,11 @@ export class DashboardComponent implements OnInit {
 
         },
         error => {
-            console.log('une erreur a été détectée!')
+            // // console.log('une erreur a été détectée!')
         },
         () => {
-            console.log('Total');
-            console.log(this.cdount);
+            // // console.log('Total');
+            // // console.log(this.cdount);
         }
     );
 
@@ -988,12 +989,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
                 this.loader = false;
             },
             () => {
-                console.log('chargement des pannes');
-                console.log(this.pannes);
+                // // console.log('chargement des pannes');
+                // // console.log(this.pannes);
             }
         );
 
@@ -1009,11 +1010,11 @@ export class DashboardComponent implements OnInit {
 //             // this.rowData = data;
 //         },
 //         error => {
-//             console.log('une erreur a été détectée!')
+//             // // console.log('une erreur a été détectée!')
 //         },
 //         () => {
-//             console.log('panne cette semaine');
-//             console.log(this.ThisWeekPannes);
+//             // // console.log('panne cette semaine');
+//             // // console.log(this.ThisWeekPannes);
 //         }
 //     );
 // }
@@ -1038,11 +1039,11 @@ export class DashboardComponent implements OnInit {
                 this.Tpannes = data;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('chargement des pannes Techniques');
-                console.log(this.Tpannes);
+                // // console.log('chargement des pannes Techniques');
+                // // console.log(this.Tpannes);
             }
         );
 
@@ -1054,11 +1055,11 @@ export class DashboardComponent implements OnInit {
                 (data.length>1)? this.OP2 = data[1] : this.OP2 = '';
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('chargement des pannes Techniques');
-                console.log(this.Opannes);
+                // // console.log('chargement des pannes Techniques');
+                // console.log(this.Opannes);
             }
         );
 
@@ -1074,11 +1075,11 @@ export class DashboardComponent implements OnInit {
                 (data.length>1)? this.details2 = data[1].details : this.details2 = '';
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('chargement des pannes Techniques');
-                console.log(this.Detailspannes);
+                // console.log('chargement des pannes Techniques');
+                // console.log(this.Detailspannes);
             }
         );
 
@@ -1097,11 +1098,11 @@ export class DashboardComponent implements OnInit {
 
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('chargement des outils');
-                console.log(this.Outilpannes);
+                // console.log('chargement des outils');
+                // console.log(this.Outilpannes);
             }
         );
 
@@ -1117,13 +1118,13 @@ export class DashboardComponent implements OnInit {
                 (data.length > 1)?this.fi2 = data[1].fin_inter: this.fi2  = '';
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('chargement des heures');
-                console.log(this.Hpannes);
-                console.log('longueur');
-                console.log(this.tail);
+                // console.log('chargement des heures');
+                // console.log(this.Hpannes);
+                // console.log('longueur');
+                // console.log(this.tail);
             }
         );
     }
@@ -1141,12 +1142,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!');
+                // console.log('une erreur a été détectée!');
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1164,12 +1165,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!');
+                // console.log('une erreur a été détectée!');
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1185,12 +1186,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
                 this.loader = false;
             },
             () => {
-                console.log('panne hier');
-                console.log(this.pannes);
+                // console.log('panne hier');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1206,12 +1207,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
                 this.loader = false;
             },
             () => {
-                console.log('panne cette semaine');
-                console.log(this.pannes);
+                // console.log('panne cette semaine');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1227,12 +1228,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1243,7 +1244,7 @@ export class DashboardComponent implements OnInit {
         const dat = new Date();
         const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM');
         const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
-        console.log('last Month: '+ dat1);
+        // console.log('last Month: '+ dat1);
         this.periode_panne = "pannes du mois de "+ dat1+" "+x;
         this.panneService.getLastMonthPannes().subscribe(
             data => {
@@ -1252,12 +1253,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
                 this.loader = false
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1267,7 +1268,7 @@ export class DashboardComponent implements OnInit {
         this.pannes = [];
         const dat = new Date();
         const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMMM yyyy');
-        console.log('last Month: '+ dat1);
+        // console.log('last Month: '+ dat1);
         this.periode_panne = "pannes du mois de "+ dat1;
         this.panneService.getThisMonthPannes().subscribe(
             data => {
@@ -1276,12 +1277,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                // console.log('une erreur a été détectée!')
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1291,7 +1292,7 @@ export class DashboardComponent implements OnInit {
         this.pannes = [];
         const dat = new Date();
         const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy');
-        console.log('last Month: '+ dat1);
+        // console.log('last Month: '+ dat1);
         this.periode_panne = "pannes de l'année "+ dat1;
         this.panneService.getLastYearPannes().subscribe(
             data => {
@@ -1300,12 +1301,12 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!');
+                // console.log('une erreur a été détectée!');
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
@@ -1315,7 +1316,7 @@ export class DashboardComponent implements OnInit {
         this.pannes = [];
         const dat = new Date();
         const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy');
-        console.log('last Month: '+ dat1);
+        // console.log('last Month: '+ dat1);
         this.periode_panne = "pannes de l'année "+ dat1;
         this.panneService.getThisYearPannes().subscribe(
             data => {
@@ -1324,22 +1325,22 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!');
+                // console.log('une erreur a été détectée!');
                 this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
-                console.log(this.pannes);
+                // console.log('panne aujourd\'hui');
+                // console.log(this.pannes);
             }
         );
     }
 
     rangeDate(){
-        console.log('rien');
+        // console.log('rien');
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
         this.periode_panne = "pannes du "+d1+" au "+d2 ;
-        console.log(d1 + ' et '+ d2);
+        // console.log(d1 + ' et '+ d2);
         this.loader = true;
         this.pannes = [];
         this.panneService.getRangeDatePannes(d1, d2).subscribe(
@@ -1349,19 +1350,19 @@ export class DashboardComponent implements OnInit {
                 this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!');
+                // console.log('une erreur a été détectée!');
                 this.loader = false;
             },
             () => {
-                console.log('panne range');
-                console.log(this.pannes);
+                // console.log('panne range');
+                // console.log(this.pannes);
             }
         );
     }
 
     showDepart(d: Departement){
         let url = btoa(d.idDepartement.toString());
-        console.log(d.idDepartement +' '+url);
+        // console.log(d.idDepartement +' '+url);
         this.router.navigateByUrl("departements/"+url);
     }
 
@@ -1461,10 +1462,10 @@ export class DashboardComponent implements OnInit {
                 this.bureaux = data;
             },
             error => {
-                console.log('une erreur a été détectée au chargement des sessions!')
+                // console.log('une erreur a été détectée au chargement des sessions!')
             },
             () => {
-                console.log('chargement des bureaux', this.bureaux);
+                // console.log('chargement des bureaux', this.bureaux);
             }
         );
     }

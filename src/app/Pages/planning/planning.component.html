@@ -68,7 +68,7 @@
                         </tr>
                         </thead>
                         <tbody *ngIf="planings.length && loaders == false ">
-                        <tr class="widget-content" *ngFor="let plan of planings | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                        <tr class="widget-content" *ngFor="let plan of planings | paginate:{id: 'planning', itemsPerPage: 7, currentPage:p}; ">
                             <th scope="row" >{{ plan.date | date: 'dd/MM/yyyy'}}</th>
                             <td>{{plan.evenement | uppercase}}</td>
                             <td>{{plan.membre | uppercase}}</td>
@@ -118,6 +118,7 @@
                     <ul class="pagination pagination-sm mb-0">
                         <li>
                             <pagination-controls (pageChange)="p=$event"
+                                                 id="planning"
                                                  autoHide="true"
                                                  responsive="true"
                                                  previousLabel="Précédent"

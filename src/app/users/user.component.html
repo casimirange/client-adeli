@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
                         <tr class="widget-content"
-                            *ngFor="let user of users | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; "
+                            *ngFor="let user of users | filter: term | paginate:{id: 'users', itemsPerPage: 7, currentPage:p}; "
                             [ngClass]="{'bg-n': user.etat == false }">
                             <th scope="row">{{user.email}}</th>
                             <td>{{user.name}}</td>
@@ -316,6 +316,7 @@
                     <ul class="pagination pagination-sm mb-0">
                         <li>
                             <pagination-controls (pageChange)="p=$event"
+                                                 id="users"
                                                  autoHide="true"
                                                  responsive="true"
                                                  previousLabel="Précédent"

@@ -105,7 +105,7 @@
                         </tr>
                         </thead>
                         <tbody *ngIf="prets.length && loaders == false ">
-                        <tr *ngFor="let pret of prets | paginate:{itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
+                        <tr *ngFor="let pret of prets | paginate:{id: 'pret', itemsPerPage: pages, currentPage:p}"  [ngClass]="pret.rembourse == false ? 'bg-w' : ''" (click)="pret.rembourse == false ? open(mymodal) : null; selectedPret = pret">
 
                             <ng-template #mymodal let-modal >
                                 <div class="modal-header">
@@ -237,6 +237,7 @@
                         <ul class="pagination pagination-sm mb-0">
                             <li>
                                 <pagination-controls (pageChange)="p=$event"
+                                                     id="pret"
                                                      autoHide = "true"
                                                      responsive = "true"
                                                      previousLabel = "Précédent"

@@ -6,7 +6,7 @@ import {CompteRendu} from "../../Models/cr";
 import {Communique} from "../../Models/communique";
 import {CommuniqueService} from "../../services/communique/communique.service";
 import {TokenStorageService} from "../../auth/token-storage.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-communique',
   templateUrl: './communique.component.html',
@@ -57,7 +57,7 @@ export class CommuniqueComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -101,7 +101,7 @@ export class CommuniqueComponent implements OnInit {
   }
 
   onChange($event: any): void {
-    console.log("onChange");
+    // console.log("onChange");
     //this.log += new Date() + "<br />";
   }
 
@@ -112,13 +112,13 @@ export class CommuniqueComponent implements OnInit {
   }
 
   onPaste($event: any): void {
-    console.log("onPaste");
+    // console.log("onPaste");
     //this.log += new Date() + "<br />";
   }
 
   swl(tec: any){
-    const Swal = require('sweetalert2');
-    console.log('voici le CR:', this.mycontent);
+    // const Swal = require('sweetalert2');
+    // console.log('voici le CR:', this.mycontent);
     Swal.fire({
       title: 'test',
       html:  tec,
@@ -132,7 +132,6 @@ export class CommuniqueComponent implements OnInit {
       allowOutsideClick: true,
       focusConfirm: false,
       focusCancel: false,
-      focusDeny: true,
       showLoaderOnConfirm: true
     }).then((result) => {
       if (result.value) {
@@ -153,8 +152,8 @@ export class CommuniqueComponent implements OnInit {
   addCR() {
     // const t = this.crForm.value;
 
-    // console.log('date', this.crForm.controls['dat'].value);
-    console.log('msg', this.mycontent);
+    // // console.log('date', this.crForm.controls['dat'].value);
+    // console.log('msg', this.mycontent);
 
 
     // this.communique.date = this.crForm.controls['dat'].value;
@@ -162,7 +161,7 @@ export class CommuniqueComponent implements OnInit {
 
     // if(this.mycontent == ''){
     //   const Swal = require('sweetalert2');
-    //   console.log('voici le communiqué:', this.mycontent);
+    //   // console.log('voici le communiqué:', this.mycontent);
     //   Swal.fire({
     //     title: 'Attention',
     //     icon:'warning' ,
@@ -185,8 +184,8 @@ export class CommuniqueComponent implements OnInit {
   }
 
   updateCommunique() {
-    console.log('update', this.selectedCommunique);
-    const Swal = require('sweetalert2');
+    // console.log('update', this.selectedCommunique);
+    // const Swal = require('sweetalert2');
     this.selectedCommunique.details = this.crForm.controls['cp'].value;
     this.communiqueService.putCommunique(this.selectedCommunique.id_communique, this.selectedCommunique).subscribe(
         res => {
@@ -237,7 +236,7 @@ export class CommuniqueComponent implements OnInit {
   }
 
   deleteCommunique(tec: Communique){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Suppression',
       icon: 'error',
@@ -255,10 +254,10 @@ export class CommuniqueComponent implements OnInit {
         this.communiqueService.deleteCommunique(tec.id_communique).subscribe(
             data => { this.loadCommunique(); },
             error => {
-              console.log('une erreur a été détectée lors de la suppression du communiqué');
+              // console.log('une erreur a été détectée lors de la suppression du communiqué');
             },
             () => {
-              console.log('communique supprimé');
+              // console.log('communique supprimé');
             }
         );
         Swal.fire({
@@ -280,11 +279,11 @@ export class CommuniqueComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur de chargement des Communiqué!');
+          // console.log('une erreur de chargement des Communiqué!');
           this.loaders = false;
         },
         () => {
-          console.log('chargement des communiqués', this.communiques);
+          // console.log('chargement des communiqués', this.communiques);
           this.loaders = false;
         }
     );

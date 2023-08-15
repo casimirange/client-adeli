@@ -7,7 +7,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Location} from "@angular/common";
 import {User} from "../../Models/users";
 import {UserService} from "../../services/user/user.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-prets',
   templateUrl: './prets.component.html',
@@ -89,7 +89,7 @@ export class PretsComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -134,12 +134,12 @@ export class PretsComponent implements OnInit {
           this.prets = data;
         } ,
         error => {
-          console.log('les amandes ne se sont pas chargées correctement');
+          // console.log('les amandes ne se sont pas chargées correctement');
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log('Liste des prêts: ', this.prets);
+          // console.log('Liste des prêts: ', this.prets);
         }
     );
   }
@@ -172,14 +172,14 @@ export class PretsComponent implements OnInit {
   }
 
   rembourser(p: Prêts){
-    console.log('remboursé ', p.nom);
-    const Swal = require('sweetalert2');
+    // console.log('remboursé ', p.nom);
+    // const Swal = require('sweetalert2');
     this.selectedPret = p;
     this.selectedPret.montant_rembourse = this.rembForm.controls['montant_remb'].value;
     p.montant_rembourse = this.rembForm.controls['montant_remb'].value;
-    console.log('montant remboursé', p.montant_rembourse);
-    console.log('pret', this.selectedPret);
-    console.log('id', p.id_pret);
+    // console.log('montant remboursé', p.montant_rembourse);
+    // console.log('pret', this.selectedPret);
+    // console.log('id', p.id_pret);
     this.pretServices.rembourserPret(p.id_pret, p).subscribe(
         res => {
           // this.initPlan();
@@ -233,23 +233,23 @@ export class PretsComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }
 
   addPret() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.techForm.controls['membre'].value;
     this.selectedPret.date_pret = this.techForm.controls['date'].value;
     this.selectedPret.montant_prete = this.techForm.controls['montant'].value;
-    console.log('membre', this.id);
-    console.log('membre', this.selectedPret);
+    // console.log('membre', this.id);
+    // console.log('membre', this.selectedPret);
     this.pretServices.newPret(this.id, this.selectedPret).subscribe(
         res => {
           // this.initPlan();

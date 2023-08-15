@@ -218,7 +218,7 @@
                         </tr>
                         </thead>
                         <tbody *ngIf="tontines.length && loade == false ">
-                        <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
+                        <tr class="widget-content" *ngFor="let tontine of tontines | filter: term | paginate:{id: 'tontine', itemsPerPage: pages, currentPage:p}" [ngClass]="tontine.credit != 0 ? 'bg-w' : ''">
                             <th scope="row" >{{ tontine.date | date: 'dd-MM-yyyy'}}</th>
                             <td>{{tontine.debit}} €</td>
                             <td class="text-capitalize">{{tontine.credit}} €</td>
@@ -277,6 +277,7 @@
                     <ul class="pagination pagination-sm mb-0">
                         <li>
                             <pagination-controls (pageChange)="p=$event"
+                                                 id="tontine"
                                                  autoHide = "true"
                                                  responsive = "true"
                                                  previousLabel = "Précédent"

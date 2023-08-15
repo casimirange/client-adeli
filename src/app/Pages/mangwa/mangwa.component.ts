@@ -6,7 +6,7 @@ import {MangwaService} from "../../services/mangwa/mangwa.service";
 import {RetenueService} from "../../services/retenue/retenue.service";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-mangwa',
   templateUrl: './mangwa.component.html',
@@ -78,7 +78,7 @@ export class MangwaComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -122,12 +122,12 @@ export class MangwaComponent implements OnInit {
           this.mangwas = data;
         } ,
         error => {
-          console.log('erreur chargement mangwa')
+          // console.log('erreur chargement mangwa')
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log("Liste mangwa: ",this.mangwas)
+          // console.log("Liste mangwa: ",this.mangwas)
         }
     );
   }
@@ -156,16 +156,16 @@ export class MangwaComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }
 
   addMangwa() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.techForm.controls['membre'].value;
@@ -174,8 +174,8 @@ export class MangwaComponent implements OnInit {
     this.selectedMangwa.date = this.techForm.controls['date'].value;
     this.selectedMangwa.motif = this.techForm.controls['motif'].value;
     this.selectedMangwa.transaction = this.techForm.controls['fonction'].value;
-    console.log('membre', this.id);
-    console.log('membre', this.selectedMangwa);
+    // console.log('membre', this.id);
+    // console.log('membre', this.selectedMangwa);
     this.mangwaServices.newMangwa(this.id, this.selectedMangwa).subscribe(
         res => {
           // this.initPlan();

@@ -10,7 +10,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AuthService} from "../auth/auth.service";
 import { SignUpInfo } from '../auth/signup-info';
 import {User} from "../Models/users";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -82,7 +82,7 @@ export class UserComponent implements OnInit {
 
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       var content = document.createElement('div');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
@@ -211,10 +211,10 @@ export class UserComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('erreure', error);
+          // // console.log('erreure', error);
         },
         () =>{
-          console.log('users ', this.users)
+          // // console.log('users ', this.users)
         }
     )
   }
@@ -229,7 +229,7 @@ export class UserComponent implements OnInit {
   }
 
   swl(pan: User){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     var content = document.createElement('div');
     content.innerHTML = pan.etat == true ? 'Voulez-vous vraiment désactiver <strong>' : 'Voulez-vous vraiment activer <strong>' + pan.username.toString()+ '</strong> de la plateforme ?';
     Swal.fire({
@@ -255,7 +255,7 @@ export class UserComponent implements OnInit {
       if (result.value) {
         this.authService.enableUser(pan.id).subscribe(
             res => {
-              console.log('utilisateur mis à jour')
+              // // console.log('utilisateur mis à jour')
               // this.modalService.dismissAll();
               this.LoadUsers();
             }
@@ -274,7 +274,7 @@ export class UserComponent implements OnInit {
   onUpdate(user: User) {
     this.role = [];
 
-    console.log('admin', this.registerForm.controls['president'].value );
+    // // console.log('admin', this.registerForm.controls['president'].value );
     this.respCP =  'president';
     this.respPL =  'secretaire';
     this.respBRA =  'senceur';
@@ -300,13 +300,13 @@ export class UserComponent implements OnInit {
         this.role
     );
 
-    console.log('utilisateur', this.signupInfos)
+    // // console.log('utilisateur', this.signupInfos)
 
     this.authService.updateUser(this.signupInfos, user.id).subscribe(
         data => {
-          console.log(data);
+          // // console.log(data);
           this.LoadUsers();
-          const Swal = require('sweetalert2');
+          // const Swal = require('sweetalert2');
           const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -326,9 +326,9 @@ export class UserComponent implements OnInit {
           })
         },
         error => {
-          console.log(error);
+          // // console.log(error);
           this.errorMessage = error.error.message;
-          const Swal = require('sweetalert2');
+          // const Swal = require('sweetalert2');
           const Toast = Swal.mixin({
             toast: true,
             position: 'bottom-end',

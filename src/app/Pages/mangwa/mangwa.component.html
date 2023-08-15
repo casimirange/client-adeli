@@ -133,7 +133,7 @@
                         </tr>
                         </thead>
                         <tbody *ngIf="mangwas.length && loaders == false ">
-                        <tr *ngFor="let mangwa of mangwas | paginate:{itemsPerPage: 7, currentPage:p}; "  [ngClass]="mangwa.debit == 0 ? 'bg-w' : ''">
+                        <tr *ngFor="let mangwa of mangwas | paginate:{id: 'mangwa', itemsPerPage: 7, currentPage:p}; "  [ngClass]="mangwa.debit == 0 ? 'bg-w' : ''">
                             <td class="text-center">{{mangwa.date}}</td>
                             <td class="text-left">{{mangwa.nom}}</td>
                             <td class="text-left">{{mangwa.motif}}</td>
@@ -187,6 +187,7 @@
                         <ul class="pagination pagination-sm mb-0">
                             <li>
                                 <pagination-controls (pageChange)="p=$event"
+                                                     id="mangwa"
                                                      autoHide = "true"
                                                      responsive = "true"
                                                      previousLabel = "Précédent"

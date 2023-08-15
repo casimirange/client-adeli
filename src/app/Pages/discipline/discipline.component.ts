@@ -5,7 +5,7 @@ import {DisciplineService} from "../../services/discipline/discipline.service";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
 import {TokenStorageService} from "../../auth/token-storage.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-discipline',
   templateUrl: './discipline.component.html',
@@ -54,7 +54,7 @@ export class DisciplineComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -100,11 +100,11 @@ export class DisciplineComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des disciplines');
+          // console.log('une erreur a été détectée lors du chargement des disciplines');
           this.loaders = false;
         },
         () => {
-          console.log('chargement des disciplines', this.disciplines);
+          // console.log('chargement des disciplines', this.disciplines);
           this.loaders = false;
         }
     );
@@ -116,10 +116,10 @@ export class DisciplineComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }
@@ -130,24 +130,24 @@ export class DisciplineComponent implements OnInit {
   //         this.users = data;
   //       },
   //       error => {
-  //         console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+  //         // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
   //       },
   //       () => {
-  //         console.log('chargement des techniciens actifs');
+  //         // console.log('chargement des techniciens actifs');
   //       }
   //   );
   // }
 
   addDiscipline() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.discForm.controls['membre'].value;
     this.selectedDiscipline.date = this.discForm.controls['date'].value;
     this.selectedDiscipline.type = this.discForm.controls['type'].value;
     this.selectedDiscipline.sanction = this.discForm.controls['sanction'].value;
-    console.log('membre', this.id);
-    console.log('membre', this.selectedDiscipline);
+    // console.log('membre', this.id);
+    // console.log('membre', this.selectedDiscipline);
     this.disciplineService.newDiscipline(this.id, this.selectedDiscipline).subscribe(
         res => {
           this.initDisci();
@@ -196,15 +196,15 @@ export class DisciplineComponent implements OnInit {
   }
 
   updateDiscipline() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.discForm.controls['membre'].value;
     this.selectedDiscipline.date = this.discForm.controls['date'].value;
     this.selectedDiscipline.type = this.discForm.controls['type'].value;
     this.selectedDiscipline.sanction = this.discForm.controls['sanction'].value;
-    console.log('membre', this.id);
-    console.log('membre', this.selectedDiscipline);
+    // console.log('membre', this.id);
+    // console.log('membre', this.selectedDiscipline);
     this.disciplineService.putDiscipline(this.id, this.selectedDiscipline.id_discipline,this.selectedDiscipline).subscribe(
         res => {
           this.initDisci();
@@ -254,7 +254,7 @@ export class DisciplineComponent implements OnInit {
   }
 
   deleteDiscipline(tec: Discipline){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Suppression',
       icon: 'error',
@@ -272,10 +272,10 @@ export class DisciplineComponent implements OnInit {
         this.disciplineService.deleteDiscipline(tec.id_discipline).subscribe(
             data => { this.loadDisciplines(); },
             error => {
-              console.log('une erreur a été détectée lors de la suppression de la discipline');
+              // console.log('une erreur a été détectée lors de la suppression de la discipline');
             },
             () => {
-              console.log('sanction supprimée');
+              // console.log('sanction supprimée');
             }
         );
         Swal.fire({

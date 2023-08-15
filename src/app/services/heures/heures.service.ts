@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {API_URLS} from "../../configs/api.url.configs";
+// import {API_URLS} from "../../configs/api.url.configs";
 import {Heures} from "../../Models/heures";
 import {environment} from "../../../environments/environment";
 

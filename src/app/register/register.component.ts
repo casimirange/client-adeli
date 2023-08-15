@@ -6,7 +6,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TokenStorageService} from "../auth/token-storage.service";
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit {
 
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       var content = document.createElement('div');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
@@ -223,7 +223,7 @@ export class RegisterComponent implements OnInit {
         this.isSignedUp = true;
         this.isSignUpFailed = false;
         this.router.navigateByUrl('/utilisateurs')
-        const Swal = require('sweetalert2');
+        // const Swal = require('sweetalert2');
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -246,7 +246,7 @@ export class RegisterComponent implements OnInit {
         console.log(error);
         this.errorMessage = error.error.message;
         this.isSignUpFailed = true;
-        const Swal = require('sweetalert2');
+        // const Swal = require('sweetalert2');
         const Toast = Swal.mixin({
           toast: true,
           position: 'bottom-end',

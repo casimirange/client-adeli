@@ -5,7 +5,7 @@ import {AmandesService} from "../../services/amandes/amandes.service";
 import {TokenStorageService} from "../../auth/token-storage.service";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-amandes',
   templateUrl: './amandes.component.html',
@@ -69,7 +69,7 @@ export class AmandesComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -113,10 +113,10 @@ export class AmandesComponent implements OnInit {
           this.users = data;
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!');
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!');
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }
@@ -128,12 +128,12 @@ export class AmandesComponent implements OnInit {
           this.amandes = data;
         } ,
         error => {
-          console.log('les amandes ne se sont pas chargées correctement');
+          // console.log('les amandes ne se sont pas chargées correctement');
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log('Liste des amandes: ', this.amandes);
+          // console.log('Liste des amandes: ', this.amandes);
         }
     );
   }
@@ -157,7 +157,7 @@ export class AmandesComponent implements OnInit {
   }
 
   addAmande() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     // this.selectedTontine.name = this.planForm.controls['membre'].value;
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.discForm.controls['membre'].value;

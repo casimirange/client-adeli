@@ -5,6 +5,7 @@ import { TokenStorageService } from '../auth/token-storage.service';
 import { AuthLoginInfo } from '../auth/login-info';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-login',
@@ -70,7 +71,7 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
         this.reloadPage();
-        const Swal = require('sweetalert2');
+        // const Swal = require('sweetalert2');
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -93,7 +94,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         this.errorMessage = error.error.message;
         this.isLoginFailed = true;
-        const Swal = require('sweetalert2');
+        // const Swal = require('sweetalert2');
         const Toast = Swal.mixin({
           toast: true,
           position: 'bottom-end',

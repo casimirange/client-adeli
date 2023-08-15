@@ -6,7 +6,7 @@ import {DisciplineService} from "../../services/discipline/discipline.service";
 import {PlaningService} from "../../services/planing/planing.service";
 import {User} from "../../Models/users";
 import {TokenStorageService} from "../../auth/token-storage.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.component.html',
@@ -41,7 +41,7 @@ export class PlanningComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
-      const Swal = require('sweetalert2');
+      // const Swal = require('sweetalert2');
       this.roles.every(role => {
         if (role === 'ROLE_TRESORIER') {
           this.authority = 'tresorier';
@@ -101,12 +101,12 @@ export class PlanningComponent implements OnInit {
 
         } ,
         error => {
-          console.log('une erreur sur planing a été détectée!')
+          // console.log('une erreur sur planing a été détectée!')
           this.loaders = false;
         },
         () => {
           this.loaders = false;
-          console.log("Planing: ",this.planings);
+          // console.log("Planing: ",this.planings);
         }
     );
   }
@@ -118,16 +118,16 @@ export class PlanningComponent implements OnInit {
 
         },
         error => {
-          console.log('une erreur a été détectée lors du chargement des utilisateurs!')
+          // console.log('une erreur a été détectée lors du chargement des utilisateurs!')
         },
         () => {
-          console.log('chargement des techniciens actifs');
+          // console.log('chargement des techniciens actifs');
         }
     );
   }
 
   addPlanning() {
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     this.selectedPlanning.name = this.planForm.controls['membre'].value;
     this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.planForm.controls['membre'].value;
@@ -179,8 +179,8 @@ export class PlanningComponent implements OnInit {
   }
 
   updatePlanning(p: Planing) {
-    const Swal = require('sweetalert2');
-    console.log('le planing sélectionné est ', p)
+    // const Swal = require('sweetalert2');
+    // console.log('le planing sélectionné est ', p)
     this.id = this.planForm.controls['membre'].value;
     this.planingServices.updatePlanning(p, this.id, p.id).subscribe(
         res => {
@@ -230,7 +230,7 @@ export class PlanningComponent implements OnInit {
   }
 
   deletePlaning(tec: Planing){
-    const Swal = require('sweetalert2');
+    // const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Suppression',
       icon: 'error',
@@ -248,10 +248,10 @@ export class PlanningComponent implements OnInit {
         this.planingServices.deletePlaning(tec.id).subscribe(
             data => { this.Planing(); },
             error => {
-              console.log('une erreur a été détectée lors de la suppression du planing');
+              // console.log('une erreur a été détectée lors de la suppression du planing');
             },
             () => {
-              console.log('planing supprimé');
+              // console.log('planing supprimé');
             }
         );
         Swal.fire({
