@@ -18,8 +18,8 @@ export class BeneficiaireService {
     return this.http.get(environment.BENEFICIAIRE_URL);
   }
 
-  newBenef(id: any, info: Beneficiaires): Observable<any> {
-    return this.http.post<any>(environment.BENEFICIAIRE_URL + `/news/?id=${id}`, info, httpOptions);
+  newBenef(id: any, info: Beneficiaires, date: any): Observable<any> {
+    return this.http.post<any>(environment.BENEFICIAIRE_URL + `/news/?id=${id}&date=${date}`, info, httpOptions);
   }
 
 }

@@ -21,6 +21,17 @@
                                         <span>*</span> veuillez sélectionner un membre
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <label [ngClass]="{'red': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}" for="date" class="">Date</label>
+<!--                                    <select [ngClass]="{'fred': techForm.controls['membre'].invalid && (techForm.controls['membre'].touched)}" id="date" class="form-control-sm form-control" formControlName="membre"  >-->
+<!--                                        <option value="" selected disabled hidden>Sélectionner un membre</option>-->
+<!--                                        <option *ngFor="let user of users" [ngValue]="user.id"  >{{user.name}}</option>-->
+<!--                                    </select>-->
+                                  <input type="date" [ngClass]="{'fred': techForm.controls['date'].invalid && (techForm.controls['date'].touched)}" id="date" class="form-control-sm form-control" formControlName="date">
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="techForm.controls['date'].invalid && (techForm.controls['date'].touched) ">
+                                        <span>*</span> veuillez sélectionner la date du planing
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,6 +88,17 @@
                                                         <input [ngClass]="{'fred': rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched)}" type="text" class="form-control form-control-sm" placeholder="200 €" formControlName="mont" />
                                                         <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['mont'].invalid && (rembForm.controls['mont'].touched) ">
                                                             <span>*</span> montant invalide!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <div class="position-relative">
+                                                        <label [ngClass]="{'red': rembForm.controls['date'].invalid && (rembForm.controls['date'].touched)}" for="" class="">Date</label>
+                                                        <input [ngClass]="{'fred': rembForm.controls['date'].invalid && (rembForm.controls['date'].touched)}" type="date" class="form-control form-control-sm" placeholder="200 €" formControlName="date" />
+                                                        <div style="color: #f65656; font-style: italic;" *ngIf="rembForm.controls['date'].invalid && (rembForm.controls['date'].touched) ">
+                                                            <span>*</span> date invalide!
                                                         </div>
                                                     </div>
                                                 </div>

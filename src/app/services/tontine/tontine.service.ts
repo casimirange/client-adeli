@@ -28,7 +28,7 @@ export class TontineService {
     return this.http.get(environment.TONTINE_URL + `/session`);
   }
 
-  newCotisation(id: any): Observable<any> {
-    return this.http.post<any>(environment.TONTINE_URL + `?user=${id}`, httpOptions);
+  newCotisation(id: any, date: any): Observable<any> {
+    return this.http.post<any>(environment.TONTINE_URL + `?user=${id}&date=${date}`, httpOptions);
   }
 }

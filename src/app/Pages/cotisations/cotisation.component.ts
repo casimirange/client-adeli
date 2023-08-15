@@ -73,12 +73,14 @@ export class CotisationComponent implements OnInit {
   createForm() {
     this.techForm = this.fb.group({
       membre: ['', [Validators.required]],
+      date: ['', [Validators.required]],
     });
   }
   rembForms() {
     this.rembForm = this.fb.group({
       mont: ['', [Validators.required, Validators.pattern("^[0-9]{1,13}$") ]],
       membres: ['', [Validators.required]],
+      date: ['', [Validators.required]],
     });
   }
   createForm1() {
@@ -239,7 +241,7 @@ export class CotisationComponent implements OnInit {
     // this.selectedPlanning.date = this.planForm.controls['date'].value;
     this.id = this.techForm.controls['membre'].value;
     console.log('membre', this.id);
-    this.tontineService.newCotisation(this.id).subscribe(
+    this.tontineService.newCotisation(this.id, this.techForm.controls['date'].value).subscribe(
         res => {
           // this.initPlan();
           this.loadActiveTontine();
@@ -290,11 +292,12 @@ export class CotisationComponent implements OnInit {
     // console.log('remboursé ', p.nom);
     const Swal = require('sweetalert2');
     this.selectedBenef.montant = this.rembForm.controls['mont'].value;
+    this.selectedBenef.date = this.rembForm.controls['date'].value;
     this.id = this.rembForm.controls['membres'].value;
     console.log('bouf', this.selectedBenef.montant)
     console.log('id', this.id)
     console.log('benef', this.selectedBenef)
-    this.beneficiaireService.newBenef(this.id, this.selectedBenef).subscribe(
+    this.beneficiaireService.newBenef(this.id, this.selectedBenef, this.selectedBenef.date).subscribe(
         res => {
           // this.initPlan();
           this.loadBeneficiaires();
