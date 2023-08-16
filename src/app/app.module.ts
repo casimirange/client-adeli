@@ -32,7 +32,7 @@ import {AuthInterceptor, httpInterceptorProviders} from "./services/auth/auth-in
 import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {jqxGridModule} from "jqwidgets-ng/jqxgrid";
 import { SearchComponent } from './search/search/search.component';
-import {DatePipe} from "@angular/common";
+import {DatePipe, LocationStrategy, PathLocationStrategy} from "@angular/common";
 import {RapportService} from "./services/rapport/rapport.service";
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
 import {MessageServiceService} from "./services/message-service.service";
@@ -111,7 +111,8 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     CompteRenduService,
     CommuniqueService,
     DisciplineService,
-    BureauService
+    BureauService,
+    { provide: LocationStrategy, useClass: PathLocationStrategy}
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
