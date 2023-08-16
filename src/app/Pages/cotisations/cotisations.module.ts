@@ -14,15 +14,16 @@ import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [CotisationComponent, LcoComponent],
-    imports: [
-        CommonModule,
-        CotisationsRoutingModule,
-        ReactiveFormsModule,
-        FormsModule,
-        LoadingBarModule,
-        LayoutModule,
-        Ng2SearchPipeModule,
-        NgxPaginationModule
-    ]
+  imports: [
+    CommonModule,
+    CotisationsRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    LoadingBarModule,
+    LayoutModule,
+    NgxPaginationModule,
+    Ng2SearchPipeModule,
+
+  ]
 })
 export class CotisationsModule { }

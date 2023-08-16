@@ -9,10 +9,12 @@ import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxPaginationModule} from "ngx-pagination";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {PaddingLayoutComponent} from "./base-layout/padding-layout/padding-layout.component";
+import {TitleComponent} from "../layout/page-title/title/title.component";
 
 
 @NgModule({
-  declarations: [UserComponent, BaseLayoutComponent],
+  declarations: [UserComponent, BaseLayoutComponent, PaddingLayoutComponent, TitleComponent],
     imports: [
         CommonModule,
         UsersRoutingModule,

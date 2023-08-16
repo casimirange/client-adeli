@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     let token = localStorage.getItem('authToken');
     if(token){
       this.router.navigateByUrl('/dashboard');
-      console.log('authtoken')
+      // console.log('authtoken')
     }
     this.loginForm = this.fb.group({
       username: ['', [Validators.minLength(3), Validators.required ]],

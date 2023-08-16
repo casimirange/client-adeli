@@ -34,8 +34,8 @@
             return true;
         }
 
-      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
-      console.log('tests')
+      this.router.navigate(['/auth/login'], );
+      // console.log('tests')
       return false;
 
 }
