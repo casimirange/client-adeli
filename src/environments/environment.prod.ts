@@ -2,7 +2,7 @@
 // const url = 'http://141.94.17.128:8080/ServeurADELI-0.0.1-SNAPSHOT';
 // const url = 'https://adeli-serveur.herokuapp.com';
 // const url = 'https://serveur-adeli-f87fcdec796c.herokuapp.com';
-const url = 'http://localhost:8080/ServeurADELI-0.0.1-SNAPSHOT';
+const url = 'http://54.229.221.79:8080/ServeurADELI-0.0.1-SNAPSHOT';
 export const environment = {
   production: true,
   // api_url: 'https://acon-stats-server.herokuapp.com',
