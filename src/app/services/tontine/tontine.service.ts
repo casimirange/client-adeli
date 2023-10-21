@@ -24,8 +24,8 @@ export class TontineService {
     return this.http.get(environment.TONTINE_URL + `/session/${id_session}`);
   }
 
-  getHistoriqueActiveSession(): Observable<any>{
-    return this.http.get(environment.TONTINE_URL + `/session`);
+  getHistoriqueActiveSession(session?: string): Observable<any>{
+    return this.http.get(environment.TONTINE_URL + `/session?sessionId=${session}`);
   }
 
   newCotisation(id: any, date: any): Observable<any> {

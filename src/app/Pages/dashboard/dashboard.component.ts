@@ -699,7 +699,7 @@ export class DashboardComponent implements OnInit {
     Planing(){
 
         this.loade = true;
-        this.planingServices.getPlaning().subscribe(
+        this.planingServices.getPlaning('').subscribe(
             data => {
                 this.planings = data;
 

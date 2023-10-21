@@ -8,6 +8,8 @@ import {Location} from "@angular/common";
 import {User} from "../../Models/users";
 import {UserService} from "../../services/user/user.service";
 import Swal from "sweetalert2";
+import {Sessions} from "../../Models/Sessions";
+import {SessionService} from "../../services/session/session.service";
 @Component({
   selector: 'app-prets',
   templateUrl: './prets.component.html',
@@ -20,6 +22,8 @@ export class PretsComponent implements OnInit {
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
   prets: Prêts[] = [];
+  sessions: Sessions[];
+  sessionId = '';
   loaders: boolean = false;
   selectedPret: Prêts;
   amandeForm: FormGroup;
@@ -40,6 +44,7 @@ export class PretsComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private pretServices: PretService,
               private userServices: UserService,
+              private sessionService: SessionService,
               private modalService: NgbModal,
               private tokenStorage: TokenStorageService,
               private _location: Location,
@@ -124,12 +129,27 @@ export class PretsComponent implements OnInit {
       });
     }
     this.allPrets();
+    this.loadSession()
     this.loadUsers();
+  }
+  loadSession() {
+    this.sessionService.getAllSession().subscribe(
+      data => {
+        this.sessions = data
+
+      },
+      error => {
+        // console.log('une erreur a été détectée au chargement des sessions!')
+      },
+      () => {
+        // console.log('chargement des sessions', this.sessions);
+      }
+    );
   }
 
   allPrets() {
     this.loaders = true;
-    this.pretServices.getPrets().subscribe(
+    this.pretServices.getPrets(this.sessionId).subscribe(
         data => {
           this.prets = data;
         } ,

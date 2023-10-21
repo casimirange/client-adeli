@@ -15,8 +15,8 @@ export class PlaningService {
 
   constructor(private http: HttpClient) { }
 
-  getPlaning(): Observable<any> {
-    return this.http.get(environment.PLANING_URL);
+  getPlaning(session? : string): Observable<any> {
+    return this.http.get(environment.PLANING_URL+`?sessionId=${session}`);
   }
 
   newPlanning(info: Planing, id: any): Observable<any> {

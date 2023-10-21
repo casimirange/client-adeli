@@ -6,6 +6,8 @@ import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
 import {TokenStorageService} from "../../auth/token-storage.service";
 import Swal from "sweetalert2";
+import {SessionService} from "../../services/session/session.service";
+import {Sessions} from "../../Models/Sessions";
 @Component({
   selector: 'app-discipline',
   templateUrl: './discipline.component.html',
@@ -18,6 +20,8 @@ export class DisciplineComponent implements OnInit {
   icons = 'pe-7s-news-paper icon-gradient bg-mixed-hopes';
 
   type: string[] = ['Absence', 'Retard', 'Trouble'];
+  sessions: Sessions[];
+  sessionId = '';
   disciplines: Discipline[] = [];
   selectedDiscipline: Discipline;
   discForm: FormGroup;
@@ -32,6 +36,7 @@ export class DisciplineComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private userServices: UserService,
               private tokenStorage: TokenStorageService,
+              private sessionService: SessionService,
               private disciplineService: DisciplineService) {
     this.selectedDiscipline = new Discipline();
     this.loaders = false
@@ -90,11 +95,26 @@ export class DisciplineComponent implements OnInit {
     }
     this.loadDisciplines();
     this.loadUsers();
+    this.loadSession()
+  }
+  loadSession() {
+    this.sessionService.getAllSession().subscribe(
+      data => {
+        this.sessions = data
+
+      },
+      error => {
+        // console.log('une erreur a été détectée au chargement des sessions!')
+      },
+      () => {
+        // console.log('chargement des sessions', this.sessions);
+      }
+    );
   }
 
   loadDisciplines() {
     this.loaders = true;
-    this.disciplineService.getDiscipline().subscribe(
+    this.disciplineService.getDiscipline(this.sessionId).subscribe(
         data => {
           this.disciplines = data;
 

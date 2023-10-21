@@ -19,8 +19,8 @@ export class DisciplineService {
     return this.http.post(environment.DISCIPLINE_URL, discipline );
   }
 
-  getDiscipline(): Observable<any>{
-    return this.http.get(environment.DISCIPLINE_URL);
+  getDiscipline(session?: string): Observable<any>{
+    return this.http.get(environment.DISCIPLINE_URL+`?sessionId=${session}`);
   }
 
   newDiscipline(id: any, info: Discipline): Observable<any> {

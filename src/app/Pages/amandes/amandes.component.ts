@@ -6,6 +6,8 @@ import {TokenStorageService} from "../../auth/token-storage.service";
 import {UserService} from "../../services/user/user.service";
 import {User} from "../../Models/users";
 import Swal from "sweetalert2";
+import {Sessions} from "../../Models/Sessions";
+import {SessionService} from "../../services/session/session.service";
 @Component({
   selector: 'app-amandes',
   templateUrl: './amandes.component.html',
@@ -19,6 +21,8 @@ export class AmandesComponent implements OnInit {
 
   p: number;
   amandes: Amandes[] = [];
+  sessions: Sessions[];
+  sessionId = '';
   loaders: boolean = false;
   selectedAmande: Amandes;
   amandeForm: FormGroup;
@@ -36,6 +40,7 @@ export class AmandesComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private amandeServices: AmandesService,
               private userServices: UserService,
+              private sessionService: SessionService,
               private tokenStorage: TokenStorageService,
   ) {
     this.selectedAmande = new Amandes();
@@ -105,6 +110,21 @@ export class AmandesComponent implements OnInit {
     }
     this.allAmandes();
     this.loadUsers();
+    this.loadSession()
+  }
+  loadSession() {
+    this.sessionService.getAllSession().subscribe(
+      data => {
+        this.sessions = data
+
+      },
+      error => {
+        // console.log('une erreur a été détectée au chargement des sessions!')
+      },
+      () => {
+        // console.log('chargement des sessions', this.sessions);
+      }
+    );
   }
 
   loadUsers() {
@@ -123,7 +143,7 @@ export class AmandesComponent implements OnInit {
 
   allAmandes(){
     this.loaders = true;
-    this.amandeServices.getAmandes().subscribe(
+    this.amandeServices.getAmandes(this.sessionId).subscribe(
         data => {
           this.amandes = data;
         } ,

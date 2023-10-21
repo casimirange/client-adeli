@@ -50,7 +50,7 @@ export class CotisationComponent implements OnInit {
   beneficiaires: Beneficiaires[] = [];
   users: User[];
   closeResult: any;
-
+  sessionId = '';
   selectedTech: Technicien;
   private modelTech: Technicien;
   constructor(private fb: FormBuilder,
@@ -169,7 +169,8 @@ export class CotisationComponent implements OnInit {
   // //
   loadActiveTontine() {
     this.loade = true;
-    this.tontineService.getHistoriqueActiveSession().subscribe(
+    // console.log(this.sessionId)
+    this.tontineService.getHistoriqueActiveSession(this.sessionId).subscribe(
         data => {
           this.tontines = data
 
@@ -187,7 +188,7 @@ export class CotisationComponent implements OnInit {
 
   loadBeneficiaires() {
     this.loader = true;
-    this.beneficiaireService.getBeneficiaireSession().subscribe(
+    this.beneficiaireService.getBeneficiaireSession(this.sessionId).subscribe(
         data => {
           this.beneficiaires = data;
         },

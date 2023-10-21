@@ -14,8 +14,8 @@ export class PretService {
 
   constructor(private http: HttpClient) { }
 
-  getPrets(): Observable<any> {
-    return this.http.get(environment.PRET_URL);
+  getPrets(session? :string): Observable<any> {
+    return this.http.get(environment.PRET_URL+`?sessionId=${session}`);
   }
 
   newPret(id: any, info: Prêts): Observable<any> {

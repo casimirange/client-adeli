@@ -18,8 +18,8 @@ export class AmandesService {
     return this.http.get(environment.AMANDE_URL + `/solde`);
   }
 
-  getAmandes(): Observable<any>{
-    return this.http.get(environment.AMANDE_URL);
+  getAmandes(session: string): Observable<any>{
+    return this.http.get(environment.AMANDE_URL+`?sessionId=${session}`);
   }
 
   newAmande(id: any, info: Amandes): Observable<any> {

@@ -79,12 +79,10 @@
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                             <!--<form [formGroup]="selectPanForm">-->
-                                <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
-                                    <!--<option value="" selected disabled hidden>Afficher Tout</option>-->
-                                    <!--<option value="tous">Tous les Techniciens</option>-->
-                                    <!--<option value="actifs" >Actifs</option>-->
-                                    <!--<option value="inactifs" >Inactifs</option>-->
-                                <!--</select>-->
+                          <select class="form-control-sm form-control"  [(ngModel)]="sessionId" (ngModelChange)="allPrets()" >
+                            <option value="" selected disabled hidden>Filtrer par session</option>
+                            <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
+                          </select>
                             <!--</form>-->
                         </div>
                     </div>

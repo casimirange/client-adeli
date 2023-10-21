@@ -7,6 +7,8 @@ import {PlaningService} from "../../services/planing/planing.service";
 import {User} from "../../Models/users";
 import {TokenStorageService} from "../../auth/token-storage.service";
 import Swal from "sweetalert2";
+import {Sessions} from "../../Models/Sessions";
+import {SessionService} from "../../services/session/session.service";
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.component.html',
@@ -19,6 +21,8 @@ export class PlanningComponent implements OnInit {
   icons = 'pe-7s-news-paper icon-gradient bg-mixed-hopes';
 
   planings: Planing[] = [];
+  sessions: Sessions[];
+  sessionId = '';
   selectedPlanning: Planing;
   loaders: boolean = false;
   planForm: FormGroup;
@@ -31,6 +35,7 @@ export class PlanningComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userServices: UserService,
+              private sessionService: SessionService,
               private tokenStorage: TokenStorageService,
               private planingServices: PlaningService) {
     this.createForm();
@@ -77,8 +82,23 @@ export class PlanningComponent implements OnInit {
     }
     this.Planing();
     this.loadUsers();
+    this.loadSession()
   }
 
+  loadSession() {
+    this.sessionService.getAllSession().subscribe(
+      data => {
+        this.sessions = data
+
+      },
+      error => {
+        // console.log('une erreur a été détectée au chargement des sessions!')
+      },
+      () => {
+        // console.log('chargement des sessions', this.sessions);
+      }
+    );
+  }
   createForm() {
     this.planForm = this.fb.group({
       date: ['', [Validators.required]],
@@ -95,7 +115,7 @@ export class PlanningComponent implements OnInit {
   Planing(){
     this.planings = [];
     this.loaders = true;
-    this.planingServices.getPlaning().subscribe(
+    this.planingServices.getPlaning(this.sessionId).subscribe(
         data => {
           this.planings = data;
 

@@ -14,8 +14,8 @@ export class BeneficiaireService {
 
   constructor(private http: HttpClient) { }
 
-  getBeneficiaireSession(): Observable<any>{
-    return this.http.get(environment.BENEFICIAIRE_URL);
+  getBeneficiaireSession(session: string): Observable<any>{
+    return this.http.get(environment.BENEFICIAIRE_URL+`?sessionId=${session}`);
   }
 
   newBenef(id: any, info: Beneficiaires, date: any): Observable<any> {

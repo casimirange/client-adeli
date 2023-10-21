@@ -182,14 +182,15 @@
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <!--<form [formGroup]="selectPanForm">-->
-                            <!--&lt;!&ndash;<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">&ndash;&gt;-->
+<!--                        <form [formGroup]="selectPanForm">-->
+                            <!--<select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">-->
 
-                            <!--<select class="form-control-sm form-control"   [(ngModel)]="selectedSessions.id_session">-->
-                                <!--<option value="" selected disabled hidden>Filtrer par session</option>-->
-                                <!--<option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>-->
-                            <!--</select>-->
-                        <!--</form>-->
+<!--                            <select class="form-control-sm form-control"   [(ngModel)]="selectedSessions.id_session" [(ngModel)]="sessionId" (ngModelChange)="filterOrders()" >-->
+                            <select class="form-control-sm form-control"  [(ngModel)]="sessionId" (ngModelChange)="loadActiveTontine(); loadBeneficiaires()" >
+                                <option value="" selected disabled hidden>Filtrer par session</option>
+                                <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
+                            </select>
+<!--                        </form>-->
                     </div>
                 </div>
                 <div class="btn-actions-pane-right">
