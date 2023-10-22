@@ -10,6 +10,8 @@ import {Tontines} from "../../Models/tontines";
 import {Amandes} from "../../Models/amandes";
 import {DisciplineService} from "../../services/discipline/discipline.service";
 import {Discipline} from "../../Models/discipline";
+import {Sessions} from "../../Models/Sessions";
+import {SessionService} from "../../services/session/session.service";
 
 @Component({
   selector: 'app-use-component',
@@ -27,6 +29,8 @@ export class UseComponentComponent implements OnInit {
   p: number;
   div: boolean;
   selectedUser: User;
+  sessions: Sessions[];
+  sessionId = '';
   prets: Prêts[] = [];
   tontines: Tontines[] = [];
   amandes: Amandes[] = [];
@@ -52,6 +56,7 @@ export class UseComponentComponent implements OnInit {
               private fb: FormBuilder,
               private datePipe: DatePipe,
               private router: Router,
+              private sessionService: SessionService,
               private tokenStorage: TokenStorageService,
               private route: ActivatedRoute) {
     this.selectedUser = new User();
@@ -71,10 +76,26 @@ export class UseComponentComponent implements OnInit {
     this.showTontine();
     this.showAmande();
     this.showDiscipline();
+    this.loadSession()
+  }
+
+  loadSession() {
+    this.sessionService.getAllSession().subscribe(
+      data => {
+        this.sessions = data
+
+      },
+      error => {
+        // console.log('une erreur a été détectée au chargement des sessions!')
+      },
+      () => {
+        // console.log('chargement des sessions', this.sessions);
+      }
+    );
   }
 
   showMachine() {
-    console.log('test')
+    // console.log('test')
     this.route.params.subscribe(params => {
         const urls = Number.parseInt(atob(params['id']));
         this.noms = '';
@@ -84,54 +105,54 @@ export class UseComponentComponent implements OnInit {
                 this.noms = this.selectedUser.name;
             } ,
             error => {
-                console.log('erreur chargement de l\'utilisateur');
+                // console.log('erreur chargement de l\'utilisateur');
                 // this.load = false;
             },
             () => {
                 // this.load= false;
-                console.log('Liste des prêts: ', this.selectedUser);
+                // console.log('Liste des prêts: ', this.selectedUser);
             }
         );
     });
   }
 
   showPret() {
-    console.log('test')
+    // console.log('test')
     this.route.params.subscribe(params => {
         const urls = Number.parseInt(atob(params['id']));
       this.loaders = true;
-      this.userService.getPret(urls).subscribe(
+      this.userService.getPret(urls, this.sessionId).subscribe(
           data => {
             this.prets = data;
           } ,
           error => {
-            console.log('les amandes ne se sont pas chargées correctement');
+            // console.log('les amandes ne se sont pas chargées correctement');
             this.loaders = false;
           },
           () => {
             this.loaders = false;
-            console.log('Liste des prêts: ', this.prets);
+            // console.log('Liste des prêts: ', this.prets);
           }
       );
     })
   }
 
   showTontine() {
-    console.log('test')
+    // console.log('test')
     this.route.params.subscribe(params => {
         const urls = Number.parseInt(atob(params['id']));
       this.loaders = true;
         this.loade = true;
-        this.userService.getTontine(urls).subscribe(
+        this.userService.getTontine(urls, this.sessionId).subscribe(
             data => {
                 this.tontines = data
             },
             error => {
-                console.log('une erreur tontine active');
+                // console.log('une erreur tontine active');
                 this.loade = false;
             },
             () => {
-                console.log('chargement tontine active', this.tontines);
+                // console.log('chargement tontine active', this.tontines);
                 this.loade = false;
             }
         );
@@ -139,42 +160,42 @@ export class UseComponentComponent implements OnInit {
   }
 
   showAmande() {
-    console.log('test')
+    // console.log('test')
     this.route.params.subscribe(params => {
         const urls = Number.parseInt(atob(params['id']));
         this.loadeAmande = true;
-        this.userService.getAmande(urls).subscribe(
+        this.userService.getAmande(urls, this.sessionId).subscribe(
             data => {
                 this.amandes = data;
             } ,
             error => {
-                console.log('les amandes ne se sont pas chargées correctement');
+                // console.log('les amandes ne se sont pas chargées correctement');
                 this.loadeAmande = false;
             },
             () => {
                 this.loadeAmande = false;
-                console.log('Liste des amandes: ', this.amandes);
+                // console.log('Liste des amandes: ', this.amandes);
             }
         );
     })
   }
 
   showDiscipline() {
-    console.log('test')
+    // console.log('test')
     this.route.params.subscribe(params => {
         const urls = Number.parseInt(atob(params['id']));
         this.loadeDiscipline = true;
-        this.userService.getDiscipline(urls).subscribe(
+        this.userService.getDiscipline(urls, this.sessionId).subscribe(
             data => {
                 this.disciplines = data;
 
             },
             error => {
-                console.log('une erreur a été détectée lors du chargement des disciplines');
+                // console.log('une erreur a été détectée lors du chargement des disciplines');
                 this.loadeDiscipline = false;
             },
             () => {
-                console.log('chargement des disciplines', this.disciplines);
+                // console.log('chargement des disciplines', this.disciplines);
                 this.loadeDiscipline = false;
             }
         );

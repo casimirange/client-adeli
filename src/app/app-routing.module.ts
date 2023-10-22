@@ -46,6 +46,7 @@ const routes: Routes = [
   {    path: 'communiqué', loadChildren: () => import('./Pages/communique/communique.module').then(m => m.CommuniqueModule),  canActivate:[AuthGuardService], },
   {    path: 'session', loadChildren: () => import('./Pages/session/session.module').then(m => m.SessionModule),  canActivate:[AuthGuardService], },
   {    path: 'planning', loadChildren: () => import('./Pages/planning/planning.module').then(m => m.PlanningModule),  canActivate:[AuthGuardService], },
+  {    path: 'user', loadChildren: () => import('./Pages/use-component/use-component.module').then(m => m.UseComponentModule), canActivate:[AuthGuardService]},
   {    path: 'erreur', loadChildren: () => import('./layout/erreur404/erreur404.module').then(m => m.Erreur404Module) },
   // {
   //   path: '',

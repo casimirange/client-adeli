@@ -45,20 +45,20 @@ export class UserService {
     return this.http.get(environment.URERS + `/id/${id}`);
   }
 
-  getPret(id: number): Observable <any> {
-    return this.http.get(environment.PRET_URL + `/id/${id}`);
+  getPret(id: number, sessionId?: string): Observable <any> {
+    return this.http.get(environment.PRET_URL + `/id/${id}/?sessionId=${sessionId}`);
   }
 
-  getTontine(id: number): Observable <any> {
-    return this.http.get(environment.TONTINE_URL + `/id/${id}`);
+  getTontine(id: number, sessionId?: string): Observable <any> {
+    return this.http.get(environment.TONTINE_URL + `/id/${id}/?sessionId=${sessionId}`);
   }
 
-  getAmande(id: number): Observable <any> {
-    return this.http.get(environment.AMANDE_URL + `/id/${id}`);
+  getAmande(id: number, sessionId?: string): Observable <any> {
+    return this.http.get(environment.AMANDE_URL + `/id/${id}/?sessionId=${sessionId}`);
   }
 
-  getDiscipline(id: number): Observable <any> {
-    return this.http.get(environment.DISCIPLINE_URL + `/id/${id}`);
+  getDiscipline(id: number, sessionId?: string): Observable <any> {
+    return this.http.get(environment.DISCIPLINE_URL + `/id/${id}/?sessionId=${sessionId}`);
   }
   //
   // addUser(users: User ): Observable<any>{

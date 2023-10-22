@@ -9,8 +9,8 @@ import {LuComponent} from "./lu/lu.component";
 const routes: Routes = [
   {
     path: '', component: LuComponent, children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      { path: 'dashboard', component: UseComponentComponent},
+      { path: '', redirectTo: 'dashboard/:id', pathMatch: 'full'},
+      { path: 'dashboard/:id', component: UseComponentComponent},
     ]
   }
 ];

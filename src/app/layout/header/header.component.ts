@@ -123,6 +123,6 @@ export class HeaderComponent implements OnInit {
 
   selectedEvent(m: User) {
     const url = btoa(m.id.toString());
-    this.router.navigateByUrl('machines/'+url);
+    this.router.navigateByUrl('user/dashboard/'+ url);
   }
 }

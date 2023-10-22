@@ -9,17 +9,19 @@ import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {LayoutModule} from "../../layout/layout.module";
 import {NgxPaginationModule} from "ngx-pagination";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [UseComponentComponent, LuComponent],
-  imports: [
-    CommonModule,
-    UseComponentRoutingModule,
-    LoadingBarModule,
-    LayoutModule,
-    NgxPaginationModule,
-    Ng2SearchPipeModule
-  ]
+    imports: [
+        CommonModule,
+        UseComponentRoutingModule,
+        LoadingBarModule,
+        LayoutModule,
+        NgxPaginationModule,
+        Ng2SearchPipeModule,
+        FormsModule
+    ]
 })
 export class UseComponentModule { }

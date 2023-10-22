@@ -5,6 +5,17 @@
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Information utilisateur
+              <div class="btn-actions-pane-right">
+                <div role="group" class="btn-group-sm btn-group">
+                  <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                  <!--<form [formGroup]="selectPanForm">-->
+                  <select class="form-control-sm form-control"  [(ngModel)]="sessionId" (ngModelChange)="showTontine(); showPret(); showAmande(); showDiscipline()" >
+                    <option value="" selected disabled hidden>Filtrer par session</option>
+                    <option *ngFor="let session of sessions" [ngValue]="session.id_session"  >Session {{session.debut | date : 'MMM yyyy'}}</option>
+                  </select>
+                  <!--</form>-->
+                </div>
+              </div>
             </div>
             <div class="table-responsive">
                 <table class="align-middle mb-0 table table-sm table-borderless table-hover">
